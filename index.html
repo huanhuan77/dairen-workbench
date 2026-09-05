@@ -333,6 +333,15 @@ body{
         <button data-f="mid">中</button>
         <button data-f="bad">差</button>
       </div>
+      <div class="seg" id="prodAcctSeg" style="margin-top:6px">
+        <button class="on" data-a="all">全部账号</button>
+        <button data-a="big">大号</button>
+        <button data-a="small">小号</button>
+      </div>
+      <div class="seg" id="prodSortSeg" style="margin-top:6px">
+        <button class="on" data-s="last">最新发布</button>
+        <button data-s="orders">出单最多</button>
+      </div>
       <div style="margin-top:10px" id="prodList"></div>
     </div>
 
@@ -414,7 +423,7 @@ body{
 /* ============ 应用版本 / 检查更新 ============
    发布新版时把 APP_VER 递增，并同步把同目录 ver.json 的 latest 改成相同值。
    checkUpdate() 拉同域 ver.json 对比，提示是否有新版本。 */
-var APP_VER=16;
+var APP_VER=17;
 /* 检查是否有新版(手动触发) */
 function checkUpdate(){
   const now=Date.now();
@@ -814,8 +823,8 @@ function productOptions(name){
 function recOrders(r){return r.orders!=null?(Number(r.orders)||0):((r.price||0)>0?1:0);}
 function recSold(r){return recOrders(r)>0;}
 /* 一个产品的汇总统计 */
-function prodStats(pid){
-  const recs=db.records.filter(r=>r.pid===pid);
+function prodStats(pid,acctFilter='all'){
+  const recs=db.records.filter(r=>r.pid===pid&&acctMatch(acctOf(r),acctFilter));
   let videos=recs.length, orders=0, revenue=0, soldVideos=0;
   recs.forEach(r=>{const o=recOrders(r);orders+=o;revenue+=(r.price||0);if(o>0)soldVideos++;});
   return {recs,videos,orders,revenue,soldVideos};
@@ -1093,30 +1102,38 @@ function saveMoney(){
 
 /* ============ render products ============ */
 let prodFilter='all';
+let prodAcct='all';
+let prodSort='last';
+function prodTotalOrders(pid){return db.records.filter(r=>r.pid===pid).reduce((s,r)=>s+recOrders(r),0);}
 function renderProducts(f){prodFilter=f||prodFilter;
-  const list=[...db.products].sort((a,b)=>(b.last||'').localeCompare(a.last||''));
+  const list=db.products.slice().sort((a,b)=>{
+    if(prodSort==='orders')return prodTotalOrders(b.id)-prodTotalOrders(a.id);
+    return (b.last||'').localeCompare(a.last||'');
+  });
   const el=document.getElementById('prodList');
   if(!list.length){el.innerHTML=emptyHTML('还没有视频记录，点右下角 + 记一条带货视频');return;}
   const filtered=list.filter(p=>{
+    // 账号筛选:该产品必须有匹配acct的rec
+    if(prodAcct!=='all'){
+      const has=db.records.some(r=>r.pid===p.id&&acctMatch(acctOf(r),prodAcct));
+      if(!has)return false;
+    }
     if(prodFilter==='all')return true;
-    const good=db.records.filter(r=>r.pid===p.id&&r.rate&&r.rate>=4).length;
-    const mid=db.records.filter(r=>r.pid===p.id&&r.rate===3).length;
-    const bad=db.records.filter(r=>r.pid===p.id&&r.rate&&r.rate<=2).length;
-    const avg=avgRate(p.id);
+    const avg=avgRate(p.id,prodAcct);
     if(prodFilter==='good')return avg>=3.5;
     if(prodFilter==='mid')return avg>0&&avg>=2.5&&avg<3.5;
     if(prodFilter==='bad')return avg>0&&avg<2.5;
     return true;
   });
-  if(!filtered.length){el.innerHTML=emptyHTML('该分类下没有产品');return;}
+  if(!filtered.length){el.innerHTML=emptyHTML('该筛选下没有产品');return;}
   el.innerHTML=filtered.map(p=>{
-    const st=prodStats(p.id);
+    const st=prodStats(p.id,prodAcct);
     const recs=st.recs;
     const revenue=st.revenue;
     const good=recs.filter(r=>r.rate&&r.rate>=4).length;
     const mid=recs.filter(r=>r.rate===3).length;
     const bad=recs.filter(r=>r.rate&&r.rate<=2).length;
-    const avg=avgRate(p.id);
+    const avg=avgRate(p.id,prodAcct);
     const copyCount=db.copies.filter(c=>c.name===p.name).length;
     const avgTxt=avg>0?avg.toFixed(1)+' 分':'未评';
     return `<div class="card" style="margin-bottom:10px"><div class="prod" onclick="openProduct(${JSON.stringify(p.id)})">
@@ -1136,7 +1153,7 @@ function renderProducts(f){prodFilter=f||prodFilter;
     </div></div>`;
   }).join('');
 }
-function avgRate(pid){const rs=db.records.filter(r=>r.pid===pid&&r.rate);if(!rs.length)return 0;return rs.reduce((s,r)=>s+r.rate,0)/rs.length;}
+function avgRate(pid,acctFilter='all'){const rs=db.records.filter(r=>r.pid===pid&&acctMatch(acctOf(r),acctFilter)&&r.rate);if(!rs.length)return 0;return rs.reduce((s,r)=>s+r.rate,0)/rs.length;}
 
 function emptyHTML(msg){return '<div class="empty"><svg viewBox="0 0 24 24" stroke="currentColor" fill="none"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/></svg><div>'+esc(msg)+'</div></div>';}
 
@@ -1507,6 +1524,8 @@ document.addEventListener('click',e=>{
   if(seg){seg.parentNode.querySelectorAll('button').forEach(b=>b.classList.remove('on'));seg.classList.add('on');
     const parent=seg.closest('.seg');
     if(parent.id==='prodSeg')renderProducts(seg.dataset.f);
+    else if(parent.id==='prodAcctSeg'){prodAcct=seg.dataset.a;renderProducts();}
+    else if(parent.id==='prodSortSeg'){prodSort=seg.dataset.s;renderProducts();}
     else if(parent.id==='sampleSeg')renderSamples(seg.dataset.f);
     else if(parent.id==='copySeg')renderCopies(seg.dataset.f);
     else if(parent.id==='sampleAcctSeg'){sampleAcct=seg.dataset.a;renderSamples();}
