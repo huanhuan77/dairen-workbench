@@ -110,9 +110,11 @@ body{
 .copy-status-row{display:flex;flex-wrap:wrap;gap:8px;margin:14px 0 4px}
 .copy-status-row .chip{padding:6px 12px;border-radius:14px;background:#fff;border:1px solid var(--line);color:var(--text);font-size:13px;font-weight:600;cursor:pointer}
 .copy-status-row .chip.on{background:#fff0f6;color:var(--brand);border-color:#ffcce0}
+.copy-status-row .chip.hot.on{background:var(--brand);color:#fff;border-color:var(--brand)}
 .copy-used-time{display:inline-flex;align-items:center;gap:4px;background:#e6f9f1;color:#0bb07b;font-size:12px;padding:3px 10px;border-radius:10px;margin:8px 0 14px;font-weight:600}
 .st-pill{display:inline-flex;align-items:center;gap:3px;border:1px solid var(--line);background:#fff;color:var(--text2);font-size:12px;font-weight:600;padding:4px 10px;border-radius:14px;cursor:pointer;user-select:none}
 .st-pill.st-on{background:#fff0f6;color:var(--brand);border-color:#ffcce0}
+.st-pill.hot.st-on{background:var(--brand);color:#fff;border-color:var(--brand)}
 
 /* list items */
 .row{display:flex;align-items:center;gap:12px;padding:13px 14px}
@@ -417,7 +419,7 @@ body{
 /* ============ 应用版本 / 检查更新 ============
    发布新版时把 APP_VER 递增，并同步把同目录 ver.json 的 latest 改成相同值。
    checkUpdate() 拉同域 ver.json 对比，提示是否有新版本。 */
-var APP_VER=24;
+var APP_VER=25;
 /* 检查是否有新版(手动触发) */
 function checkUpdate(){
   const now=Date.now();
@@ -460,7 +462,6 @@ function ensureSeedCopies(){
     ['益美滋无糖清润糖','爱大概是知道你抽🚬\n所以给你买的润喉糖从没断过'],
     ['无糖草本润喉糖','原来老师收到小心意\n真的会开心很久\n平日里不好意思的感谢\n都藏在这盒糖里🥺']
   ];
-  const BOOM='爆单';
   // 历史正文（之前内置版本）：如用户手机里仍是这一版则升级到新版本
   const UPDATES={
     '芭比安睡裤':[['资本你赢了\n幸好9.💰Ⓜ️条时忍住\n没买🙄','资本你赢了\n幸好9.💰①条时忍住\n没买🙄']]
@@ -468,14 +469,15 @@ function ensureSeedCopies(){
   let dirty=false;
   defs.forEach(([name,text])=>{
     const rows=db.copies.filter(c=>c.name===name);
-    if(!seeded&&!rows.length){   // 首次内置且库里没有 → 种入一条（带爆单标签）
-      db.copies.unshift({id:uid(),name,date:today(),rate:0,text,note:text,tags:[BOOM],views:null,likes:null});
+    if(!seeded&&!rows.length){   // 首次内置且库里没有 → 种入一条（标记 hot=爆单）
+      db.copies.unshift({id:uid(),name,date:today(),rate:0,text,note:text,tags:[],views:null,likes:null,hot:true});
       dirty=true;
       return;
     }
-    rows.forEach(c=>{            // 已有该产品文案 → 统一补「爆单」标签（去重）
+    rows.forEach(c=>{            // 已有该产品文案 → 标记 hot=爆单（统一）
+      if(!c.hot){c.hot=true;dirty=true;}
       const t=(c.tags||[]).filter(Boolean);
-      if(!t.includes(BOOM)){c.tags=t.concat([BOOM]);dirty=true;}
+      if(t.includes('爆单')){c.tags=t.filter(x=>x!=='爆单');dirty=true;}   // 旧版用 tags 标记，迁到 hot
       // 一次性正文升级（仅在文本仍等于旧版本时改写为新版本，不动用户已改的）
       const ups=UPDATES[name]||[];
       for(const [from,to] of ups){
@@ -488,18 +490,31 @@ function ensureSeedCopies(){
 }
 
 /* ===== 扩展内置爆单文案（小号爆单）：首次打开种入一次，绝不重复，绝不破坏用户其它数据 =====
-   趣味车润喉糖O糖O脂清凉糖果（=趣味到润喉糖）/ 益美滋组合装香体糖。带「爆单」标签。 */
+   趣味车润喉糖O糖O脂清凉糖果（=趣味到润喉糖）/ 益美滋组合装香体糖。标记 hot=爆单。 */
 var SEED_KEY2=DB_KEY+'_seeded_v2';
 function ensureSeedCopiesExtra(){
-  try{if(localStorage.getItem(SEED_KEY2))return;}catch(e){}
+  const seeded2=!!localStorage.getItem(SEED_KEY2);
   const BOOM='爆单';
   const defs=[
     ['趣味车润喉糖O糖O脂清凉糖果','爱从来不是克制\n知道他爱抽🚬\n所以给他买的趣味到润喉糖\n从来没断过…'],
     ['益美滋组合装香体糖','哈哈哈🤣\n幸好9.9一盒的时候\n我没买\n现在这个价就到手四盒\n真的爽歪歪～😆']
   ];
   let dirty=false;
+  // 已设 SEED_KEY2 的老用户：把这两个产品的旧 tags=爆单 迁到 hot=true
+  if(seeded2){
+    defs.forEach(([name])=>{
+      db.copies.filter(c=>c.name===name).forEach(c=>{
+        if(!c.hot){c.hot=true;dirty=true;}
+        if((c.tags||[]).includes(BOOM)){c.tags=c.tags.filter(x=>x!==BOOM);dirty=true;}
+      });
+    });
+    try{localStorage.setItem(SEED_KEY2,'1');}catch(e){}
+    if(dirty)save();
+    return;
+  }
+  // 首次种入
   defs.forEach(([name,text])=>{
-    db.copies.unshift({id:uid(),name,date:today(),rate:0,text,note:text,tags:[BOOM],views:null,likes:null});
+    db.copies.unshift({id:uid(),name,date:today(),rate:0,text,note:text,tags:[],views:null,likes:null,hot:true});
     dirty=true;
   });
   try{localStorage.setItem(SEED_KEY2,'1');}catch(e){}
@@ -1313,7 +1328,7 @@ function renderPcList(){
       <div style="display:flex;gap:6px;flex-wrap:wrap;margin-bottom:8px">
         <span class="st-pill ${c.used?'st-on':''}" onclick="event.stopPropagation();toggleCopyFlagStay('${c.id}','used');renderPcList();return false">${c.used?'✓ 用过':'用过'}</span>
         <span class="st-pill ${c.sold?'st-on':''}" onclick="event.stopPropagation();toggleCopyFlagStay('${c.id}','sold');renderPcList();return false">${c.sold?'✓ 出单':'出单'}</span>
-        <span class="st-pill ${c.hot?'st-on':''}" onclick="event.stopPropagation();toggleCopyFlagStay('${c.id}','hot');renderPcList();return false">${c.hot?'🔥 爆单':'爆单'}</span>
+        <span class="st-pill hot ${c.hot?'st-on':''}" onclick="event.stopPropagation();toggleCopyFlagStay('${c.id}','hot');renderPcList();return false">${c.hot?'🔥 爆单':'爆单'}</span>
       </div>
       ${(c.tags&&c.tags.length)?`<div style="margin-bottom:10px;display:flex;flex-wrap:wrap;gap:4px">${c.tags.slice(0,5).map(t=>`<span class="tag-bubble" style="font-size:11px;padding:3px 9px" onclick="event.stopPropagation();copyText('#${esc(t)}');toast('已复制话题 #${esc(t)}')">#${esc(t)}</span>`).join('')}${c.tags.length>5?`<span class="chip">+${c.tags.length-5}</span>`:''}</div>`:''}
       <div style="display:flex;gap:8px;justify-content:flex-end"><button class="copy-mini" onclick="event.stopPropagation();copyOne('${c.id}')"><svg viewBox="0 0 24 24"><rect x="9" y="9" width="12" height="12" rx="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg>复制文案</button></div>
@@ -1367,7 +1382,7 @@ function enterCopyDetail(id){
   <div class="copy-status-row">
     <span class="chip ${c.used?'on':''}" onclick="enterToggleCopyFlag('${c.id}','used')">✓ 用过</span>
     <span class="chip ${c.sold?'on':''}" onclick="enterToggleCopyFlag('${c.id}','sold')">出单</span>
-    <span class="chip ${c.hot?'on':''}" onclick="enterToggleCopyFlag('${c.id}','hot')">爆单</span>
+    <span class="chip hot ${c.hot?'on':''}" onclick="enterToggleCopyFlag('${c.id}','hot')">${c.hot?'🔥 ':''}爆单</span>
     <span class="chip" onclick="document.getElementById('cp_body').focus()">编辑</span>
   </div>
   ${same.length?`<div class="f-label" style="margin-top:16px;color:var(--text2)">同产品的其他文案</div>${same.map(s=>`<div class="row" style="padding:8px 0"><div class="grow"><div class="d">${fmtYMD(s.date)}</div></div><span class="badge" style="background:${s.rate>=4?'#0bb07b':s.rate===3?'#ff9500':'#ff3d4a'};color:#fff;font-size:11px">${s.rate}星</span></div>`).join('')}`:''}
