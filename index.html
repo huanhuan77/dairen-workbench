@@ -414,7 +414,7 @@ body{
 /* ============ 应用版本 / 检查更新 ============
    发布新版时把 APP_VER 递增，并同步把同目录 ver.json 的 latest 改成相同值。
    checkUpdate() 拉同域 ver.json 对比，提示是否有新版本。 */
-var APP_VER=10;
+var APP_VER=11;
 /* 检查是否有新版(手动触发) */
 function checkUpdate(){
   const now=Date.now();
@@ -442,7 +442,7 @@ function reloadApp(){location.reload(true);}
 /* ============ store helpers ============ */
 const DB_KEY='dl_dairen_workbench_v1';
 let db={products:[],samples:[],records:[],copies:[]};
-function load(){try{db=JSON.parse(localStorage.getItem(DB_KEY))||db}catch(e){};normalize();ensureSeedCopies();ensureSeedVideos();}
+function load(){try{db=JSON.parse(localStorage.getItem(DB_KEY))||db}catch(e){};normalize();ensureSeedCopies();ensureSeedVideos();ensureSeedSamples();}
 function save(){localStorage.setItem(DB_KEY,JSON.stringify(db));renderAll();cloudSchedule();}
 
 /* ===== 内置示例文案：这些是「爆单」文案。
@@ -501,6 +501,23 @@ function ensureSeedVideos(){
   });
   try{localStorage.setItem(VSEED_KEY,'1');}catch(e){}
   if(n)save();
+}
+
+/* ===== 内置样品（样品排期默认数据，待拍摄=没拍的，归大号）：首次种入一次，同名已存在则跳过 =====
+   珀芙研传明酸次抛 / WINY益生菌 / 韩束面膜 / 林清轩面膜 / 自然堂水乳 / 自然堂眼霜
+   （产品名已去掉「（小美）」「（小美桌拍）」等括号备注） */
+var SSEED_KEY=DB_KEY+'_sseed_2026_09';
+function ensureSeedSamples(){
+  try{if(localStorage.getItem(SSEED_KEY))return;}catch(e){}
+  const list=['珀芙研传明酸次抛','WINY益生菌','韩束面膜','林清轩面膜','自然堂水乳','自然堂眼霜'];
+  let added=0;
+  list.forEach(name=>{
+    if(db.samples.some(s=>s.name===name))return;   // 已有同名样品，保留用户数据不重复
+    db.samples.unshift({id:uid(),name,acct:'big',status:'todo',shoot:'',pub:'',note:'',created:today()});
+    added++;
+  });
+  try{localStorage.setItem(SSEED_KEY,'1');}catch(e){}
+  if(added)save();
 }
 
 /* ============ 云端自动备份(GitHub Gist) ============
