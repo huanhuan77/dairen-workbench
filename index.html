@@ -423,7 +423,7 @@ body{
 /* ============ 应用版本 / 检查更新 ============
    发布新版时把 APP_VER 递增，并同步把同目录 ver.json 的 latest 改成相同值。
    checkUpdate() 拉同域 ver.json 对比，提示是否有新版本。 */
-var APP_VER=17;
+var APP_VER=18;
 /* 检查是否有新版(手动触发) */
 function checkUpdate(){
   const now=Date.now();
@@ -1136,7 +1136,7 @@ function renderProducts(f){prodFilter=f||prodFilter;
     const avg=avgRate(p.id,prodAcct);
     const copyCount=db.copies.filter(c=>c.name===p.name).length;
     const avgTxt=avg>0?avg.toFixed(1)+' 分':'未评';
-    return `<div class="card" style="margin-bottom:10px"><div class="prod" onclick="openProduct(${JSON.stringify(p.id)})">
+    return `<div class="card" style="margin-bottom:10px"><div class="prod" onclick="openProduct('${String(p.id).replace(/'/g,"\\'")}')">
       <div class="thumb" style="background:${hueOf(p.name)}">${esc(initials(p.name))}</div>
       <div class="grow">
         <div class="prod-name">${esc(p.name)}</div>
