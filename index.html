@@ -417,7 +417,7 @@ body{
 /* ============ 应用版本 / 检查更新 ============
    发布新版时把 APP_VER 递增，并同步把同目录 ver.json 的 latest 改成相同值。
    checkUpdate() 拉同域 ver.json 对比，提示是否有新版本。 */
-var APP_VER=19;
+var APP_VER=20;
 /* 检查是否有新版(手动触发) */
 function checkUpdate(){
   const now=Date.now();
@@ -1418,7 +1418,7 @@ function renderHome(){
     const p=db.products.find(x=>x.id===r.pid);
     const nm=r.type==='product'?(p?p.name:'出单'):(r.note||CATS[r.cat]?.name||'记账');
     const isProd=r.type==='product';
-    return `<div class="row" ${isProd?`onclick="openProduct('${r.pid}')"`:'style=cursor:default'}><div class="thumb" style="background:${isProd?hueOf(nm):(CATS[r.cat]?CATS[r.cat].c:'#8a8f99')}">${esc(initials(isProd?nm:(CATS[r.cat]?CATS[r.cat].name:'账')))}</div><div class="grow"><div class="t">${esc(nm)}</div><div class="d">${fmtYMD(r.date)}${isProd&&r.rate?' · '+r.rate+' 星':''}</div></div>${isProd?`<div class="d" style="font-weight:700;color:var(--green)">${money(r.price)}</div>`:''}</div>`;}).join('');
+    return `<div class="row" ${isProd?`onclick="openProduct('${String(r.pid).replace(/'/g,"\\'")}')"`:'style=cursor:default'}><div class="thumb" style="background:${isProd?hueOf(nm):(CATS[r.cat]?CATS[r.cat].c:'#8a8f99')}">${esc(initials(isProd?nm:(CATS[r.cat]?CATS[r.cat].name:'账')))}</div><div class="grow"><div class="t">${esc(nm)}</div><div class="d">${fmtYMD(r.date)}${isProd&&r.rate?' · '+r.rate+' 星':''}</div></div></div>`;}).join('');
   }
 }
 
