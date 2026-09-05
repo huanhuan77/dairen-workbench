@@ -286,7 +286,7 @@ body{
       <div class="logo"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="3" width="7" height="9" rx="1.5"/><rect x="14" y="3" width="7" height="5" rx="1.5"/><rect x="14" y="12" width="7" height="9" rx="1.5"/><rect x="3" y="16" width="7" height="5" rx="1.5"/></svg></div>
       <div><span class="brand-t">带货达人工作台</span><span class="brand-s" id="hSub">今日概览</span></div>
     </div>
-    <div class="header-tool"><button class="cloud-btn" onclick="openCloudEntry()" id="cloudBtn" title="云端备份"><span class="cloud-dot" id="cloudDot"></span><b id="cloudTxt">云备</b></button></div>
+    <div class="header-tool"><button class="cloud-btn" onclick="checkUpdate()" title="检查更新" style="padding:5px 8px"><svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="M21 12a9 9 0 1 1-2.64-6.36"/><path d="M21 3v6h-6"/></svg><b>更新</b></button><button class="cloud-btn" onclick="openCloudEntry()" id="cloudBtn" title="云端备份"><span class="cloud-dot" id="cloudDot"></span><b id="cloudTxt">云备</b></button></div>
   </div></header>
 
   <div class="content">
@@ -409,6 +409,35 @@ body{
 <div id="toast"></div>
 
 <script>
+/* ============ 应用版本 / 检查更新 ============
+   发布新版时把 APP_VER 递增，并同步把同目录 ver.json 的 latest 改成相同值。
+   checkUpdate() 拉同域 ver.json 对比，提示是否有新版本。 */
+var APP_VER=1;
+var APP_NOTE='';   // 本版更新说明(可在检查面板"已是最新"时一并展示)
+/* 检查是否有新版(手动触发) */
+function checkUpdate(){
+  const now=Date.now();
+  fetch('./ver.json?v='+now,{cache:'no-store'})
+  .then(r=>{if(!r.ok)throw new Error('HTTP '+r.status);return r.json();})
+  .then(j=>{const latest=parseInt(j.latest)||0;renderUpdateSheet(latest,(j.note||''),(latest>APP_VER)?'new':'ok');})
+  .catch(()=>renderUpdateSheet(APP_VER,'','err'));
+}
+function renderUpdateSheet(latest,note,state){
+  let head,bodyHtml,foot;
+  if(state==='new'){
+    head='发现新版本';bodyHtml='<p style="font-size:15px;color:var(--text1);line-height:1.7;margin:0 0 6px">有新版本 v'+latest+' 已上线（你当前是 v'+APP_VER+'）。</p><p style="font-size:13px;color:var(--text2);line-height:1.6;margin:0 0 12px">'+(note||'')+'</p>';
+    foot='<div class="btn-row"><button class="btn primary" onclick="reloadApp()">刷新使用新版</button></div>';
+  }else if(state==='ok'){
+    head='已是最新版本';bodyHtml='<p style="font-size:15px;color:var(--green);font-weight:700;margin:0 0 6px">当前已是最新版 v'+APP_VER+'</p><p style="font-size:13px;color:var(--text2);line-height:1.6;margin:0">'+(note||'')+'</p>';
+    foot='';
+  }else{
+    head='检查失败';bodyHtml='<p style="font-size:14px;color:var(--text2);line-height:1.7;margin:0">暂时无法连接网络检查更新，请稍后再试。</p>';foot='';
+  }
+  openSheet(`<div class="grip"></div><div class="sheet-head"><span class="tt">${head}</span><button class="close" onclick="closeSheet()">×</button></div>
+  <div class="sheet-body">${bodyHtml}${foot}</div>`);
+}
+function reloadApp(){location.reload(true);}
+
 /* ============ store helpers ============ */
 const DB_KEY='dl_dairen_workbench_v1';
 let db={products:[],samples:[],records:[],copies:[]};
