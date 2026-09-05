@@ -412,7 +412,7 @@ body{
 /* ============ 应用版本 / 检查更新 ============
    发布新版时把 APP_VER 递增，并同步把同目录 ver.json 的 latest 改成相同值。
    checkUpdate() 拉同域 ver.json 对比，提示是否有新版本。 */
-var APP_VER=5;
+var APP_VER=6;
 /* 检查是否有新版(手动触发) */
 function checkUpdate(){
   const now=Date.now();
@@ -440,8 +440,27 @@ function reloadApp(){location.reload(true);}
 /* ============ store helpers ============ */
 const DB_KEY='dl_dairen_workbench_v1';
 let db={products:[],samples:[],records:[],copies:[]};
-function load(){try{db=JSON.parse(localStorage.getItem(DB_KEY))||db}catch(e){};normalize();}
+function load(){try{db=JSON.parse(localStorage.getItem(DB_KEY))||db}catch(e){};normalize();ensureSeedCopies();}
 function save(){localStorage.setItem(DB_KEY,JSON.stringify(db));renderAll();cloudSchedule();}
+
+/* ===== 内置示例文案：首次打开自动种入一次（已有同名产品则跳过，不影响用户自己的数据）===== */
+var SEED_KEY=DB_KEY+'_seeded_v1';
+function ensureSeedCopies(){
+  try{if(localStorage.getItem(SEED_KEY))return;}catch(e){}
+  const defs=[
+    ['芭比安睡裤','资本你赢了\n幸好9.💰Ⓜ️条时忍住\n没买🙄'],
+    ['益美滋无糖清润糖','爱大概是知道你抽🚬\n所以给你买的润喉糖从没断过'],
+    ['无糖草本润喉糖','原来老师收到小心意\n真的会开心很久\n平日里不好意思的感谢\n都藏在这盒糖里🥺']
+  ];
+  let added=0;
+  defs.forEach(([name,text])=>{
+    if(db.copies.some(c=>c.name===name))return;   // 已有同名产品文案，跳过以免重复
+    db.copies.unshift({id:uid(),name,date:today(),rate:0,text,note:text,tags:[],views:null,likes:null});
+    added++;
+  });
+  try{localStorage.setItem(SEED_KEY,'1');}catch(e){}
+  if(added)save();
+}
 
 /* ============ 云端自动备份(GitHub Gist) ============
    单人自用：本地 localStorage 为主，每次改动防抖自动备份到一个私有 Gist；
