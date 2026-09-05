@@ -412,7 +412,7 @@ body{
 /* ============ 应用版本 / 检查更新 ============
    发布新版时把 APP_VER 递增，并同步把同目录 ver.json 的 latest 改成相同值。
    checkUpdate() 拉同域 ver.json 对比，提示是否有新版本。 */
-var APP_VER=4;
+var APP_VER=5;
 /* 检查是否有新版(手动触发) */
 function checkUpdate(){
   const now=Date.now();
@@ -795,22 +795,26 @@ function copyTags(id){
 function bulkImportCopy(){
   openSheet(`<div class="grip"></div><div class="sheet-head"><span class="tt">批量导入文案</span><button class="close" onclick="closeSheet()">×</button></div>
   <div class="sheet-body">
-    <p class="hint" style="margin-top:0">每段文案用空行或 <code>---</code> 分隔导入。导入后如需话题，可在文案详情里单独添加。</p>
-    <div class="f-label">产品名 <span class="req">*</span></div>
+    <p class="hint" style="margin-top:0">每段文案用空行或 <code>---</code> 分隔。若想分到不同产品，每段开头写 <code>【产品名】</code>，例如：<code>【无糖草本润喉糖】正文…</code>；没写则归到下方产品名。</p>
+    <div class="f-label">默认产品名 <span class="req">*</span></div>
     <input class="f-input" name="bi_name" list="prodOpts-bi_name" required><datalist id="prodOpts-bi_name">${[...new Set(db.products.map(p=>p.name))].map(n=>'<option value="'+esc(n)+'">').join('')}</datalist>
-    <div class="f-label">文案内容</div>
-    <textarea class="f-textarea" id="biBody" style="min-height:160px" placeholder="第一段正文\n\n第二段正文\n\n（空行或---分隔）"></textarea>
+    <div class="f-label">文案内容（可多段/多产品）</div>
+    <textarea class="f-textarea" id="biBody" style="min-height:160px" placeholder="【芭比安睡裤】第一段正文…&#10;&#10;【益美滋无糖清润糖】第二段正文…&#10;&#10;第三段无产品标记则归默认产品"></textarea>
     <div class="btn-row"><button class="btn ghost" onclick="closeSheet()">取消</button><button class="btn primary" onclick="doBulkImport()">导入</button></div>
   </div>`);
 }
 function doBulkImport(){
-  const name=formVal('bi_name');if(!name){toast('请填写产品名');return;}
+  const defaultName=formVal('bi_name');if(!defaultName){toast('请填写默认产品名');return;}
   const body=document.getElementById('biBody').value;
   if(!body.trim()){toast('请粘贴文案内容');return;}
   const segs=body.split(/\n\s*\n|\n-{3,}\n|\n-{3,}/).map(s=>s.trim()).filter(Boolean);
   if(!segs.length){toast('未识别到任何文案段');return;}
   let n=0;
   segs.forEach(seg=>{
+    if(!seg)return;
+    let name=defaultName;
+    let m=seg.match(/^【([^】]{1,30})】\s*/);
+    if(m){name=m[1].trim();seg=seg.slice(m[0].length).trim();}
     if(!seg)return;
     db.copies.unshift({id:uid(),name,date:today(),rate:0,text:seg,note:seg,tags:[],views:null,likes:null});
     n++;
