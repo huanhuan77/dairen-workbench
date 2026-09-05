@@ -414,7 +414,7 @@ body{
 /* ============ 应用版本 / 检查更新 ============
    发布新版时把 APP_VER 递增，并同步把同目录 ver.json 的 latest 改成相同值。
    checkUpdate() 拉同域 ver.json 对比，提示是否有新版本。 */
-var APP_VER=13;
+var APP_VER=14;
 /* 检查是否有新版(手动触发) */
 function checkUpdate(){
   const now=Date.now();
@@ -442,7 +442,7 @@ function reloadApp(){location.reload(true);}
 /* ============ store helpers ============ */
 const DB_KEY='dl_dairen_workbench_v1';
 let db={products:[],samples:[],records:[],copies:[]};
-function load(){try{db=JSON.parse(localStorage.getItem(DB_KEY))||db}catch(e){};normalize();ensureSeedCopies();ensureSeedVideos();ensureSeedSamples();ensureSeedOrders();}
+function load(){try{db=JSON.parse(localStorage.getItem(DB_KEY))||db}catch(e){};normalize();ensureSeedCopies();ensureSeedVideos();ensureSeedSamples();ensureSeedOrders();ensureSeedOrdersSmall();}
 function save(){localStorage.setItem(DB_KEY,JSON.stringify(db));renderAll();cloudSchedule();}
 
 /* ===== 内置示例文案：这些是「爆单」文案。
@@ -551,6 +551,32 @@ function ensureSeedOrders(){
     n++;
   });
   try{localStorage.setItem(OSEED_KEY,'1');}catch(e){}
+  if(n)save();
+}
+
+/* ===== 内置9月小号出单产品：首次种入一次，与大号同名产品归并；产品名已精简(去【李雪琴代言】等标签) ===== */
+var ASEED_KEY=DB_KEY+'_aseed_2026_09';
+function ensureSeedOrdersSmall(){
+  try{if(localStorage.getItem(ASEED_KEY))return;}catch(e){}
+  const y=new Date().getFullYear();
+  const date=y+'-09-30';
+  const spec=[
+    ['益美滋约会无糖薄荷',1469.10,59],   // 与大号v12同产品归并
+    ['无蔗糖润喉糖茶',279.20,5],
+    ['益美滋七夕约会香体糖',78.50,5],     // 与大号v12同产品归并
+    ['趣味车润喉糖O糖O脂清凉糖果',29.90,1],
+    ['I\'MINT益美滋深润糖十八味',29.90,1] // 与大号v12同产品归并
+  ];
+  let n=0;
+  spec.forEach(([name,price,orders])=>{
+    let prod=db.products.find(p=>p.name===name);
+    if(!prod){prod={id:uid(),name,count:0,last:null,note:'',platform:'douyin'};db.products.push(prod);}
+    db.records.unshift({id:uid(),pid:prod.id,date,orders,price,note:'9月小号汇总',acct:'small',type:'product'});
+    prod.count=(prod.count||0)+1;
+    if(date>(prod.last||''))prod.last=date;
+    n++;
+  });
+  try{localStorage.setItem(ASEED_KEY,'1');}catch(e){}
   if(n)save();
 }
 
