@@ -417,7 +417,7 @@ body{
 /* ============ 应用版本 / 检查更新 ============
    发布新版时把 APP_VER 递增，并同步把同目录 ver.json 的 latest 改成相同值。
    checkUpdate() 拉同域 ver.json 对比，提示是否有新版本。 */
-var APP_VER=20;
+var APP_VER=21;
 /* 检查是否有新版(手动触发) */
 function checkUpdate(){
   const now=Date.now();
@@ -837,6 +837,8 @@ function addProductSheet(){
   <div class="grip"></div><div class="sheet-head"><span class="tt">记一条带货视频</span><button class="close" onclick="closeSheet()">×</button></div>
   <div class="sheet-body">
     ${productPicker('p_name')}
+    <div class="f-label">日期 <span class="hint" style="font-weight:400">默认今天，回填可改</span></div>
+    <input class="f-input" name="p_date" type="date" value="${today()}">
     <div class="f-label">这条视频出了几单？</div>
     <input class="f-input" name="p_orders" type="number" inputmode="numeric" value="0" placeholder="填 0 表示这条没出单">
     <div class="f-label">这条视频带货金额 ¥ <span class="hint" style="font-weight:400">没出单可不填</span></div>
@@ -874,20 +876,21 @@ function saveProduct(){
   const price=parseFloat(formVal('p_price'))||0;
   const rate=parseInt(document.getElementById('pRate').value)||0;
   const note=formVal('p_note');
+  const dateVal=formVal('p_date')||today();
   const todayS=today();
   // resolve product id：同产品名自动归并
   const ids=productOptions(name);
   let prod=ids.length?db.products.find(p=>p.id===ids[0]):null;
   if(!prod){prod={id:uid(),name,count:0,last:null,note:'',platform:'douyin'};db.products.push(prod);}
   prod.count=(prod.count||0)+1;
-  prod.last=todayS;
-  const rec={id:uid(),pid:prod.id,date:todayS,orders,price,note,type:'product'};
+  prod.last=dateVal>(prod.last||'')?dateVal:(prod.last||dateVal);
+  const rec={id:uid(),pid:prod.id,date:dateVal,orders,price,note,type:'product'};
   if(rate>0){rec.rate=rate;}
   db.records.unshift(rec);
   if(rate>0){
     // try link to a copy of same name today
-    let c=db.copies.find(x=>x.name===name&&x.date===todayS);
-    if(!c){c={id:uid(),name,date:todayS,rate,note:''};db.copies.push(c);}
+    let c=db.copies.find(x=>x.name===name&&x.date===dateVal);
+    if(!c){c={id:uid(),name,date:dateVal,rate,note:''};db.copies.push(c);}
     if(c.rate<rate){c.rate=rate;}
   }
   save();
