@@ -414,7 +414,7 @@ body{
 /* ============ 应用版本 / 检查更新 ============
    发布新版时把 APP_VER 递增，并同步把同目录 ver.json 的 latest 改成相同值。
    checkUpdate() 拉同域 ver.json 对比，提示是否有新版本。 */
-var APP_VER=9;
+var APP_VER=10;
 /* 检查是否有新版(手动触发) */
 function checkUpdate(){
   const now=Date.now();
@@ -442,7 +442,7 @@ function reloadApp(){location.reload(true);}
 /* ============ store helpers ============ */
 const DB_KEY='dl_dairen_workbench_v1';
 let db={products:[],samples:[],records:[],copies:[]};
-function load(){try{db=JSON.parse(localStorage.getItem(DB_KEY))||db}catch(e){};normalize();ensureSeedCopies();}
+function load(){try{db=JSON.parse(localStorage.getItem(DB_KEY))||db}catch(e){};normalize();ensureSeedCopies();ensureSeedVideos();}
 function save(){localStorage.setItem(DB_KEY,JSON.stringify(db));renderAll();cloudSchedule();}
 
 /* ===== 内置示例文案：这些是「爆单」文案。
@@ -473,6 +473,34 @@ function ensureSeedCopies(){
   });
   try{localStorage.setItem(SEED_KEY,'1');}catch(e){}
   if(dirty)save();
+}
+
+/* ===== 内置 9 月大号已发视频（出单管理默认数据）：首次打开种入一次，绝不重复叠加 =====
+   清单（每条 = 大号已发的一条带货视频，日期归 9 月 1~5 日轮排）：
+   倍思充电器2 / 益美滋润喉糖4 / 维特健灵小黄条1 / 噗噗片2 / 巧尼芙抹茶巧克力3 /
+   x-it润喉糖2 / 快乐点安睡裤2 / 益美滋18味深润糖1 / 益美滋组合装香体糖1 /
+   珀芙研小样套组1 / 珀芙研屏安修护面膜1。
+   出单数/金额先记 0（0 单 0 元），用户后续可在产品详情里手动补真实出单与销售额。 */
+var VSEED_KEY=DB_KEY+'_vseed_2026_09';
+function ensureSeedVideos(){
+  try{if(localStorage.getItem(VSEED_KEY))return;}catch(e){}
+  const spec=[['倍思充电器',2],['益美滋润喉糖',4],['维特健灵小黄条',1],['噗噗片',2],['巧尼芙抹茶巧克力',3],['x-it润喉糖',2],['快乐点安睡裤',2],['益美滋18味深润糖',1],['益美滋组合装香体糖',1],['珀芙研小样套组',1],['珀芙研屏安修护面膜',1]];
+  const y=new Date().getFullYear();
+  const days=['01','02','03','04','05'].map(d=>y+'-09-'+d);
+  let n=0;
+  spec.forEach(([name,cnt])=>{
+    let prod=db.products.find(p=>p.name===name);
+    if(!prod){prod={id:uid(),name,count:0,last:null,note:'',platform:'douyin'};db.products.push(prod);}
+    for(let i=0;i<cnt;i++){
+      const date=days[n%days.length];
+      db.records.unshift({id:uid(),pid:prod.id,date,orders:0,price:0,note:'',type:'product'});
+      prod.count=(prod.count||0)+1;
+      if(date>(prod.last||''))prod.last=date;
+      n++;
+    }
+  });
+  try{localStorage.setItem(VSEED_KEY,'1');}catch(e){}
+  if(n)save();
 }
 
 /* ============ 云端自动备份(GitHub Gist) ============
