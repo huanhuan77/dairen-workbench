@@ -4,7 +4,7 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
 <meta name="theme-color" content="#ff7eb6">
-<title>带货达人工作台</title>
+<title>婷婷工作台</title>
 <style>
 :root{
   --brand:#ff7eb6;
@@ -284,7 +284,7 @@ body{
   <header class="app-header"><div class="header-row">
     <div class="brand">
       <div class="logo"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="3" width="7" height="9" rx="1.5"/><rect x="14" y="3" width="7" height="5" rx="1.5"/><rect x="14" y="12" width="7" height="9" rx="1.5"/><rect x="3" y="16" width="7" height="5" rx="1.5"/></svg></div>
-      <div><span class="brand-t">带货达人工作台</span><span class="brand-s" id="hSub">今日概览</span></div>
+      <div><span class="brand-t">婷婷工作台</span><span class="brand-s" id="hSub">今日概览</span></div>
     </div>
     <div class="header-tool"><button class="cloud-btn" onclick="checkUpdate()" title="检查更新" style="padding:5px 8px"><svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="M21 12a9 9 0 1 1-2.64-6.36"/><path d="M21 3v6h-6"/></svg><b>更新</b></button><button class="cloud-btn" onclick="openCloudEntry()" id="cloudBtn" title="云端备份"><span class="cloud-dot" id="cloudDot"></span><b id="cloudTxt">云备</b></button></div>
   </div></header>
@@ -412,8 +412,8 @@ body{
 /* ============ 应用版本 / 检查更新 ============
    发布新版时把 APP_VER 递增，并同步把同目录 ver.json 的 latest 改成相同值。
    checkUpdate() 拉同域 ver.json 对比，提示是否有新版本。 */
-var APP_VER=1;
-var APP_NOTE='';   // 本版更新说明(可在检查面板"已是最新"时一并展示)
+var APP_VER=2;
+var APP_NOTE='更名婷婷工作台';   // 本版更新说明(可在检查面板"已是最新"时一并展示)
 /* 检查是否有新版(手动触发) */
 function checkUpdate(){
   const now=Date.now();
@@ -462,7 +462,7 @@ function cloudPush(){
   const body=JSON.stringify(db);
   const url=gistId?('https://api.github.com/gists/'+gistId):'https://api.github.com/gists';
   const method=gistId?'PATCH':'POST';
-  const payload=gistId?{files:{[GH_FILE]:{content:body}}}:{description:'带货达人工作台自动备份',public:false,files:{[GH_FILE]:{content:body}}};
+  const payload=gistId?{files:{[GH_FILE]:{content:body}}}:{description:'婷婷工作台自动备份',public:false,files:{[GH_FILE]:{content:body}}};
   fetch(url,{method,headers:ghHeaders(),body:JSON.stringify(payload)})
   .then(r=>{if(!r.ok)throw new Error('HTTP '+r.status);return r.json();})
   .then(j=>{if(!gistId&&j.id){try{localStorage.setItem(DB_KEY+'_gist',j.id);}catch(e){}}
