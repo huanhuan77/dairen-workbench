@@ -467,19 +467,22 @@ function openCloudPanel(){
       <div class="btn-row"><button class="btn primary" onclick="cloudPush();toast('正在备份…')">立即备份到云端</button></div>
       <button class="btn ghost" style="margin-top:10px;width:100%" onclick="if(confirm('用云端数据覆盖当前本地内容？此操作不可撤销。')){cloudPull().then(cd=>{if(cd&&(cd.products||cd.copies||cd.samples||cd.records)){db=cd;normalize();save();toast('已从云端恢复');}else{toast('云端没有可恢复的数据');}}).catch(()=>toast('云端读取失败'));}">从云端恢复(覆盖本地)</button>
     `:`
-      <div style="background:var(--brand-soft);color:var(--brand);padding:12px 14px;border-radius:12px;font-size:13px;line-height:1.7;margin-bottom:12px">云端自动备份还没配好。需要一个 GitHub 备份令牌(Token)才能启用，只需填一次，之后每次改动都会自动备份。</div>
-      <div style="font-size:14px;line-height:1.75">
-        1. 浏览器登录你的 GitHub<br>
-        2. 打开 <b>github.com/settings/tokens</b> → 点 <b>Generate new token</b> → 选 <b>Generate new token (classic)</b><br>
-        3. 勾选唯一的 <b>gist</b> 权限，其它别勾<br>
-        4. 点最下方 <b>Generate token</b>，复制以 <b>ghp_</b> 开头的整串
+      <p style="font-size:14px;color:var(--text1);margin:0 0 10px">粘贴你的备份令牌就能启用自动备份。</p>
+      <input id="ghTokIn" type="password" style="width:100%;box-sizing:border-box;padding:12px;border:1px solid var(--line);border-radius:10px;font-size:14px;background:var(--card)" placeholder="粘贴令牌" autocomplete="off" autocapitalize="off" spellcheck="false">
+      <div style="display:flex;justify-content:space-between;align-items:center;gap:8px;margin-top:10px">
+        <label style="display:flex;align-items:center;gap:6px;font-size:13px;color:var(--text2)"><input type="checkbox" id="ghSaveChk" checked> 记住在本机</label>
+        <button class="btn primary" style="min-width:100px" onclick="saveCloudToken()">启用备份</button>
       </div>
-      <input id="ghTokIn" type="password" style="width:100%;box-sizing:border-box;margin:12px 0 6px;padding:12px;border:1px solid var(--line);border-radius:10px;font-size:14px;background:var(--card)" placeholder="粘贴你的 ghp_ 令牌到此处" autocomplete="off" autocapitalize="off" spellcheck="false">
-      <div style="display:flex;justify-content:space-between;align-items:center;gap:8px;margin-top:8px">
-        <label style="display:flex;align-items:center;gap:6px;font-size:13px;color:var(--text2)"><input type="checkbox" id="ghSaveChk" checked> 记住在本机(下次免填)</label>
-        <button class="btn primary" style="min-width:120px" onclick="saveCloudToken()">保存并启用备份</button>
-      </div>
-      <button class="btn ghost" style="margin-top:10px;width:100%" onclick="if(confirm('用云端数据覆盖当前本地内容？此操作不可撤销。')){cloudPull().then(cd=>{if(cd&&(cd.products||cd.copies||cd.samples||cd.records)){db=cd;normalize();save();toast('已从云端恢复');}else{toast('云端没有可恢复的数据');}}).catch(()=>toast('云端读取失败'));}">从云端恢复(覆盖本地)</button>
+      <details style="margin-top:12px;font-size:13px;color:var(--text2)">
+        <summary style="cursor:pointer;color:var(--brand);outline:none">不知道怎么获取？点这里看</summary>
+        <div style="margin-top:8px;line-height:1.7">
+          1. 在浏览器登录 GitHub<br>
+          2. 打开 <b>github.com/settings/tokens</b>，点 <b>Generate new token</b> → 选 <b>Generate new token (classic)</b><br>
+          3. 只勾 <b>gist</b> 一项，其它别勾<br>
+          4. 点最下方 <b>Generate token</b>，复制那整串贴回来
+        </div>
+      </details>
+      <button class="btn ghost" style="margin-top:14px;width:100%" onclick="if(confirm('用云端数据覆盖当前本地内容？此操作不可撤销。')){cloudPull().then(cd=>{if(cd&&(cd.products||cd.copies||cd.samples||cd.records)){db=cd;normalize();save();toast('已从云端恢复');}else{toast('云端没有可恢复的数据');}}).catch(()=>toast('云端读取失败'));}">从云端恢复(覆盖本地)</button>
     `}
   </div>`);
   if(cloudReady())setCloudUI();
