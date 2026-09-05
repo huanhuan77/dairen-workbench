@@ -417,7 +417,7 @@ body{
 /* ============ 应用版本 / 检查更新 ============
    发布新版时把 APP_VER 递增，并同步把同目录 ver.json 的 latest 改成相同值。
    checkUpdate() 拉同域 ver.json 对比，提示是否有新版本。 */
-var APP_VER=23;
+var APP_VER=24;
 /* 检查是否有新版(手动触发) */
 function checkUpdate(){
   const now=Date.now();
@@ -456,11 +456,15 @@ var SEED_KEY=DB_KEY+'_seeded_v1';
 function ensureSeedCopies(){
   const seeded=!!localStorage.getItem(SEED_KEY);
   const defs=[
-    ['芭比安睡裤','资本你赢了\n幸好9.💰Ⓜ️条时忍住\n没买🙄'],
+    ['芭比安睡裤','资本你赢了\n幸好9.💰①条时忍住\n没买🙄'],
     ['益美滋无糖清润糖','爱大概是知道你抽🚬\n所以给你买的润喉糖从没断过'],
     ['无糖草本润喉糖','原来老师收到小心意\n真的会开心很久\n平日里不好意思的感谢\n都藏在这盒糖里🥺']
   ];
   const BOOM='爆单';
+  // 历史正文（之前内置版本）：如用户手机里仍是这一版则升级到新版本
+  const UPDATES={
+    '芭比安睡裤':[['资本你赢了\n幸好9.💰Ⓜ️条时忍住\n没买🙄','资本你赢了\n幸好9.💰①条时忍住\n没买🙄']]
+  };
   let dirty=false;
   defs.forEach(([name,text])=>{
     const rows=db.copies.filter(c=>c.name===name);
@@ -472,6 +476,11 @@ function ensureSeedCopies(){
     rows.forEach(c=>{            // 已有该产品文案 → 统一补「爆单」标签（去重）
       const t=(c.tags||[]).filter(Boolean);
       if(!t.includes(BOOM)){c.tags=t.concat([BOOM]);dirty=true;}
+      // 一次性正文升级（仅在文本仍等于旧版本时改写为新版本，不动用户已改的）
+      const ups=UPDATES[name]||[];
+      for(const [from,to] of ups){
+        if(c.text===from){c.text=to;if(c.note===from)c.note=to;dirty=true;}
+      }
     });
   });
   try{localStorage.setItem(SEED_KEY,'1');}catch(e){}
