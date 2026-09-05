@@ -414,7 +414,7 @@ body{
 /* ============ 应用版本 / 检查更新 ============
    发布新版时把 APP_VER 递增，并同步把同目录 ver.json 的 latest 改成相同值。
    checkUpdate() 拉同域 ver.json 对比，提示是否有新版本。 */
-var APP_VER=11;
+var APP_VER=12;
 /* 检查是否有新版(手动触发) */
 function checkUpdate(){
   const now=Date.now();
@@ -442,7 +442,7 @@ function reloadApp(){location.reload(true);}
 /* ============ store helpers ============ */
 const DB_KEY='dl_dairen_workbench_v1';
 let db={products:[],samples:[],records:[],copies:[]};
-function load(){try{db=JSON.parse(localStorage.getItem(DB_KEY))||db}catch(e){};normalize();ensureSeedCopies();ensureSeedVideos();ensureSeedSamples();}
+function load(){try{db=JSON.parse(localStorage.getItem(DB_KEY))||db}catch(e){};normalize();ensureSeedCopies();ensureSeedVideos();ensureSeedSamples();ensureSeedOrders();}
 function save(){localStorage.setItem(DB_KEY,JSON.stringify(db));renderAll();cloudSchedule();}
 
 /* ===== 内置示例文案：这些是「爆单」文案。
@@ -518,6 +518,40 @@ function ensureSeedSamples(){
   });
   try{localStorage.setItem(SSEED_KEY,'1');}catch(e){}
   if(added)save();
+}
+
+/* ===== 内置9月大号出单产品（出单管理·本月出单汇总）：首次种入一次，同名产品归并，绝不破坏已有数据 =====
+   清单来自抖音出单中心截图（11个产品）。每个产品=1条 rec：date=2026-09-30(月末汇总)、
+   orders=订单数、price=销售额、note='9月大号汇总'。佣金/净佣金暂不录入出单管理(用记账→带货收入记)。 */
+var OSEED_KEY=DB_KEY+'_oseed_2026_09';
+function ensureSeedOrders(){
+  try{if(localStorage.getItem(OSEED_KEY))return;}catch(e){}
+  const y=new Date().getFullYear();
+  const date=y+'-09-30';
+  const spec=[
+    ['教师节益美滋润喉护嗓',5365.10,94],
+    ['快乐点益生菌日安裤安睡裤',1278.00,54],
+    ['益美滋约会无糖薄荷',124.50,5],
+    ['DOBO草本7天无忧',89.41,1],
+    ['X-it教师节无糖草本润喉糖',68.80,2],
+    ['I\'MINT益美滋深润糖十八味',59.80,2],
+    ['珀芙研爆款小样套组',53.80,2],
+    ['红地球贴贴隔离霜',39.90,1],
+    ['百草园清清片秋葵',27.41,1],
+    ['一次性棉感袜子男女款',20.80,1],
+    ['益美滋七夕约会香体糖',19.90,1]
+  ];
+  let n=0;
+  spec.forEach(([name,price,orders])=>{
+    let prod=db.products.find(p=>p.name===name);
+    if(!prod){prod={id:uid(),name,count:0,last:null,note:'',platform:'douyin'};db.products.push(prod);}
+    db.records.unshift({id:uid(),pid:prod.id,date,orders,price,note:'9月大号汇总',type:'product'});
+    prod.count=(prod.count||0)+1;
+    if(date>(prod.last||''))prod.last=date;
+    n++;
+  });
+  try{localStorage.setItem(OSEED_KEY,'1');}catch(e){}
+  if(n)save();
 }
 
 /* ============ 云端自动备份(GitHub Gist) ============
