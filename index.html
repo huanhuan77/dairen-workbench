@@ -412,20 +412,19 @@ body{
 /* ============ 应用版本 / 检查更新 ============
    发布新版时把 APP_VER 递增，并同步把同目录 ver.json 的 latest 改成相同值。
    checkUpdate() 拉同域 ver.json 对比，提示是否有新版本。 */
-var APP_VER=3;
-var APP_NOTE='';   // 本版更新说明(有新版时展示)
+var APP_VER=4;
 /* 检查是否有新版(手动触发) */
 function checkUpdate(){
   const now=Date.now();
   fetch('./ver.json?v='+now,{cache:'no-store'})
   .then(r=>{if(!r.ok)throw new Error('HTTP '+r.status);return r.json();})
-  .then(j=>{const latest=parseInt(j.latest)||0;renderUpdateSheet(latest,(j.note||''),(latest>APP_VER)?'new':'ok');})
-  .catch(()=>renderUpdateSheet(APP_VER,'','err'));
+  .then(j=>{const latest=parseInt(j.latest)||0;renderUpdateSheet(latest,(latest>APP_VER)?'new':'ok');})
+  .catch(()=>renderUpdateSheet(APP_VER,'err'));
 }
-function renderUpdateSheet(latest,note,state){
+function renderUpdateSheet(latest,state){
   let head,bodyHtml,foot;
   if(state==='new'){
-    head='发现新版本';bodyHtml='<p style="font-size:15px;color:var(--text1);line-height:1.7;margin:0 0 6px">有新版本 v'+latest+' 已上线（你当前是 v'+APP_VER+'）。</p><p style="font-size:13px;color:var(--text2);line-height:1.6;margin:0 0 12px">'+(note||'')+'</p>';
+    head='发现新版本';bodyHtml='<p style="font-size:15px;color:var(--text1);line-height:1.7;margin:0">有新版本 v'+latest+' 已上线（你当前是 v'+APP_VER+'）。</p>';
     foot='<div class="btn-row"><button class="btn primary" onclick="reloadApp()">刷新使用新版</button></div>';
   }else if(state==='ok'){
     head='已是最新版本';bodyHtml='<p style="font-size:15px;color:var(--green);font-weight:700;margin:0">当前已是最新版 v'+APP_VER+'</p>';
