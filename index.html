@@ -414,7 +414,7 @@ body{
 /* ============ 应用版本 / 检查更新 ============
    发布新版时把 APP_VER 递增，并同步把同目录 ver.json 的 latest 改成相同值。
    checkUpdate() 拉同域 ver.json 对比，提示是否有新版本。 */
-var APP_VER=12;
+var APP_VER=13;
 /* 检查是否有新版(手动触发) */
 function checkUpdate(){
   const now=Date.now();
@@ -1274,25 +1274,26 @@ function renderLedger(){
   const mk=monthKey(ledgerMonth);
   const el=document.getElementById('ledgerList');
   document.getElementById('ledgerMonth').textContent=ledgerMonth.getFullYear()+'年'+(ledgerMonth.getMonth()+1)+'月';
-  const list=db.records.filter(r=>(r.date||'').startsWith(mk)&&acctMatch(acctOf(r),ledgerAcct)).sort((a,b)=>(b.date||'').localeCompare(a.date||''));
+  // 记账=钱包提现流水:只看 income/expense,不混入出单管理的产品rec
+  const allMonth=db.records.filter(r=>(r.date||'').startsWith(mk)&&acctMatch(acctOf(r),ledgerAcct));
+  const list=allMonth.filter(r=>r.type==='income'||r.type==='expense').sort((a,b)=>(b.date||'').localeCompare(a.date||''));
   let inc=0,exp=0;
-  db.records.forEach(r=>{if((r.date||'').startsWith(mk)&&acctMatch(acctOf(r),ledgerAcct)){if(r.type==='income')inc+=r.amount||0;else if(r.type==='product')inc+=r.price||0;else if(r.type==='expense')exp+=r.amount||0;}});
+  allMonth.forEach(r=>{if(r.type==='income')inc+=r.amount||0;else if(r.type==='expense')exp+=r.amount||0;});
   document.getElementById('lIncome').textContent=money(inc);
   document.getElementById('lExpense').textContent=money(exp);
   document.getElementById('lBalance').textContent=money(inc-exp);
-  if(!list.length){el.innerHTML=emptyHTML('这个月还没有账目');return;}
+  if(!list.length){el.innerHTML=emptyHTML('还没有记账。从抖音钱包提现到银行卡后，在这里记一笔');return;}
   // group by date
   let curDate='',h='';
   list.forEach(r=>{
     if(r.date!==curDate){curDate=r.date;if(h)h+='</div>';h+='<div class="card" style="margin-bottom:10px"><div class="row" style="padding:8px 14px;border:none;font-size:12px;color:var(--text2);font-weight:600;background:#fafafa">'+fmtYMD(r.date)+'</div>';}
-    const isIn=(r.type==='income'||(r.type==='product'&&r.price));
-    const catName = r.type==='product'?'带货收入':(CATS[r.cat]?CATS[r.cat].name:r.cat);
-    const catColor = r.type==='product'?'#0bb07b':(CATS[r.cat]?CATS[r.cat].c:'#8a8f99');
-    const amt = r.type==='product'?(r.price||0):(r.amount||0);
-    const sign = isIn?'+':'-';
-    const note = r.type==='product'?('出单 · '+productName(r.pid||'')):(r.note||catName);
+    const isIn=r.type==='income';
+    const catName=CATS[r.cat]?CATS[r.cat].name:r.cat;
+    const catColor=CATS[r.cat]?CATS[r.cat].c:'#8a8f99';
+    const amt=r.amount||0;
+    const sign=isIn?'+':'-';
     const acctTag=r.acct?`<span class="chip" style="background:${r.acct==='big'?'#fff3e0':'#e8f0ff'};color:${r.acct==='big'?'var(--orange)':'var(--blue)'}">${ACCT_NAME[acctOf(r)]}</span>`:'';
-    h+=`<div class="row"><div class="cat-ico" style="background:${catColor}">${esc(initials(catName))}</div><div class="grow"><div class="t" style="font-size:14px">${esc(note)}</div><div class="d" style="display:flex;gap:4px;align-items:center">${catName}${acctTag}</div></div><div style="font-weight:800;font-size:15px;color:${isIn?'var(--green)':'var(--brand)'}">${sign}${money(amt).replace('¥','¥')}</div></div>`;
+    h+=`<div class="row"><div class="cat-ico" style="background:${catColor}">${esc(initials(catName))}</div><div class="grow"><div class="t" style="font-size:14px">${esc(r.note||catName)}</div><div class="d" style="display:flex;gap:4px;align-items:center">${catName}${acctTag}</div></div><div style="font-weight:800;font-size:15px;color:${isIn?'var(--green)':'var(--brand)'}">${sign}${money(amt).replace('¥','¥')}</div></div>`;
   });
   h+='</div>';
   el.innerHTML=h;
@@ -1311,7 +1312,7 @@ function renderHome(){
   // month income
   const mk=monthKey(new Date());
   let inc=0,exp=0;
-  db.records.forEach(r=>{if((r.date||'').startsWith(mk)){if(r.type==='income'||(r.type==='product'&&r.price))inc+=r.price||r.amount||0;if(r.type==='expense')exp+=r.amount||0;}});
+  db.records.forEach(r=>{if((r.date||'').startsWith(mk)){if(r.type==='income')inc+=r.amount||0;if(r.type==='expense')exp+=r.amount||0;}});
   document.getElementById('hIncome').textContent=money(inc);
   document.getElementById('hIncomeSub').textContent='本月结余 '+money(inc-exp);
   // waiting
