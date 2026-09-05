@@ -286,13 +286,13 @@ body{
       <div class="logo"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="3" width="7" height="9" rx="1.5"/><rect x="14" y="3" width="7" height="5" rx="1.5"/><rect x="14" y="12" width="7" height="9" rx="1.5"/><rect x="3" y="16" width="7" height="5" rx="1.5"/></svg></div>
       <div><span class="brand-t">带货达人工作台</span><span class="brand-s" id="hSub">今日概览</span></div>
     </div>
-    <div class="header-tool"><button class="cloud-btn" onclick="openCloudPanel()" id="cloudBtn" title="云端备份"><span class="cloud-dot" id="cloudDot"></span><b id="cloudTxt">云备</b></button></div>
+    <div class="header-tool"><button class="cloud-btn" onclick="openCloudEntry()" id="cloudBtn" title="云端备份"><span class="cloud-dot" id="cloudDot"></span><b id="cloudTxt">云备</b></button></div>
   </div></header>
 
   <div class="content">
     <!-- ============ HOME ============ -->
     <div id="view-home" class="view on">
-      <div class="backup-bar unset" id="backupBar" onclick="openCloudPanel()">
+      <div class="backup-bar unset" id="backupBar" onclick="openCloudEntry()">
         <div class="bb-l"><span class="cloud-dot" id="barDot"></span><span class="bb-txt" id="barTxt">自动备份未启用</span></div>
         <button class="bb-btn" id="barBtn" onclick="event.stopPropagation();onBarBtn()">去启用</button>
       </div>
@@ -482,8 +482,12 @@ function refreshBar(ready){
 }
 /* 总览备份条右侧按钮 */
 function onBarBtn(){
-  if(!cloudReady()){openCloudPanel();return;}
+  if(!cloudReady()){openCloudSetup();return;}
   cloudPush();toast('正在备份…');
+}
+/* header 云备按钮 / 总览 backup-bar 整条 → 统一入口(配置后看详情、未配置启用) */
+function openCloudEntry(){
+  if(cloudReady())openCloudPanel();else openCloudSetup();
 }
 function cloudLastTime(){
   const v=parseInt(localStorage.getItem(DB_KEY+'_cloud'))||0;if(!v)return '尚未备份';
@@ -493,34 +497,36 @@ function openCloudPanel(){
   const itemN=(db.products?db.products.length:0)+'个产品 · '+(db.copies?db.copies.length:0)+'条文案 · '+(db.samples?db.samples.length:0)+'个样品 · '+(db.records?db.records.length:0)+'条记录';
   openSheet(`<div class="grip"></div><div class="sheet-head"><span class="tt">云端自动备份</span><button class="close" onclick="closeSheet()">×</button></div>
   <div class="sheet-body">
-    ${cloudReady()?`
-      <div class="stat-grid" style="grid-template-columns:repeat(2,1fr)">
-        <div class="stat-card"><div class="lab">本地数据</div><div class="num" style="font-size:15px;font-weight:700;color:var(--text1)">${itemN}</div></div>
-        <div class="stat-card"><div class="lab">上次云备份</div><div class="num" style="font-size:14px;font-weight:700;color:var(--text1)">${cloudLastTime()}</div></div>
-      </div>
-      <p style="font-size:13px;color:var(--text2);line-height:1.6;margin:12px 0">每次改动后会自动保存一份到云端。换手机/清缓存后打开页面，只要本地是空的会自动把云端那份拉回来。</p>
-      <div class="btn-row"><button class="btn primary" onclick="cloudPush();toast('正在备份…')">立即备份到云端</button></div>
-      <button class="btn ghost" style="margin-top:10px;width:100%" onclick="if(confirm('用云端数据覆盖当前本地内容？此操作不可撤销。')){cloudPull().then(cd=>{if(cd&&(cd.products||cd.copies||cd.samples||cd.records)){db=cd;normalize();save();toast('已从云端恢复');}else{toast('云端没有可恢复的数据');}}).catch(()=>toast('云端读取失败'));}">从云端恢复(覆盖本地)</button>
-    `:`
-      <p style="font-size:14px;color:var(--text1);margin:0 0 10px">粘贴你的备份令牌就能启用自动备份。</p>
-      <input id="ghTokIn" type="password" style="width:100%;box-sizing:border-box;padding:12px;border:1px solid var(--line);border-radius:10px;font-size:14px;background:var(--card)" placeholder="粘贴令牌" autocomplete="off" autocapitalize="off" spellcheck="false">
-      <div style="display:flex;justify-content:space-between;align-items:center;gap:8px;margin-top:10px">
-        <label style="display:flex;align-items:center;gap:6px;font-size:13px;color:var(--text2)"><input type="checkbox" id="ghSaveChk" checked> 记住在本机</label>
-        <button class="btn primary" style="min-width:100px" onclick="saveCloudToken()">启用备份</button>
-      </div>
-      <details style="margin-top:12px;font-size:13px;color:var(--text2)">
-        <summary style="cursor:pointer;color:var(--brand);outline:none">不知道怎么获取？点这里看</summary>
-        <div style="margin-top:8px;line-height:1.7">
-          1. 在浏览器登录 GitHub<br>
-          2. 打开 <b>github.com/settings/tokens</b>，点 <b>Generate new token</b> → 选 <b>Generate new token (classic)</b><br>
-          3. 只勾 <b>gist</b> 一项，其它别勾<br>
-          4. 点最下方 <b>Generate token</b>，复制那整串贴回来
-        </div>
-      </details>
-      <button class="btn ghost" style="margin-top:14px;width:100%" onclick="if(confirm('用云端数据覆盖当前本地内容？此操作不可撤销。')){cloudPull().then(cd=>{if(cd&&(cd.products||cd.copies||cd.samples||cd.records)){db=cd;normalize();save();toast('已从云端恢复');}else{toast('云端没有可恢复的数据');}}).catch(()=>toast('云端读取失败'));}">从云端恢复(覆盖本地)</button>
-    `}
+    <div class="stat-grid" style="grid-template-columns:repeat(2,1fr)">
+      <div class="stat-card"><div class="lab">本地数据</div><div class="num" style="font-size:15px;font-weight:700;color:var(--text1)">${itemN}</div></div>
+      <div class="stat-card"><div class="lab">上次云备份</div><div class="num" style="font-size:14px;font-weight:700;color:var(--text1)">${cloudLastTime()}</div></div>
+    </div>
+    <p style="font-size:13px;color:var(--text2);line-height:1.6;margin:12px 0">每次改动后会自动保存一份到云端。换手机/清缓存后打开页面，只要本地是空的会自动把云端那份拉回来。</p>
+    <div class="btn-row"><button class="btn primary" onclick="cloudPush();toast('正在备份…')">立即备份到云端</button></div>
+    <button class="btn ghost" style="margin-top:10px;width:100%" onclick="if(confirm('用云端数据覆盖当前本地内容？此操作不可撤销。')){cloudPull().then(cd=>{if(cd&&(cd.products||cd.copies||cd.samples||cd.records)){db=cd;normalize();save();toast('已从云端恢复');}else{toast('云端没有可恢复的数据');}}).catch(()=>toast('云端读取失败'));}">从云端恢复(覆盖本地)</button>
   </div>`);
-  if(cloudReady())setCloudUI();
+  setCloudUI();
+}
+/* 仅用于启用流程的轻弹窗(避免和已配置后的云端面板内容重复) */
+function openCloudSetup(){
+  openSheet(`<div class="grip"></div><div class="sheet-head"><span class="tt">启用云端备份</span><button class="close" onclick="closeSheet()">×</button></div>
+  <div class="sheet-body">
+    <p style="font-size:14px;color:var(--text1);margin:0 0 10px">粘贴你的备份令牌就能启用自动备份。</p>
+    <input id="ghTokIn" type="password" style="width:100%;box-sizing:border-box;padding:12px;border:1px solid var(--line);border-radius:10px;font-size:14px;background:var(--card)" placeholder="粘贴令牌" autocomplete="off" autocapitalize="off" spellcheck="false">
+    <div style="display:flex;justify-content:space-between;align-items:center;gap:8px;margin-top:10px">
+      <label style="display:flex;align-items:center;gap:6px;font-size:13px;color:var(--text2)"><input type="checkbox" id="ghSaveChk" checked> 记住在本机</label>
+      <button class="btn primary" style="min-width:100px" onclick="saveCloudToken()">启用备份</button>
+    </div>
+    <details style="margin-top:12px;font-size:13px;color:var(--text2)">
+      <summary style="cursor:pointer;color:var(--brand);outline:none">不知道怎么获取？点这里看</summary>
+      <div style="margin-top:8px;line-height:1.7">
+        1. 在浏览器登录 GitHub<br>
+        2. 打开 <b>github.com/settings/tokens</b>，点 <b>Generate new token</b> → 选 <b>Generate new token (classic)</b><br>
+        3. 只勾 <b>gist</b> 一项，其它别勾<br>
+        4. 点最下方 <b>Generate token</b>，复制那整串贴回来
+      </div>
+    </details>
+  </div>`);
 }
 /* 在云端面板粘贴 token 并保存(可选是否记住本机) */
 function saveCloudToken(){
@@ -535,7 +541,7 @@ function saveCloudToken(){
   CLOUD_STATE='busy';setCloudUI();
   fetch('https://api.github.com/user',{headers:{'Authorization':'Bearer '+ghToken()}})
   .then(r=>{if(!r.ok)throw new Error('HTTP '+r.status);return r.json();})
-  .then(u=>{CLOUD_STATE='ok';setCloudUI();toast('令牌有效，开始启用备份…');cloudPush();})
+  .then(u=>{CLOUD_STATE='ok';setCloudUI();toast('令牌有效，开始启用备份…');closeSheet();cloudPush();})
   .catch(()=>{CLOUD_STATE='fail';setCloudUI();toast('令牌无效或网络错误，请检查');});
 }
 function normalize(){
