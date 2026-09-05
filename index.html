@@ -412,8 +412,8 @@ body{
 /* ============ 应用版本 / 检查更新 ============
    发布新版时把 APP_VER 递增，并同步把同目录 ver.json 的 latest 改成相同值。
    checkUpdate() 拉同域 ver.json 对比，提示是否有新版本。 */
-var APP_VER=2;
-var APP_NOTE='更名婷婷工作台';   // 本版更新说明(可在检查面板"已是最新"时一并展示)
+var APP_VER=3;
+var APP_NOTE='';   // 本版更新说明(有新版时展示)
 /* 检查是否有新版(手动触发) */
 function checkUpdate(){
   const now=Date.now();
@@ -428,7 +428,7 @@ function renderUpdateSheet(latest,note,state){
     head='发现新版本';bodyHtml='<p style="font-size:15px;color:var(--text1);line-height:1.7;margin:0 0 6px">有新版本 v'+latest+' 已上线（你当前是 v'+APP_VER+'）。</p><p style="font-size:13px;color:var(--text2);line-height:1.6;margin:0 0 12px">'+(note||'')+'</p>';
     foot='<div class="btn-row"><button class="btn primary" onclick="reloadApp()">刷新使用新版</button></div>';
   }else if(state==='ok'){
-    head='已是最新版本';bodyHtml='<p style="font-size:15px;color:var(--green);font-weight:700;margin:0 0 6px">当前已是最新版 v'+APP_VER+'</p><p style="font-size:13px;color:var(--text2);line-height:1.6;margin:0">'+(note||'')+'</p>';
+    head='已是最新版本';bodyHtml='<p style="font-size:15px;color:var(--green);font-weight:700;margin:0">当前已是最新版 v'+APP_VER+'</p>';
     foot='';
   }else{
     head='检查失败';bodyHtml='<p style="font-size:14px;color:var(--text2);line-height:1.7;margin:0">暂时无法连接网络检查更新，请稍后再试。</p>';foot='';
