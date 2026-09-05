@@ -384,7 +384,6 @@ body{
         </div>
         <p style="font-size:13px;color:var(--text2);margin:0 0 12px">按产品查看。每条记录都可标记「用过/出单/爆单」方便复盘。</p>
         <div style="display:flex;gap:8px;flex-wrap:wrap;margin-bottom:12px">
-          <button class="topic-pill" onclick="bulkImportCopy()">批量导入</button>
           <button class="topic-pill" onclick="clearAllCopies()" style="color:var(--brand)">清空文案</button>
         </div>
         <div style="margin-top:4px" id="copyList"></div>
@@ -415,7 +414,7 @@ body{
 /* ============ 应用版本 / 检查更新 ============
    发布新版时把 APP_VER 递增，并同步把同目录 ver.json 的 latest 改成相同值。
    checkUpdate() 拉同域 ver.json 对比，提示是否有新版本。 */
-var APP_VER=8;
+var APP_VER=9;
 /* 检查是否有新版(手动触发) */
 function checkUpdate(){
   const now=Date.now();
@@ -825,12 +824,16 @@ function copyTags(id){
   if(!tags.length){toast('这条没有话题');return;}
   copyText(tags.map(t=>'#'+t).join(' '));
 }
-function bulkImportCopy(){
+function bulkImportCopy(lockName){
+  const locked=lockName&&lockName.trim();
+  const hint=locked
+    ? '每段文案用空行或 <code>---</code> 分隔。默认将导入到「'+esc(locked)+'」；如需分到其他产品，每段开头写 <code>【产品名】</code>，例如 <code>【无糖草本润喉糖】正文…</code>。'
+    : '每段文案用空行或 <code>---</code> 分隔。若想分到不同产品，每段开头写 <code>【产品名】</code>，例如：<code>【无糖草本润喉糖】正文…</code>；没写则归到下方产品名。';
   openSheet(`<div class="grip"></div><div class="sheet-head"><span class="tt">批量导入文案</span><button class="close" onclick="closeSheet()">×</button></div>
   <div class="sheet-body">
-    <p class="hint" style="margin-top:0">每段文案用空行或 <code>---</code> 分隔。若想分到不同产品，每段开头写 <code>【产品名】</code>，例如：<code>【无糖草本润喉糖】正文…</code>；没写则归到下方产品名。</p>
+    <p class="hint" style="margin-top:0">${hint}</p>
     <div class="f-label">默认产品名 <span class="req">*</span></div>
-    <input class="f-input" name="bi_name" list="prodOpts-bi_name" required><datalist id="prodOpts-bi_name">${[...new Set(db.products.map(p=>p.name))].map(n=>'<option value="'+esc(n)+'">').join('')}</datalist>
+    <input class="f-input" name="bi_name" list="prodOpts-bi_name" value="${locked?esc(locked):''}"${locked?' readonly style='+'"background:#f5f5f7;color:var(--text3)"':''} required><datalist id="prodOpts-bi_name">${[...new Set(db.products.map(p=>p.name))].map(n=>'<option value="'+esc(n)+'">').join('')}</datalist>
     <div class="f-label">文案内容（可多段/多产品）</div>
     <textarea class="f-textarea" id="biBody" style="min-height:160px" placeholder="【芭比安睡裤】第一段正文…&#10;&#10;【益美滋无糖清润糖】第二段正文…&#10;&#10;第三段无产品标记则归默认产品"></textarea>
     <div class="btn-row"><button class="btn ghost" onclick="closeSheet()">取消</button><button class="btn primary" onclick="doBulkImport()">导入</button></div>
@@ -852,7 +855,10 @@ function doBulkImport(){
     db.copies.unshift({id:uid(),name,date:today(),rate:0,text:seg,note:seg,tags:[],views:null,likes:null});
     n++;
   });
-  save();closeSheet();viewTab('copy');renderCopies('all');toast('已导入 '+n+' 条文案');
+  save();closeSheet();
+  if(copyDrillMode==='detail'){renderPcList();showCopyDrill();}
+  else{viewTab('copy');renderCopies('all');}
+  toast('已导入 '+n+' 条文案');
 }
 function clearAllCopies(){
   if(!db.copies.length){toast('文案库已是空的');return;}
@@ -1047,7 +1053,7 @@ function copyMatchFilter(c){
 function renderCopies(f){if(f)copyFilter=f||copyFilter;
   const topStat=document.getElementById('cpTopStat');if(topStat)topStat.textContent='文案 '+db.copies.length+' 条';
   const el=document.getElementById('copyList');
-  if(!db.copies.length){el.innerHTML=emptyHTML('还没有文案记录。点右上角"+新文案"或"批量导入"添加');return;}
+  if(!db.copies.length){el.innerHTML=emptyHTML('还没有文案记录。点右上角"+新文案"添加，或进入产品详情使用「批量导入」');return;}
   // 按产品分组统计
   const byProd={};
   db.copies.forEach(c=>{
@@ -1119,6 +1125,7 @@ function enterCopyList(name){
   const el=document.getElementById('copyDrill');
   el.innerHTML=`
   <div class="drill-bar"><button class="drill-back" onclick="showCopyHome()"><svg viewBox="0 0 24 24"><path d="M15 18l-6-6 6-6"/></svg></button><div class="drill-title">${esc(name)}</div>
+  <button class="topic-pill" onclick="bulkImportCopy('${esc(name).replace(/'/g,"\\'")}')" style="background:#fff;border-color:var(--line);color:var(--text);flex-shrink:0">批量导入</button>
   <button onclick="addCopySheet('${esc(name).replace(/'/g,"\\'")}')" style="border:none;background:var(--brand);color:#fff;border-radius:10px;font-size:12px;font-weight:700;padding:7px 12px;flex-shrink:0">+ 新文案</button></div>
   <div style="display:flex;gap:6px;align-items:center;margin-bottom:12px"><div class="seg" style="flex:1;flex-wrap:nowrap;overflow-x:auto" id="pcStateSeg">
     <button class="on" data-f="all">全部</button>
