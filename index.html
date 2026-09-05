@@ -414,7 +414,7 @@ body{
 /* ============ 应用版本 / 检查更新 ============
    发布新版时把 APP_VER 递增，并同步把同目录 ver.json 的 latest 改成相同值。
    checkUpdate() 拉同域 ver.json 对比，提示是否有新版本。 */
-var APP_VER=15;
+var APP_VER=16;
 /* 检查是否有新版(手动触发) */
 function checkUpdate(){
   const now=Date.now();
@@ -442,7 +442,7 @@ function reloadApp(){location.reload(true);}
 /* ============ store helpers ============ */
 const DB_KEY='dl_dairen_workbench_v1';
 let db={products:[],samples:[],records:[],copies:[]};
-function load(){try{db=JSON.parse(localStorage.getItem(DB_KEY))||db}catch(e){};normalize();ensureSeedCopies();ensureSeedVideos();ensureSeedVideosSmall();ensureSeedSamples();ensureSeedOrders();ensureSeedOrdersSmall();}
+function load(){try{db=JSON.parse(localStorage.getItem(DB_KEY))||db}catch(e){};normalize();ensureSeedCopies();ensureSeedCopiesExtra();ensureSeedVideos();ensureSeedVideosSmall();ensureSeedSamples();ensureSeedOrders();ensureSeedOrdersSmall();}
 function save(){localStorage.setItem(DB_KEY,JSON.stringify(db));renderAll();cloudSchedule();}
 
 /* ===== 内置示例文案：这些是「爆单」文案。
@@ -472,6 +472,25 @@ function ensureSeedCopies(){
     });
   });
   try{localStorage.setItem(SEED_KEY,'1');}catch(e){}
+  if(dirty)save();
+}
+
+/* ===== 扩展内置爆单文案（小号爆单）：首次打开种入一次，绝不重复，绝不破坏用户其它数据 =====
+   趣味车润喉糖O糖O脂清凉糖果（=趣味到润喉糖）/ 益美滋组合装香体糖。带「爆单」标签。 */
+var SEED_KEY2=DB_KEY+'_seeded_v2';
+function ensureSeedCopiesExtra(){
+  try{if(localStorage.getItem(SEED_KEY2))return;}catch(e){}
+  const BOOM='爆单';
+  const defs=[
+    ['趣味车润喉糖O糖O脂清凉糖果','爱从来不是克制\n知道他爱抽🚬\n所以给他买的趣味到润喉糖\n从来没断过…'],
+    ['益美滋组合装香体糖','哈哈哈🤣\n幸好9.9一盒的时候\n我没买\n现在这个价就到手四盒\n真的爽歪歪～😆']
+  ];
+  let dirty=false;
+  defs.forEach(([name,text])=>{
+    db.copies.unshift({id:uid(),name,date:today(),rate:0,text,note:text,tags:[BOOM],views:null,likes:null});
+    dirty=true;
+  });
+  try{localStorage.setItem(SEED_KEY2,'1');}catch(e){}
   if(dirty)save();
 }
 
