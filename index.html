@@ -56,6 +56,14 @@ body{
 .cloud-btn b{font-weight:700}
 .cloud-dot{width:7px;height:7px;border-radius:50%;background:#cfd3d9;flex-shrink:0}
 .cloud-dot.ok{background:#0bb07b}.cloud-dot.busy{background:#ff9500}.cloud-dot.fail{background:#ff3d4a}
+.backup-bar{display:flex;align-items:center;gap:8px;justify-content:space-between;background:#fff;border:1px solid #f3d9e6;border-radius:14px;padding:9px 12px;margin-bottom:12px;box-shadow:0 1px 6px rgba(255,126,182,.06)}
+.backup-bar .bb-l{display:flex;align-items:center;gap:8px;min-width:0}
+.backup-bar .bb-txt{font-size:13px;color:var(--text1);white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.backup-bar .bb-txt small{display:block;font-size:11px;color:var(--text2);margin-top:1px;font-weight:400}
+.backup-bar .cloud-dot{width:9px;height:9px}
+.backup-bar .bb-btn{border:none;background:var(--brand-soft);color:var(--brand);border-radius:999px;padding:6px 12px;font-size:12px;font-weight:700;cursor:pointer;font-family:inherit;white-space:nowrap;flex-shrink:0}
+.backup-bar .bb-btn:active{filter:brightness(.96)}
+.backup-bar.unset .bb-btn{background:var(--bg);color:var(--text2);font-weight:600}
 .icon-btn{width:34px;height:34px;border:none;background:var(--bg);border-radius:50%;display:flex;align-items:center;justify-content:center;cursor:pointer}
 .icon-btn svg{width:18px;height:18px;stroke:var(--text);stroke-width:2;fill:none;stroke-linecap:round;stroke-linejoin:round}
 
@@ -284,6 +292,10 @@ body{
   <div class="content">
     <!-- ============ HOME ============ -->
     <div id="view-home" class="view on">
+      <div class="backup-bar unset" id="backupBar" onclick="openCloudPanel()">
+        <div class="bb-l"><span class="cloud-dot" id="barDot"></span><span class="bb-txt" id="barTxt">自动备份未启用</span></div>
+        <button class="bb-btn" id="barBtn" onclick="event.stopPropagation();onBarBtn()">去启用</button>
+      </div>
       <div class="stat-grid" style="margin-top:4px">
         <div class="stat-card trend"><div class="lab"><span class="mini-dot" style="background:var(--brand)"></span>累计发视频</div><div class="num" id="hTotalProd">0 <small>条</small></div><div class="sub" id="hProdSub">出单 0 单 · 0 个产品</div></div>
         <div class="stat-card income"><div class="lab"><span class="mini-dot" style="background:var(--green)"></span>本月收入</div><div class="num" id="hIncome">¥0</div><div class="sub" id="hIncomeSub">本月结余 ¥0</div></div>
@@ -444,11 +456,34 @@ function cloudMaybeRecover(){
   cloudPull().then(cd=>{if(cd&&cd.products&&!hasLocal){db=cd;normalize();save();toast('已从云端恢复数据');}}).catch(()=>{});
 }
 function setCloudUI(){
-  if(!cloudReady()){const d=document.getElementById('cloudDot');const t=document.getElementById('cloudTxt');if(d)d.className='cloud-dot';if(t)t.textContent='未配置';return;}
-  const d=document.getElementById('cloudDot');const t=document.getElementById('cloudTxt');if(!d||!t)return;
+  // 右上角 header 云备点
+  const d=document.getElementById('cloudDot');const t=document.getElementById('cloudTxt');
+  if(!cloudReady()){
+    if(d)d.className='cloud-dot';if(t)t.textContent='未配置';
+    refreshBar(false);return;
+  }
+  if(!d||!t){refreshBar(true);return;}
   const map={busy:['busy','备份中…'],ok:['ok','已备份'],fail:['fail','备份失败']};
   d.className='cloud-dot'+(map[CLOUD_STATE]?(' '+map[CLOUD_STATE][0]):'');
   t.textContent=map[CLOUD_STATE]?map[CLOUD_STATE][1]:'已备份';
+  refreshBar(true);
+}
+/* 总览页顶部备份状态条(可复用右上角 cloud-dot 状态) */
+function barState(){if(CLOUD_STATE==='busy')return ['busy','备份中…','备份中'];if(CLOUD_STATE==='fail')return ['fail','备份失败，点击重试','立即备份'];return ['ok','自动备份已开启','立即备份'];}
+function refreshBar(ready){
+  const bar=document.getElementById('backupBar');if(!bar)return;
+  const dot=document.getElementById('barDot'),txt=document.getElementById('barTxt'),btn=document.getElementById('barBtn');
+  if(!dot||!txt||!btn)return;
+  if(!ready){
+    bar.className='backup-bar unset';dot.className='cloud-dot';txt.innerHTML='自动备份未启用<small>改动不会自动保存到云端</small>';btn.textContent='去启用';return;
+  }
+  const st=barState();bar.className='backup-bar';dot.className='cloud-dot '+st[0];
+  txt.innerHTML=st[1]+'<small>上次备份 '+cloudLastTime()+'</small>';btn.textContent=st[2];
+}
+/* 总览备份条右侧按钮 */
+function onBarBtn(){
+  if(!cloudReady()){openCloudPanel();return;}
+  cloudPush();toast('正在备份…');
 }
 function cloudLastTime(){
   const v=parseInt(localStorage.getItem(DB_KEY+'_cloud'))||0;if(!v)return '尚未备份';
