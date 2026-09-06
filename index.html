@@ -208,6 +208,13 @@ body{
 .prod-name{font-weight:700;font-size:15px}
 .prod-meta{display:flex;gap:6px;flex-wrap:wrap;margin-top:6px}
 .chip{font-size:11px;color:var(--text2);background:var(--bg);padding:3px 8px;border-radius:6px;font-weight:500}
+.publish-card{padding:14px 16px}
+.publish-head{display:flex;justify-content:space-between;align-items:flex-start;gap:10px}
+.publish-title{font-size:16px;font-weight:800;color:var(--text);line-height:1.3}
+.publish-del{font-size:12px;color:var(--text3);background:transparent;border:1px solid var(--line);border-radius:8px;padding:4px 10px;cursor:pointer;white-space:nowrap}
+.publish-tags{display:flex;gap:6px;margin-top:8px;flex-wrap:wrap}
+.publish-dates{margin-top:8px;font-size:13px;color:var(--text2);white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.publish-dates span{display:inline-block;margin-right:12px}
 .chip.hl{background:var(--brand-soft);color:var(--brand);font-weight:600}
 .chip.gr{background:var(--green-soft);color:var(--green)}
 .chip.or{background:var(--orange-soft);color:var(--orange)}
@@ -396,6 +403,17 @@ body{
       <div id="copyDrill" style="display:none"></div>
     </div>
 
+    <!-- ============ PUBLISH 视频发布 ============ -->
+    <div id="view-publish" class="view">
+      <div class="view-title">视频发布</div>
+      <div class="seg" id="publishAcctSeg">
+        <button class="on" data-a="all">全部账号</button>
+        <button data-a="big">大号</button>
+        <button data-a="small">小号</button>
+      </div>
+      <div style="margin-top:10px" id="publishList"></div>
+    </div>
+
     </div>
 
   <div class="fab-btn" onclick="contextFab()"><svg viewBox="0 0 24 24"><path d="M12 5v14M5 12h14"/></svg></div>
@@ -407,6 +425,7 @@ body{
   <button class="tab" data-v="product"><span class="tb-ic"><svg viewBox="0 0 24 24"><path d="M21 16V8a2 2 0 0 0-1-1.73l-7-4a2 2 0 0 0-2 0l-7 4A2 2 0 0 0 3 8v8a2 2 0 0 0 1 1.73l7 4a2 2 0 0 0 2 0l7-4A2 2 0 0 0 21 16z"/><path d="M3.27 6.96 12 12.01l8.73-5.05"/><path d="M12 22.08V12"/></svg></span><span class="tb-t">出单</span><span class="dot-ct" id="bdProd" style="display:none">0</span></button>
   <button class="tab" data-v="sample"><span class="tb-ic"><svg viewBox="0 0 24 24"><rect x="3" y="4" width="18" height="18" rx="2"/><path d="M16 2v4M8 2v4M3 10h18"/><circle cx="12" cy="15" r="1.6"/><path d="M12 13v.01"/></svg></span><span class="tb-t">排期</span><span class="dot-ct" id="bdSample" style="display:none">0</span></button>
   <button class="tab" data-v="copy"><span class="tb-ic"><svg viewBox="0 0 24 24"><path d="M12 20h9"/><path d="M16.5 3.5a2.12 2.12 0 0 1 3 3L7 19l-4 1 1-4Z"/></svg></span><span class="tb-t">文案</span></button>
+  <button class="tab" data-v="publish"><span class="tb-ic"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M23 7l-7 5 7 5V7z"/><rect x="1" y="5" width="15" height="14" rx="2" ry="2"/></svg></span><span class="tb-t">视频发布</span></button>
   <button class="tab" data-v="ledger"><span class="tb-ic"><svg viewBox="0 0 24 24"><rect x="2" y="6" width="20" height="12" rx="2"/><circle cx="12" cy="12" r="3"/><path d="M6 12h.01M18 12h.01"/></svg></span><span class="tb-t">记账</span></button>
 </div></nav>
 
@@ -833,7 +852,7 @@ let curTab='home';
 function viewTab(v){curTab=v;
   document.querySelectorAll('.tab').forEach(t=>t.classList.toggle('on',t.dataset.v===v));
   document.querySelectorAll('.view').forEach(x=>x.classList.toggle('on',x.id==='view-'+v));
-  const map={home:'今日概览',product:'出单管理',sample:'样品排期',copy:'文案库',ledger:'记账'};
+  const map={home:'今日概览',product:'出单管理',sample:'样品排期',copy:'文案库',ledger:'记账',publish:'视频发布'};
   document.getElementById('hSub').textContent=map[v]||'';
   closeSheet();refreshNav();
 }
@@ -1201,6 +1220,57 @@ function renderProducts(){
     </div></div>`;
   }).join('');
 }
+
+/* ============ render publish 视频发布 ============ */
+let publishAcct='all';
+function renderPublish(f){
+  if(f)publishAcct=f||publishAcct;
+  const el=document.getElementById('publishList');
+  const recs=db.records.filter(r=>r.type==='product'&&!(r.note||'').includes('汇总')&&acctMatch(acctOf(r),publishAcct));
+  if(!recs.length){el.innerHTML=emptyHTML('还没有视频发布记录，点右下角 + 记一条');return;}
+  const groups={};
+  recs.forEach(r=>{
+    const p=db.products.find(x=>x.id===r.pid);
+    const name=p?p.name:'未知产品';
+    const acct=acctOf(r);
+    const key=name+'|'+acct;
+    if(!groups[key])groups[key]={name,acct,total:0,daily:{}};
+    groups[key].total++;
+    groups[key].daily[r.date]=(groups[key].daily[r.date]||0)+1;
+  });
+  const list=Object.values(groups).sort((a,b)=>{
+    const aLast=Object.keys(a.daily).sort().pop()||'';
+    const bLast=Object.keys(b.daily).sort().pop()||'';
+    return bLast.localeCompare(aLast);
+  });
+  el.innerHTML=list.map(g=>{
+    const dates=Object.keys(g.daily).sort();
+    const dailyHtml=dates.map(d=>`<span>${fmtDate(d)}×${g.daily[d]}</span>`).join('');
+    return `<div class="card publish-card" style="margin-bottom:10px">
+      <div class="publish-head">
+        <div class="publish-title">${esc(g.name)}</div>
+        <button class="publish-del" onclick="delPublishGroup('${esc(g.name).replace(/'/g,"\\'")}','${g.acct}')">删除</button>
+      </div>
+      <div class="publish-tags">
+        <span class="chip" style="background:${g.acct==='small'?'#e8f0ff':'#fff3e0'};color:${g.acct==='small'?'var(--blue)':'var(--orange)'}">${ACCT_NAME[g.acct]}</span>
+        <span class="chip hl">发布 ${g.total} 条</span>
+      </div>
+      <div class="publish-dates" title="${dates.map(d=>fmtDate(d)+'×'+g.daily[d]).join('  ')}">${dailyHtml}</div>
+    </div>`;
+  }).join('');
+}
+function delPublishGroup(name,acct){
+  if(!confirm('删除「'+name+'」在'+ACCT_NAME[acct]+'下的全部视频发布记录？'))return;
+  const ids=db.products.filter(p=>p.name===name).map(p=>p.id);
+  db.records=db.records.filter(r=>{
+    if(r.type!=='product'||(r.note||'').includes('汇总'))return true;
+    if(!ids.includes(r.pid))return true;
+    if(acctOf(r)!==acct)return true;
+    return false;
+  });
+  save();renderPublish();renderHome();renderProducts();
+}
+
 function avgRate(pid,acctFilter='all'){const rs=db.records.filter(r=>r.pid===pid&&acctMatch(acctOf(r),acctFilter)&&r.rate);if(!rs.length)return 0;return rs.reduce((s,r)=>s+r.rate,0)/rs.length;}
 
 function emptyHTML(msg){return '<div class="empty"><svg viewBox="0 0 24 24" stroke="currentColor" fill="none"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/></svg><div>'+esc(msg)+'</div></div>';}
@@ -1576,11 +1646,12 @@ document.addEventListener('click',e=>{
     else if(parent.id==='copySeg')renderCopies(seg.dataset.f);
     else if(parent.id==='sampleAcctSeg'){sampleAcct=seg.dataset.a;renderSamples();}
     else if(parent.id==='ledgerAcctSeg'){ledgerAcct=seg.dataset.a;renderLedger();}
+    else if(parent.id==='publishAcctSeg'){publishAcct=seg.dataset.a;renderPublish();}
   }
 });
 
 /* ============ master render ============ */
-function renderAll(){renderHome();renderProducts();renderSamples();renderCopies();renderLedger();
+function renderAll(){renderHome();renderProducts();renderSamples();renderCopies();renderLedger();renderPublish();
   // totals in stat cards already via renderHome
   // nav badges
   const w=db.samples.filter(s=>s.status!=='done').length;
