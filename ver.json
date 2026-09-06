@@ -1,4 +1,4 @@
 {
-  "latest": 49,
-  "note": "修记账记一笔弹窗：去掉外层 cat-grid 类让分组标题不再被挤成竖排；addMoneySheet 末尾调 fillCat 让默认 tab 也有分类"
+  "latest": 54,
+  "note": "细分云端错误提示：401/403 报「令牌无效」，其它报「连不上 GitHub」；saveCloudToken/cloudPull/cloudPush/onRestoreBtn 的 catch 同步细化；APP_VER 53→54"
 }
