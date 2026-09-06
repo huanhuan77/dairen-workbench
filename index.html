@@ -149,6 +149,22 @@ body{
 .seg button{flex:1;border:none;background:none;padding:7px 4px;border-radius:8px;font-size:13px;font-family:inherit;color:var(--text2);cursor:pointer}
 .seg button.on{background:#fff;color:var(--text);font-weight:600;box-shadow:0 1px 3px rgba(0,0,0,.08)}
 
+/* 出单管理 filter bar */
+.filter{display:flex;flex-wrap:wrap;align-items:center;gap:6px 4px}
+.fb-seg{display:inline-flex;flex-wrap:wrap;gap:6px;align-items:center}
+.fb-sep{width:1px;height:18px;background:var(--line);margin:0 6px;align-self:center}
+.f-pill{padding:6px 12px;border:1px solid var(--line);border-radius:18px;background:#fff;font-size:13px;font-family:inherit;color:var(--text2);cursor:pointer;line-height:1.2}
+.f-pill.on{background:var(--brand);color:#fff;border-color:var(--brand);font-weight:600}
+.f-month{padding:5px 10px;border:1px solid var(--line);border-radius:18px;background:#fff;font-size:13px;font-family:inherit;color:var(--text2);line-height:1.2}
+.app-header.hide{display:none}
+
+/* 统计卡内的三连小数字 */
+.ord3{display:grid;grid-template-columns:repeat(3,1fr);margin-top:6px;background:var(--bg);border-radius:10px;padding:6px 0}
+.o3{text-align:center;border-right:1px solid var(--line)}
+.o3:last-child{border-right:none}
+.o3 .n{font-size:17px;font-weight:800;line-height:1.2}
+.o3 .l{font-size:10px;color:var(--text3);margin-top:1px}
+
 /* bottom sheet / modal */
 .mask{position:fixed;inset:0;background:rgba(0,0,0,.45);z-index:40;opacity:0;pointer-events:none;transition:opacity .25s}
 .mask.show{opacity:1;pointer-events:auto}
@@ -255,6 +271,63 @@ body{
 .ls .val.dn{color:var(--brand)}
 .ls .val small{font-size:12px}
 .cat-ico{width:40px;height:40px;border-radius:12px;flex-shrink:0;display:flex;align-items:center;justify-content:center;font-weight:700;font-size:16px;color:#fff}
+.cat-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:8px;margin-bottom:4px}
+.cat-group-label{font-size:12px;color:var(--text3);font-weight:600;margin:14px 0 8px}
+.cat-cell{display:flex;flex-direction:column;align-items:center;gap:6px;padding:10px 4px;border-radius:12px;cursor:pointer;border:1px solid transparent;background:#fff}
+.cat-cell:active{transform:scale(.97)}
+.cat-cell.on{background:var(--brand-soft);border-color:var(--brand)}
+.cat-cell .cat-ico{width:36px;height:36px;border-radius:50%;display:flex;align-items:center;justify-content:center}
+.cat-cell .cat-ico svg{width:18px;height:18px}
+.cat-cell .cat-nm{font-size:11px;color:var(--text);white-space:nowrap;overflow:hidden;text-overflow:ellipsis;max-width:100%}
+/* 鲨鱼风月度头条卡 */
+.led-hero{background:linear-gradient(135deg,#ffa3cf,#ff7eb6);color:#fff;border-radius:16px;padding:14px 16px;box-shadow:0 4px 14px rgba(255,126,182,.25);margin-bottom:14px}
+.led-hero .row1{display:flex;align-items:center;justify-content:space-between;margin-bottom:6px}
+.led-hero .mo{font-weight:700;font-size:15px}
+.led-hero .bal{font-size:24px;font-weight:800}
+.led-hero .bal small{font-size:12px;font-weight:600;opacity:.7}
+.led-hero .sumline{display:flex;justify-content:space-between;margin-top:8px;font-size:13px}
+.led-hero .sumline .up{color:#bff3df;font-weight:700}
+.led-hero .sumline .dn{color:#fff;font-weight:700}
+.led-tabs{display:flex;background:var(--bg);border-radius:10px;padding:3px;gap:2px;margin-bottom:10px}
+.led-tabs button{flex:1;border:none;background:none;padding:8px;border-radius:8px;font-size:13px;font-family:inherit;color:var(--text2);cursor:pointer}
+.led-tabs button.on{background:#fff;color:var(--text);font-weight:600;box-shadow:0 1px 3px rgba(0,0,0,.08)}
+.date-h{background:var(--bg);color:var(--text2);font-size:12px;font-weight:600;padding:8px 12px;display:flex;justify-content:space-between;align-items:center;border-top:1px solid var(--line)}
+.date-h:first-child{border-top:none}
+.ledger-row{display:flex;align-items:center;gap:10px;padding:10px 14px;border-bottom:1px solid var(--line)}
+.ledger-row .lr-amt{margin-left:auto;font-weight:700;font-size:15px}
+.ledger-row .lr-amt.up{color:var(--green)}
+.ledger-row .lr-amt.dn{color:var(--brand)}
+/* 鲨鱼记账风：账单行用圆形图标 + 白描边字形 */
+.ledger-row .cat-ico,.ledger-rank .cat-ico{border-radius:50%;width:42px;height:42px}
+.ledger-row .cat-ico svg,.ledger-rank .cat-ico svg{width:21px;height:21px}
+.ledger-row .t{font-weight:600;color:var(--text);overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.ledger-row .r-date{font-size:11px;color:var(--text3);margin-bottom:2px}
+.ledger-rank .lr-val{color:var(--text);font-size:15px}
+.led-rank-list{background:var(--card);border-radius:16px;overflow:hidden;box-shadow:var(--shadow);margin-bottom:14px}
+.led-rank-list .ledger-rank{border-bottom:1px solid var(--line);padding:12px 14px}
+.led-rank-list .ledger-rank:last-child{border-bottom:none}
+.ledger-list{background:var(--card);border-radius:16px;overflow:hidden;box-shadow:var(--shadow);margin-bottom:14px}
+.ledger-list .ledger-row:last-child{border-bottom:none}
+.date-h{background:var(--bg);color:var(--text2);font-size:12px;font-weight:600;padding:8px 14px;display:flex;justify-content:space-between;align-items:center}
+/* 鲨鱼风头条卡：结余标签 + 更大数字 */
+.led-hero .bal-label{font-size:12px;opacity:.75;font-weight:600;margin-bottom:2px}
+.led-hero .bal{font-size:30px;line-height:1.1}
+.led-hero .pill{background:rgba(255,255,255,.18);border-radius:20px;padding:5px 12px;font-size:13px;display:inline-flex;align-items:center;gap:4px}
+.led-hero .sumline{display:flex;gap:10px;margin-top:10px}
+.led-hero .sumline .pill .up{color:#bff3df}
+.led-hero .sumline .pill .dn{color:#fff}
+.ledger-rank .lr-bar{flex:1;height:8px;background:var(--line);border-radius:4px;overflow:hidden}
+.ledger-rank .lr-bar>i{display:block;height:100%;background:linear-gradient(90deg,var(--brand),#ffa3cf)}
+.ledger-rank .lr-val{margin-left:auto;font-weight:700;color:var(--text)}
+.ledger-chart{padding:8px 6px}
+.ledger-chart svg{width:100%;height:120px}
+.ledger-chart .lab{display:flex;justify-content:space-between;font-size:11px;color:var(--text3);margin-top:6px}
+.ledger-chart .stat{display:flex;justify-content:space-between;font-size:13px;color:var(--text2);margin-bottom:6px}
+/* 月份选择器样式 */
+.month-pick{display:grid;grid-template-columns:1fr 1fr;gap:8px}
+.mp-col{display:flex;flex-direction:column;gap:4px;max-height:240px;overflow-y:auto;background:var(--bg);border-radius:10px;padding:6px}
+.mp-cell{padding:9px 12px;border-radius:8px;text-align:center;cursor:pointer;font-size:13px;color:var(--text2)}
+.mp-cell.on{background:var(--brand);color:#fff;font-weight:600}
 
 /* toast */
 #toast{position:fixed;left:50%;top:15%;transform:translateX(-50%) translateY(-10px);background:rgba(0,0,0,.8);color:#fff;padding:10px 18px;border-radius:20px;font-size:13px;z-index:99;opacity:0;pointer-events:none;transition:.25s;white-space:nowrap;max-width:80vw;overflow:hidden;text-overflow:ellipsis}
@@ -309,17 +382,26 @@ body{
         <button class="bb-btn" id="barBtn" onclick="event.stopPropagation();onBarBtn()">去启用</button>
       </div>
       <div class="stat-grid" style="margin-top:4px">
-        <div class="stat-card trend clickable" onclick="viewTab('product')"><div class="lab"><span class="mini-dot" style="background:var(--brand)"></span>累计发视频</div><div class="num" id="hTotalProd">0 <small>条</small></div><div class="sub" id="hProdSub">出单 0 单 · 0 个产品</div></div>
+        <div class="stat-card trend clickable" onclick="quickGoToday()"><div class="lab"><span class="mini-dot" style="background:var(--brand)"></span>今日发视频</div><div class="num" id="hTotalProd">0 <small>条</small></div><div class="sub" id="hProdSub">出单 0 单 · 0 个产品</div></div>
         <div class="stat-card income clickable" onclick="viewTab('ledger')"><div class="lab"><span class="mini-dot" style="background:var(--green)"></span>本月收入</div><div class="num" id="hIncome">¥0</div><div class="sub" id="hIncomeSub">本月结余 ¥0</div></div>
         <div class="stat-card wait clickable" onclick="viewTab('sample')"><div class="lab"><span class="mini-dot" style="background:var(--orange)"></span>待拍/待发</div><div class="num" id="hWaiting">0</div><div class="sub">样品在途+待发</div></div>
-        <div class="stat-card arrive clickable" onclick="enterBestCopy()"><div class="lab"><span class="mini-dot" style="background:var(--blue)"></span>最佳文案</div><div class="num" style="font-size:20px;padding-top:4px" id="hBestCopy">-</div><div class="sub" id="hBestSub">评分最高的文案</div></div>
+        <div class="stat-card arrive clickable" onclick="viewTab('product')"><div class="lab"><span class="mini-dot" style="background:var(--blue)"></span>出单统计 <small style="font-weight:400">累计</small></div><div class="ord3">
+          <div class="o3"><div class="n" id="hOrdAllBig" style="color:var(--orange)">0</div><div class="l">大号</div></div>
+          <div class="o3"><div class="n" id="hOrdAllSmall" style="color:var(--blue)">0</div><div class="l">小号</div></div>
+          <div class="o3"><div class="n" id="hOrdAllTot" style="color:var(--green)">0</div><div class="l">共</div></div>
+        </div></div>
       </div>
 
       <div class="quick">
         <button class="qa" onclick="quickAdd('product')"><div class="ic"><svg viewBox="0 0 24 24"><path d="M21 16V8a2 2 0 0 0-1-1.73l-7-4a2 2 0 0 0-2 0l-7 4A2 2 0 0 0 3 8v8a2 2 0 0 0 1 1.73l7 4a2 2 0 0 0 2 0l7-4A2 2 0 0 0 21 16z"/><path d="M3.27 6.96 12 12.01l8.73-5.05"/><path d="M12 22.08V12"/></svg></div><div class="t">记出单</div></button>
-        <button class="qa" onclick="quickAdd('copy')"><div class="ic"><svg viewBox="0 0 24 24"><path d="M12 20h9"/><path d="M16.5 3.5a2.12 2.12 0 0 1 3 3L7 19l-4 1 1-4Z"/></svg></div><div class="t">评文案</div></button>
+        <button class="qa" onclick="quickAdd('copy')"><div class="ic"><svg viewBox="0 0 24 24"><path d="M12 20h9"/><path d="M16.5 3.5a2.12 2.12 0 0 1 3 3L7 19l-4 1 1-4Z"/></svg></div><div class="t">写文案</div></button>
         <button class="qa" onclick="quickAdd('sample')"><div class="ic"><svg viewBox="0 0 24 24"><rect x="2" y="4" width="20" height="16" rx="2"/><path d="M2 9h20"/><path d="M6 7v.01M10 7v.01M6 12v.01M10 12v.01"/></svg></div><div class="t">样品排期</div></button>
         <button class="qa" onclick="quickAdd('money')"><div class="ic"><svg viewBox="0 0 24 24"><rect x="2" y="6" width="20" height="12" rx="2"/><circle cx="12" cy="12" r="3"/><path d="M6 12h.01M18 12h.01"/></svg></div><div class="t">记一笔</div></button>
+      </div>
+
+      <div class="section" id="homeOverdueSec" style="display:none">
+        <div class="sec-head"><span class="sec-title" style="color:#ff3d4a">逾期提醒 <span class="chip" style="background:#ffe3e3;color:#ff3d4a;font-size:12px" id="odCnt">0</span></span><button class="sec-link" onclick="viewTab('sample')">排期管理</button></div>
+        <div class="card" id="homeOverdue"></div>
       </div>
 
       <div class="section">
@@ -336,15 +418,29 @@ body{
     <!-- ============ PRODUCT ============ -->
     <div id="view-product" class="view">
       <div class="view-title">出单管理</div>
-      <div class="seg" id="prodAcctSeg">
-        <button class="on" data-a="all">全部账号</button>
-        <button data-a="big">大号</button>
-        <button data-a="small">小号</button>
+      <div class="filter">
+        <span class="fb-seg" id="prodAcctSeg">
+          <button class="f-pill on" data-a="all">全部账号</button>
+          <button class="f-pill" data-a="big">大号</button>
+          <button class="f-pill" data-a="small">小号</button>
+        </span>
+        <span class="fb-sep"></span>
+        <span class="fb-seg" id="prodRangeSeg">
+          <button class="f-pill on" data-r="all">全部</button>
+          <button class="f-pill" data-r="today">今天</button>
+          <button class="f-pill" data-r="yest">昨天</button>
+          <button class="f-pill" data-r="week">本周</button>
+          <button class="f-pill" data-r="month">本月</button>
+          <button class="f-pill" data-r="lastmonth">上月</button>
+        </span>
+        <input type="month" class="f-month" id="prodMonth" value="">
+        <span class="fb-sep"></span>
+        <span class="fb-seg" id="prodSortSeg">
+          <button class="f-pill on" data-s="last">最新</button>
+          <button class="f-pill" data-s="orders">出单最多</button>
+        </span>
       </div>
-      <div class="seg" id="prodSortSeg">
-        <button class="on" data-s="last">最新发布</button>
-        <button data-s="orders">出单最多</button>
-      </div>
+      <div class="hint" id="prodRangeTip" style="margin:8px 2px 0"></div>
       <div style="margin-top:10px" id="prodList"></div>
     </div>
 
@@ -366,27 +462,6 @@ body{
       <div style="margin-top:10px" id="sampleList"></div>
     </div>
 
-    <!-- ============ LEDGER ============ -->
-    <div id="view-ledger" class="view">
-      <div class="view-title">记账</div>
-      <div class="seg" id="ledgerAcctSeg" style="margin-bottom:10px">
-        <button class="on" data-a="all">全部账号</button>
-        <button data-a="big">大号</button>
-        <button data-a="small">小号</button>
-      </div>
-      <div class="month-nav">
-        <button class="nav-btn" onclick="shiftMonth(-1)"><svg viewBox="0 0 24 24"><path d="M15 18l-6-6 6-6"/></svg></button>
-        <span class="mn" id="ledgerMonth">2026年9月</span>
-        <button class="nav-btn" onclick="shiftMonth(1)"><svg viewBox="0 0 24 24"><path d="M9 6l6 6-6 6"/></svg></button>
-      </div>
-      <div class="ledger-sum">
-        <div class="ls"><div class="lab">本月收入</div><div class="val up" id="lIncome">¥0</div></div>
-        <div class="ls"><div class="lab">本月支出</div><div class="val dn" id="lExpense">¥0</div></div>
-        <div class="ls"><div class="lab">本月结余</div><div class="val" id="lBalance" style="color:var(--text)">¥0</div></div>
-      </div>
-      <div id="ledgerList"></div>
-    </div>
-
     <!-- ============ COPY WRITING ============ -->
     <div id="view-copy" class="view">
       <div id="copyHome">
@@ -394,10 +469,7 @@ body{
           <div class="view-title" style="padding:0">文案库</div>
           <span class="chip" style="font-size:13px;background:var(--brand-soft);color:var(--brand);font-weight:700" id="cpTopStat">文案 0</span>
         </div>
-        <p style="font-size:13px;color:var(--text2);margin:0 0 12px">按产品查看。每条记录都可标记「用过/出单/爆单」方便复盘。</p>
-        <div style="display:flex;gap:8px;flex-wrap:wrap;margin-bottom:12px">
-          <button class="topic-pill" onclick="clearAllCopies()" style="color:var(--brand)">清空文案</button>
-        </div>
+        <input class="f-input" id="copySearch" type="search" placeholder="搜索产品名称…" oninput="copySearch=this.value.trim();renderCopies()" style="margin-bottom:12px">
         <div style="margin-top:4px" id="copyList"></div>
       </div>
       <div id="copyDrill" style="display:none"></div>
@@ -412,6 +484,20 @@ body{
         <button data-a="small">小号</button>
       </div>
       <div style="margin-top:10px" id="publishList"></div>
+    </div>
+
+    <!-- ============ LEDGER 记账 ============ -->
+    <div id="view-ledger" class="view">
+      <div class="led-hero" onclick="openMonthPicker()" style="cursor:pointer">
+        <div class="row1"><div class="mo" id="ledgerMonth">2026年9月 ▾</div><div style="text-align:right"><div class="bal-label">结余</div><div class="bal" id="ledHeroBal">¥0</div></div></div>
+        <div class="sumline"><div class="pill"><span class="up">↑</span> 收入 <span id="ledHeroInc">¥0</span></div><div class="pill"><span class="dn">↓</span> 支出 <span id="ledHeroExp">¥0</span></div></div>
+      </div>
+      <div class="led-tabs" id="ledTabs">
+        <button class="on" data-t="detail">明细</button>
+        <button data-t="rank">排行</button>
+        <button data-t="chart">图表</button>
+      </div>
+      <div id="ledgerList"></div>
     </div>
 
     </div>
@@ -437,31 +523,39 @@ body{
 <script>
 /* ============ 应用版本 / 检查更新 ============
    发布新版时把 APP_VER 递增，并同步把同目录 ver.json 的 latest 改成相同值。
-   checkUpdate() 拉同域 ver.json 对比，提示是否有新版本。 */
-var APP_VER=25;
-/* 检查是否有新版(手动触发) */
+   checkUpdate() 拉同域 ver.json 对比：有新版立刻强刷加载新版。 */
+var APP_VER=48;
+/* 检查是否有新版（手动触发）— 无确认弹窗，点「更新」直接拉新版 */
 function checkUpdate(){
   const now=Date.now();
   fetch('./ver.json?v='+now,{cache:'no-store'})
   .then(r=>{if(!r.ok)throw new Error('HTTP '+r.status);return r.json();})
-  .then(j=>{const latest=parseInt(j.latest)||0;renderUpdateSheet(latest,(latest>APP_VER)?'new':'ok');})
-  .catch(()=>renderUpdateSheet(APP_VER,'err'));
+  .then(j=>{
+    const latest=parseInt(j.latest)||0;
+    if(latest>APP_VER){reloadApp(latest);}
+    else if(latest===APP_VER){toast('已是最新版 v'+APP_VER);}
+    else{toast('当前版本比服务器新？v'+APP_VER+' vs v'+latest);}
+  })
+  .catch(()=>toast('检查更新失败，请稍后再试'));
 }
-function renderUpdateSheet(latest,state){
-  let head,bodyHtml,foot;
-  if(state==='new'){
-    head='发现新版本';bodyHtml='<p style="font-size:15px;color:var(--text1);line-height:1.7;margin:0">有新版本 v'+latest+' 已上线（你当前是 v'+APP_VER+'）。</p>';
-    foot='<div class="btn-row"><button class="btn primary" onclick="reloadApp()">刷新使用新版</button></div>';
-  }else if(state==='ok'){
-    head='已是最新版本';bodyHtml='<p style="font-size:15px;color:var(--green);font-weight:700;margin:0">当前已是最新版 v'+APP_VER+'</p>';
-    foot='';
-  }else{
-    head='检查失败';bodyHtml='<p style="font-size:14px;color:var(--text2);line-height:1.7;margin:0">暂时无法连接网络检查更新，请稍后再试。</p>';foot='';
-  }
-  openSheet(`<div class="grip"></div><div class="sheet-head"><span class="tt">${head}</span><button class="close" onclick="closeSheet()">×</button></div>
-  <div class="sheet-body">${bodyHtml}${foot}</div>`);
+/* 强刷加载：用版本号作查询串绕开浏览器缓存 */
+function reloadApp(latest){
+  try{closeSheet();}catch(e){}
+  const v=latest||APP_VER||Date.now();
+  try{sessionStorage.setItem(DB_KEY+'_just_updated',String(v));}catch(e){}
+  const url=location.pathname+'?v='+v+(location.hash||'');
+  location.replace(url);
 }
-function reloadApp(){location.reload(true);}
+/* 重载完成后提示「已更新到新版」 */
+function notifyUpdated(){
+  try{
+    const k=DB_KEY+'_just_updated';
+    const v=sessionStorage.getItem(k);
+    if(!v)return;
+    sessionStorage.removeItem(k);
+    toast('已更新到新版 v'+v);
+  }catch(e){}
+}
 
 /* ============ store helpers ============ */
 const DB_KEY='dl_dairen_workbench_v1';
@@ -838,14 +932,58 @@ function normalize(){
   db.products=db.products||[];db.samples=db.samples||[];db.records=db.records||[];db.copies=db.copies||[];
 }
 function uid(){return Date.now().toString(36)+Math.random().toString(36).slice(2,7);}
-function today(){const d=new Date();return d.toISOString().slice(0,10);}
+function today(){const d=new Date();return isoDate(d);}
+function isoDate(d){return d.getFullYear()+'-'+String(d.getMonth()+1).padStart(2,'0')+'-'+String(d.getDate()).padStart(2,'0');}
+/* 时间范围 → [起始日, 结束日]，'all' 返回 [null,null] */
+let prodMonth='';
+function rangeBounds(r){
+  const d=new Date();d.setHours(0,0,0,0);
+  if(r==='today')return [isoDate(d),isoDate(d)];
+  if(r==='yest'){const y=new Date(d);y.setDate(y.getDate()-1);return [isoDate(y),isoDate(y)];}
+  if(r==='week'){const w=new Date(d);const dow=(w.getDay()+6)%7;w.setDate(w.getDate()-dow);return [isoDate(w),isoDate(d)];}
+  if(r==='month')return [isoDate(new Date(d.getFullYear(),d.getMonth(),1)),isoDate(d)];
+  if(r==='lastmonth')return [isoDate(new Date(d.getFullYear(),d.getMonth()-1,1)),isoDate(new Date(d.getFullYear(),d.getMonth(),0))];
+  if(r==='custom'&&prodMonth){const[y,m]=prodMonth.split('-').map(Number);return[isoDate(new Date(y,m-1,1)),isoDate(new Date(y,m,0))];}
+  return [null,null];
+}
+function inRange(date,r){const b=rangeBounds(r);if(!b[0])return true;return (date||'')>=b[0]&&(date||'')<=b[1];}
+const RANGE_NAME={all:'全部',today:'今天',yest:'昨天',week:'本周',month:'本月',lastmonth:'上个月',custom:'指定月份'};
 function fmtDate(s){if(!s)return '-';const d=new Date(s);const n=new Date();d.setHours(0,0,0,0);n.setHours(0,0,0,0);const diff=Math.round((d-n)/86400000);
   if(diff===0)return '今天';if(diff===1)return '明天';if(diff===2)return '后天';
   const mo=['1','2','3','4','5','6','7','8','9','10','11','12'];
   return (d.getFullYear()===n.getFullYear()?'':d.getFullYear()+'年')+mo[d.getMonth()]+'月'+d.getDate()+'日';}
 function fmtYMD(s){if(!s)return'';const d=new Date(s);return d.getFullYear()+'年'+(d.getMonth()+1)+'月'+d.getDate()+'日';}
 function money(n){n=n||0;return '¥'+Number(n).toLocaleString('zh-CN',{minimumFractionDigits:0,maximumFractionDigits:2});}
-const CATS={commission:{name:'带货收入',c:'#0bb07b'},sample:{name:'样品',c:'#ff9500'},ad:{name:'投流/推广',c:'#3a7afe'},material:{name:'道具/杂费',c:'#b06bff'},income_other:{name:'其他收入',c:'#22b8cf'},expense_other:{name:'其他支出',c:'#f06595'}};
+/* 记账分类：参考鲨鱼记账，日常开销 + 生意相关 + 带货收入 */
+const CATS={
+  /* 收入来源 */
+  commission:{name:'带货佣金',c:'#0bb07b',icon:'M12 6v12M8 9c0-1.1.9-2 2-2h4a2 2 0 0 1 0 4h-4a2 2 0 0 0 0 4h4a2 2 0 0 1 0 4h-4a2 2 0 0 1-2-2'},
+  salary:{name:'工资',c:'#3a7afe',icon:'M3 8h18v12H3zM8 8V6a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2M3 13h18'},
+  bonus:{name:'红包/奖金',c:'#fa5252',icon:'M20 12v8H4v-8M2 8h20v4H2zM12 8v12M12 8S10 4 7 5s1 3 5 3M12 8s2-4 5-3-1 3-5 3'},
+  parttime:{name:'兼职副业',c:'#22b8cf',icon:'M3 5h18v11H3zM8 20h8M12 16v4'},
+  invest:{name:'理财/其他',c:'#b06bff',icon:'M3 17l6-6 4 4 8-8M21 7h-4M21 7v4'},
+  income_other:{name:'其他收入',c:'#868e96',icon:'M3 9h18v3H3zM5 12v8h14v-8M12 9V5l-3 3M12 5l3 3'},
+  /* 日常开销 */
+  food:{name:'餐饮',c:'#ff9500',icon:'M6 3v18M6 3c-1 0-1.5 4-1.5 8S5 19 6 21M18 3c-1.5 0-2 4-2 7s.5 5 2 5M18 3v18'},
+  transport:{name:'交通',c:'#3a7afe',icon:'M3 13l2-5h14l2 5v4H3zM7 17v2M17 17v2M6 13h12'},
+  shopping:{name:'购物',c:'#f06595',icon:'M6 8h12l1 12H5zM9 8V6a3 3 0 0 1 6 0v2'},
+  home:{name:'居家',c:'#0bb07b',icon:'M3 11l9-8 9 8M5 10v10h14V10M10 20v-6h4v6'},
+  digital:{name:'数码',c:'#5c6ac4',icon:'M2 5h20v12H2zM9 21h6M12 17v4'},
+  clothes:{name:'服饰',c:'#b06bff',icon:'M8 3l4 3 4-3 4 2-3 4v11H7V9L4 5z'},
+  beauty:{name:'美妆',c:'#e64980',icon:'M12 3s6 6.5 6 11a6 6 0 0 1-12 0c0-4.5 6-11 6-11z'},
+  fun:{name:'娱乐',c:'#ff922b',icon:'M12 21a9 9 0 1 0 0-18 9 9 0 0 0 0 18zM9 9h.01M15 9h.01M8 14s1.5 2 4 2 4-2 4-2'},
+  social:{name:'人情',c:'#fa5252',icon:'M12 21s-7-4.5-9.5-9A5 5 0 0 1 12 6a5 5 0 0 1 9.5 6c-2.5 4.5-9.5 9-9.5 9z'},
+  medical:{name:'医疗',c:'#12b886',icon:'M9 3h6v6h6v6h-6v6H9v-6H3V9h6z'},
+  edu:{name:'教育',c:'#4c6ef5',icon:'M4 5h13v14H6a2 2 0 0 0-2 2M17 5v14a2 2 0 0 1-2 2H6'},
+  travel:{name:'旅行',c:'#22b8cf',icon:'M21 16v-2l-8-5V3h-2v6l-8 5v2l8-2v4l-2 1.5V21l3.5-1 3.5 1v-1.5L13 19v-4.5z'},
+  pet:{name:'宠物',c:'#a98467',icon:'M9 11a1.5 1.5 0 1 0 0-3 1.5 1.5 0 0 0 0 3M15 11a1.5 1.5 0 1 0 0-3 1.5 1.5 0 0 0 0 3M12 14a1.5 1.5 0 1 0 0-3 1.5 1.5 0 0 0 0 3M7.5 16.5c0 2.5 2 4 4.5 4s4.5-1.5 4.5-4-2-2.5-4.5-2.5-4.5 .5-4.5 2.5z'},
+  comm:{name:'通讯',c:'#748ffc',icon:'M6 3h3l2 5-2 1a11 11 0 0 0 5 5l1-2 5 2v3a2 2 0 0 1-2 2A16 16 0 0 1 4 5a2 2 0 0 1 2-2z'},
+  /* 生意相关 */
+  sample:{name:'样品采购',c:'#ff9500',icon:'M3 7l9-4 9 4-9 4zM3 7v10l9 4 9-4V7M3 7l9 4 9-4'},
+  ad:{name:'投流/推广',c:'#3a7afe',icon:'M3 11v2l4 1 5 4V6L7 10zM14 9c2 0 3 1 3 3s-1 3-3 3M17 6c4 0 6 2 6 6s-2 6-6 6'},
+  material:{name:'道具/杂费',c:'#b06bff',icon:'M5 8h14l-1 12H6L5 8zM8 8a4 4 0 0 1 8 0'},
+  expense_other:{name:'其他支出',c:'#868e96',icon:'M20 12L12 20l-8-8V4h8zM7 8a2 2 0 1 1 4 0 2 2 0 0 1-4 0'}
+};
 
 /* ============ navigation ============ */
 let curTab='home';
@@ -854,6 +992,8 @@ function viewTab(v){curTab=v;
   document.querySelectorAll('.view').forEach(x=>x.classList.toggle('on',x.id==='view-'+v));
   const map={home:'今日概览',product:'出单管理',sample:'样品排期',copy:'文案库',ledger:'记账',publish:'视频发布'};
   document.getElementById('hSub').textContent=map[v]||'';
+  const headerEl=document.querySelector('.app-header');
+  if(headerEl)headerEl.classList.toggle('hide',v!=='home');
   closeSheet();refreshNav();
 }
 function contextFab(){
@@ -880,9 +1020,10 @@ function closeSheet(){document.getElementById('mask').classList.remove('show');d
 function formVal(name){const el=document.querySelector('[name="'+name+'"]');if(!el)return'';return el.type==='checkbox'?(el.checked?'1':'0'):el.value.trim();}
 
 /* ============ helper: product / copy name input ============ */
-function productPicker(sel){
+function productPicker(sel,val){
   const names=[...new Set(db.products.map(p=>p.name))].filter(Boolean);
-  const html='<div class="f-label">产品名称 <span class="req">*</span></div><input class="f-input" name="'+sel+'" list="prodOpts-'+sel+'" placeholder="输入或选择已有产品" autocomplete="off"><datalist id="prodOpts-'+sel+'">'+names.map(n=>'<option value="'+n.replace(/"/g,'&quot;')+'">').join('')+'</datalist>';
+  const v=val?(' value="'+String(val).replace(/"/g,'&quot;')+'"'):'';
+  const html='<div class="f-label">产品名称 <span class="req">*</span></div><input class="f-input" name="'+sel+'" list="prodOpts-'+sel+'"'+v+' placeholder="输入或选择已有产品" autocomplete="off"><datalist id="prodOpts-'+sel+'">'+names.map(n=>'<option value="'+n.replace(/"/g,'&quot;')+'">').join('')+'</datalist>';
   return html;
 }
 function productOptions(name){
@@ -893,12 +1034,14 @@ function productOptions(name){
 /* 单条视频记录：出单数 / 是否出单（兼容旧数据：旧记录没有 orders 时按金额>0 视为出了1单） */
 function recOrders(r){return r.orders!=null?(Number(r.orders)||0):((r.price||0)>0?1:0);}
 function recSold(r){return recOrders(r)>0;}
+/* 出单口径：0 单的属于"视频发布记录"，不进出单管理/出单记录表 */
+function isOrderRec(r){return r.type==='product'&&recOrders(r)>0;}
 /* 一个产品的汇总统计 */
-function prodStats(pid,acctFilter='all'){
-  const recs=db.records.filter(r=>r.pid===pid&&acctMatch(acctOf(r),acctFilter));
-  let videos=recs.length, orders=0, revenue=0, soldVideos=0;
-  recs.forEach(r=>{const o=recOrders(r);orders+=o;revenue+=(r.price||0);if(o>0)soldVideos++;});
-  return {recs,videos,orders,revenue,soldVideos};
+function prodStats(pid,acctFilter='all',range='all'){
+  const recs=db.records.filter(r=>r.pid===pid&&acctMatch(acctOf(r),acctFilter)&&inRange(r.date,range));
+  let days=recs.length, orders=0, revenue=0, soldDays=0;
+  recs.forEach(r=>{const o=recOrders(r);orders+=o;revenue+=(r.price||0);if(o>0)soldDays++;});
+  return {recs,videos:days,orders,revenue,soldVideos:soldDays};
 }
 
 /* ============ ADD PRODUCT (记出单) ============ */
@@ -909,25 +1052,34 @@ function quickAdd(type){
   else if(type==='money')addMoneySheet();
   else if(type==='detail')addDetailSheet();
 }
-function addProductSheet(){
+function addProductSheet(rid){
+  const rec=rid?db.records.find(r=>r.id===rid):null;
+  const editing=!!rec;
+  const preName=rec?(db.products.find(p=>p.id===rec.pid)||{}).name:'';
+  const preDate=rec?rec.date:today();
+  const preOrders=rec?(rec.orders!=null?rec.orders:(rec.price>0?1:0)):0;
+  const prePrice=rec?(rec.price||''):'';
+  const preNote=rec?(rec.note||''):'';
+  const preAcct=rec?acctOf(rec):'big';
   openSheet(`
-  <div class="grip"></div><div class="sheet-head"><span class="tt">记一条带货视频</span><button class="close" onclick="closeSheet()">×</button></div>
+  <div class="grip"></div><div class="sheet-head"><span class="tt">${editing?'编辑出单':'记出单'}</span><button class="close" onclick="closeSheet()">×</button></div>
   <div class="sheet-body">
-    ${productPicker('p_name')}
-    <div class="f-label">日期 <span class="hint" style="font-weight:400">默认今天，回填可改</span></div>
-    <input class="f-input" name="p_date" type="date" value="${today()}">
-    <div class="f-label">这条视频出了几单？</div>
-    <input class="f-input" name="p_orders" type="number" inputmode="numeric" value="0" placeholder="填 0 表示这条没出单">
-    <div class="f-label">这条视频带货金额 ¥ <span class="hint" style="font-weight:400">没出单可不填</span></div>
-    <input class="f-input" name="p_price" type="number" inputmode="decimal" placeholder="如 49.9（手填这条视频的销售额）">
-    <p class="hint" style="margin:6px 0 4px">同产品自动汇总：发视频数=记的条数，出单数=上面的单数合计，销售额=金额合计。</p>
-    <div class="f-label">文案评分（可选，评了好文案才有记录）</div>
-    <div class="rate">
-      <div class="stars" id="pStars">${[1,2,3,4,5].map(i=>'<button class="star-btn" data-i="'+i+'" onclick="setStars(this,5,\'p\')">★</button>').join('')}</div>
-      <input type="hidden" id="pRate" value="0">
+    ${productPicker('p_name',preName)}
+    <div class="f-label">归属账号</div>
+    <div class="seg-2">
+      <button data-a="big" ${preAcct!=='small'?'class="on"':''} onclick="pickAcct(this,'p_acct')">大号</button>
+      <button data-a="small" ${preAcct==='small'?'class="on"':''} onclick="pickAcct(this,'p_acct')">小号</button>
     </div>
-    <div class="f-label">备注</div><textarea class="f-textarea" name="p_note" placeholder="如：换了个切入点拍的"></textarea>
-    <div class="btn-row"><button class="btn ghost" onclick="closeSheet()">取消</button><button class="btn primary" onclick="saveProduct()">保存</button></div>
+    <input type="hidden" name="p_acct" value="${preAcct}">
+    <div class="f-label">日期 <span class="hint" style="font-weight:400">默认今天，回填可改</span></div>
+    <input class="f-input" name="p_date" type="date" value="${preDate}">
+    <div class="f-label">该产品当天出单 <span class="hint" style="font-weight:400">单数</span></div>
+    <input class="f-input" name="p_orders" type="number" inputmode="numeric" value="${preOrders}" placeholder="填 0 表示当天没出单">
+    <div class="f-label">该产品当天卖了多少钱 ¥ <span class="hint" style="font-weight:400">选填，没出单可不填</span></div>
+    <input class="f-input" name="p_price" type="number" inputmode="decimal" value="${prePrice}" placeholder="如 49.9（填当天的总销售额）">
+    <p class="hint" style="margin:6px 0 4px">同产品自动汇总：记录数=记的次数，总单数=各次单数合计，总销售额=金额合计。</p>
+    <div class="f-label">备注</div><textarea class="f-textarea" name="p_note" placeholder="如：换了切入点拍的">${esc(preNote)}</textarea>
+    <div class="btn-row">${editing?`<button class="btn danger" onclick="delRec('${rid}')">删除</button>`:''}<button class="btn ghost" onclick="closeSheet()">取消</button><button class="btn primary" onclick="saveProduct('${rid||''}')">${editing?'保存修改':'保存'}</button></div>
   </div>`);
 }
 function pickStat(el,name){document.querySelectorAll('[data-r]').forEach(b=>b.classList.remove('on'));el.classList.add('on');document.querySelector('[name="'+name+'"]').value=el.dataset.r;
@@ -946,35 +1098,56 @@ function setStars(el,max,key){const wrap=el.parentNode;const val=parseInt(el.dat
   if(key==='c')curCopyRate=val;
 }
 let curCopyRate=0;
-function saveProduct(){
+function saveProduct(rid){
   const name=formVal('p_name');
   if(!name){toast('请填写产品名称');return;}
   const orders=Math.max(0,parseInt(formVal('p_orders'))||0);
   const price=parseFloat(formVal('p_price'))||0;
-  const rate=parseInt(document.getElementById('pRate').value)||0;
   const note=formVal('p_note');
   const dateVal=formVal('p_date')||today();
-  const todayS=today();
+  const acctVal=formVal('p_acct')||'big';
+  if(rid){
+    // 编辑模式：原地更新该记录，product.count 不动
+    const rec=db.records.find(r=>r.id===rid);
+    if(!rec){toast('记录不存在');closeSheet();return;}
+    const newProd=db.products.find(p=>p.name===name)||(()=>{const np={id:uid(),name,count:0,last:null,note:'',platform:'douyin'};db.products.push(np);return np;})();
+    rec.pid=newProd.id;
+    rec.acct=acctVal;
+    rec.date=dateVal;
+    rec.orders=orders;
+    rec.price=price;
+    rec.note=note;
+    newProd.last=dateVal>(newProd.last||'')?dateVal:(newProd.last||dateVal);
+    save();
+    toast(orders>0?('已更新：'+name+' · 出单'+orders+'单'):('已更新：'+name+' · 0单'));
+    closeSheet();
+    viewTab('product');
+    renderProducts('all');
+    return;
+  }
   // resolve product id：同产品名自动归并
   const ids=productOptions(name);
   let prod=ids.length?db.products.find(p=>p.id===ids[0]):null;
   if(!prod){prod={id:uid(),name,count:0,last:null,note:'',platform:'douyin'};db.products.push(prod);}
   prod.count=(prod.count||0)+1;
   prod.last=dateVal>(prod.last||'')?dateVal:(prod.last||dateVal);
-  const rec={id:uid(),pid:prod.id,date:dateVal,orders,price,note,type:'product'};
-  if(rate>0){rec.rate=rate;}
+  const rec={id:uid(),pid:prod.id,date:dateVal,orders,price,note,acct:acctVal,type:'product'};
   db.records.unshift(rec);
-  if(rate>0){
-    // try link to a copy of same name today
-    let c=db.copies.find(x=>x.name===name&&x.date===dateVal);
-    if(!c){c={id:uid(),name,date:dateVal,rate,note:''};db.copies.push(c);}
-    if(c.rate<rate){c.rate=rate;}
-  }
   save();
   toast(orders>0?('已记录：'+name+' · 出单'+orders+'单'):('已记录：'+name+' · 0单'));
   closeSheet();
   viewTab('product');
   renderProducts('all');
+}
+function delRec(rid){
+  if(!rid)return;
+  if(!confirm('删除这条出单记录？'))return;
+  db.records=db.records.filter(r=>r.id!==rid);
+  save();
+  closeSheet();
+  viewTab('product');
+  renderProducts('all');
+  toast('已删除');
 }
 function esc(s){return String(s==null?'':s).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;');}
 function initials(name){return name?String(name).slice(0,1):'?'}
@@ -984,49 +1157,28 @@ function hueOf(name){let s=0;for(const ch of String(name||''))s=(s+ch.charCodeAt
 /* ============ ADD COPY 文案 ============ */
 function addCopySheet(preName){
   openSheet(`
-  <div class="grip"></div><div class="sheet-head"><span class="tt">记录文案表现</span><button class="close" onclick="closeSheet()">×</button></div>
+  <div class="grip"></div><div class="sheet-head"><span class="tt">新增文案</span><button class="close" onclick="closeSheet()">×</button></div>
   <div class="sheet-body">
     <input type="hidden" name="c_name" value="${esc(preName||'')}">
     ${preName?`<div style="margin-bottom:12px;padding:10px 12px;background:var(--brand-soft);color:var(--brand);border-radius:10px;font-weight:600">${esc(preName)}</div>`:productPicker('c_name')}
-    <div class="f-label">这条文案出单表现 <span class="req">*</span></div>
-    <div class="rate"><div class="stars" id="cStars">${[1,2,3,4,5].map(i=>'<button class="star-btn" data-i="'+i+'" onclick="setStars(this,5,\'c\')">★</button>').join('')}</div><input type="hidden" id="cRate" value="0"></div>
-    <div class="quickrate">
-      <div class="qr" onclick="pickQuick(4)"><div class="qr-t" style="color:#0bb07b">爆单</div><div class="qr-d">出单很好</div></div>
-      <div class="qr" onclick="pickQuick(3)"><div class="qr-t" style="color:#3a7afe">不错</div><div class="qr-d">正常出单</div></div>
-      <div class="qr" onclick="pickQuick(2)"><div class="qr-t" style="color:#ff9500">一般</div><div class="qr-d">效果平平</div></div>
-      <div class="qr" onclick="pickQuick(1)"><div class="qr-t" style="color:#ff3d4a">很差</div><div class="qr-d">基本没出</div></div>
-    </div>
-    <div class="f-label">播放量 / 互动（可选）</div>
-    <div class="f-row"><input class="f-input" name="c_views" type="number" placeholder="播放量"><input class="f-input" name="c_likes" type="number" placeholder="点赞"></div>
-    <div class="f-label">文案正文 <span class="hint" style="font-weight:400">存可整段复制去发抖音的完整文案，也可从别处粘贴进来</span></div><textarea class="f-textarea" name="c_text" style="min-height:90px" placeholder="粘贴或输入完整文案…"></textarea>
-    <div class="f-label">话题 <span class="hint" style="font-weight:400">多个话题用空格或回车分隔，例如：维特健灵小紫条 仙女都在喝什么</span></div><input class="f-input" name="c_tags" placeholder="#话题1 #话题2 …">
+    <div class="f-label">文案正文 <span class="req">*</span></div>
+    <textarea class="f-textarea" name="c_text" style="min-height:130px" placeholder="粘贴或输入完整文案…"></textarea>
+    <p class="hint" style="margin:6px 0 0">保存后到对应产品的文案列表，可一键「复制文案 / 标记用过 / 标记爆单」。</p>
     <div class="btn-row"><button class="btn ghost" onclick="closeSheet()">取消</button><button class="btn primary" onclick="saveCopy()">保存</button></div>
   </div>`);
 }
-function pickQuick(v){
-  const wrap=document.getElementById('cStars');wrap.querySelectorAll('.star-btn').forEach(b=>b.classList.toggle('on',parseInt(b.dataset.i)<=v));
-  document.getElementById('cRate').value=v;curCopyRate=v;
-  document.querySelectorAll('.qr').forEach(q=>q.classList.remove('sel'));
-  const idx={4:0,3:1,2:2,1:3}[v];
-  document.querySelectorAll('.qr')[idx]?.classList.add('sel');
-}
 function saveCopy(){
   const name=formVal('c_name');
-  const rate=curCopyRate||parseInt(document.getElementById('cRate').value)||0;
-  if(!rate){toast('请选择表现评分');return;}
   const text=formVal('c_text');
   if(!text){toast('请填写文案正文');return;}
-  const finalName=name||(text?text.slice(0,8):'');
-  if(!finalName){toast('请填写产品或文案正文');return;}
-  const tags=parseTags(formVal('c_tags'));
-  db.copies.unshift({id:uid(),name:finalName,date:today(),rate,text,note:text,tags,views:parseInt(formVal('c_views'))||null,likes:parseInt(formVal('c_likes'))||null});
+  const finalName=name||text.slice(0,8);
+  db.copies.unshift({id:uid(),name:finalName,date:today(),rate:0,text,note:text,tags:[],views:null,likes:null});
   save();
-  if(!name){toast('已保存（产品名留空，已用文案前8字自动命名）');}
   closeSheet();
   const drill=document.getElementById('copyDrill');
   const inDrill=drill&&drill.style.display!=='none';
   if(inDrill&&copyListName&&db.copies.some(x=>x.name===copyListName)){renderCopies('all');enterCopyList(copyListName);}
-  else {viewTab('copy');renderCopies('all');toast(name?'文案已记录':'');}
+  else{viewTab('copy');renderCopies('all');toast('文案已保存');}
 }
 function parseTags(s){
   return String(s||'').split(/[\s,，;；\n\r\t]+/).map(x=>x.replace(/^#+/,'').trim()).filter(Boolean);
@@ -1093,11 +1245,6 @@ function doBulkImport(){
   else{viewTab('copy');renderCopies('all');}
   toast('已导入 '+n+' 条文案');
 }
-function clearAllCopies(){
-  if(!db.copies.length){toast('文案库已是空的');return;}
-  if(!confirm('确认清空全部 '+db.copies.length+' 条文案？此操作不可恢复。'))return;
-  db.copies=[];save();renderCopies('all');toast('已清空');
-}
 
 /* ============ ADD SAMPLE 样品排期 ============ */
 function addSampleSheet(){
@@ -1119,20 +1266,19 @@ function addSampleSheet(){
       <option value="done">已完成（已发布）</option>
     </select>
     <div id="s_hint" class="hint"></div>
-    <div class="f-label">计划拍摄日期</div><input class="f-input" name="s_shoot" type="date">
-    <div class="f-label">计划发布日期</div><input class="f-input" name="s_pub" type="date">
+    <div class="f-label">收货日期 <span class="hint" style="font-weight:400">收货后 20 天内完成（拍摄+发布），否则算逾期</span></div><input class="f-input" name="s_recv" type="date" value="${today()}">
     <div class="f-label">备注</div><textarea class="f-textarea" name="s_note" placeholder="品牌方、佣金比例、品类要求等"></textarea>
     <div class="btn-row"><button class="btn ghost" onclick="closeSheet()">取消</button><button class="btn primary" onclick="saveSample()">保存</button></div>
   </div>`);
 }
 function sampleStatusHint(v){
-  const map={inway:'到货后把状态改成“待拍摄”，并填拍摄日期',todo:'填上计划拍摄日期，避免拖单',shoot:'发布后记得记一笔带货收入',done:''};
+  const map={inway:'还没到货就先不填收货日期，到货后改为“待拍摄”并填收货日期',todo:'填上收货日期，20 天内拍完并发布，避免逾期',shoot:'发布后记得记一笔带货收入，并把状态改成“已完成”',done:''};
   document.getElementById('s_hint').textContent=map[v]||'';
 }
 function saveSample(){
   const name=formVal('s_name');
   if(!name){toast('请填写样品/产品名');return;}
-  const d={id:uid(),name,acct:formVal('s_acct')||'big',status:formVal('s_status')||'inway',shoot:formVal('s_shoot'),pub:formVal('s_pub'),note:formVal('s_note'),created:today()};
+  const d={id:uid(),name,acct:formVal('s_acct')||'big',status:formVal('s_status')||'inway',recv:formVal('s_recv'),shoot:'',pub:'',note:formVal('s_note'),created:today()};
   db.samples.unshift(d);
   save();toast('样品排期已添加');closeSheet();viewTab('sample');renderSamples('all');
 }
@@ -1144,15 +1290,10 @@ function addMoneySheet(){
   <div class="sheet-body">
     <div class="seg-2"><button class="on" data-t="in" onclick="pickType(this)">收入</button><button data-t="out" onclick="pickType(this)">支出</button></div>
     <input type="hidden" name="m_type" value="in">
-    <div class="f-label">归属账号</div>
-    <div class="seg-2">
-      <button class="on" data-a="big" onclick="pickAcct(this,'m_acct')">大号</button>
-      <button data-a="small" onclick="pickAcct(this,'m_acct')">小号</button>
-    </div>
-    <input type="hidden" name="m_acct" value="big">
-    <div class="f-label">金额 ¥ <span class="req">*</span></div><input class="f-input" name="m_amount" type="number" inputmode="decimal" placeholder="0.00">
+    <div class="f-label">金额 ¥ <span class="req">*</span></div><input class="f-input" name="m_amount" type="number" inputmode="decimal" placeholder="0.00" style="font-size:18px;font-weight:700">
     <div class="f-label">分类</div>
-    <select class="f-select" id="m_cat"><option value="commission">带货收入</option><option value="income_other">其他收入</option></select>
+    <div id="m_cat_grid" class="cat-grid"></div>
+    <input type="hidden" name="m_cat" value="">
     <div class="f-label">说明</div><input class="f-input" name="m_note" placeholder="如：xx产品 坑位费 / 买样品">
     <div class="f-label">日期</div><input class="f-input" name="m_date" type="date" value="${today()}">
     <div class="btn-row"><button class="btn ghost" onclick="closeSheet()">取消</button><button class="btn primary" onclick="saveMoney()">保存</button></div>
@@ -1161,40 +1302,74 @@ function addMoneySheet(){
 let curMoneyType='in';
 function pickAcct(el,name){el.parentNode.querySelectorAll('button').forEach(b=>b.classList.remove('on'));el.classList.add('on');document.querySelector('[name="'+name+'"]').value=el.dataset.a;}
 function pickType(el){curMoneyType=el.dataset.t;document.querySelectorAll('[data-t]').forEach(b=>b.classList.toggle('on',b===el));document.querySelector('[name="m_type"]').value=el.dataset.t;fillCat();}
+function catIconSvg(catKey){const k=CATS[catKey];if(!k)return '';return `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="${k.icon}"/></svg>`;}
+/* 记账分类分组（参考鲨鱼记账：日常开销 / 生意相关 / 收入来源） */
+const LED_GROUPS={
+  in:[{t:'收入来源',items:['commission','salary','bonus','parttime','invest','income_other']}],
+  out:[
+    {t:'日常开销',items:['food','transport','shopping','home','digital','clothes','beauty','fun','social','medical','edu','travel','pet','comm']},
+    {t:'生意相关',items:['sample','ad','material','expense_other']}
+  ]
+};
 function fillCat(){
-  const sel=document.getElementById('m_cat');if(!sel)return;
-  const inc=curMoneyType==='in'?['commission','income_other']:['sample','ad','material','expense_other'];
-  sel.innerHTML=inc.map(k=>'<option value="'+k+'">'+CATS[k].name+'</option>').join('');
+  const box=document.getElementById('m_cat_grid');if(!box)return;
+  const groups=LED_GROUPS[curMoneyType]||[];
+  const sel=document.querySelector('[name="m_cat"]');
+  const prev=sel?sel.value:'';
+  let html='';
+  groups.forEach(g=>{
+    html+=`<div class="cat-group-label">${g.t}</div><div class="cat-grid">`+
+      g.items.map(k=>{const meta=CATS[k];return `<div class="cat-cell" data-cat="${k}" onclick="pickCat(this,'${k}')"><div class="cat-ico" style="background:${meta.c}15;color:${meta.c}">${catIconSvg(k)}</div><div class="cat-nm">${meta.name}</div></div>`;}).join('')+
+      `</div>`;
+  });
+  box.innerHTML=html;
+  // 默认选第一个；之前选过且仍存在就保留
+  let target=null;
+  for(const g of groups){for(const k of g.items){if(k===prev){target=k;break;}}if(target)break;}
+  if(!target&&groups[0]&&groups[0].items[0])target=groups[0].items[0];
+  const cell=box.querySelector('[data-cat="'+target+'"]');
+  if(cell)pickCat(cell,target);
+}
+function pickCat(cell,k){
+  document.querySelectorAll('#m_cat_grid .cat-cell').forEach(b=>b.classList.toggle('on',b===cell));
+  document.querySelector('[name="m_cat"]').value=k;
 }
 function saveMoney(){
   const amount=parseFloat(formVal('m_amount'));
   if(!(amount>0)){toast('请填写金额');return;}
   const type=formVal('m_type');
-  db.records.push({id:uid(),type:type==='in'?'income':'expense',cat:formVal('m_cat')||'commission',amount,acct:formVal('m_acct')||'big',date:formVal('m_date')||today(),note:formVal('m_note')});
+  db.records.push({id:uid(),type:type==='in'?'income':'expense',cat:formVal('m_cat')||'commission',amount,date:formVal('m_date')||today(),note:formVal('m_note')});
   save();toast('已记账');closeSheet();viewTab('ledger');renderLedger();
 }
 
 /* ============ render products ============ */
 let prodAcct='all';
 let prodSort='last';
-function prodTotalOrders(pid){return db.records.filter(r=>r.pid===pid).reduce((s,r)=>s+recOrders(r),0);}
+let prodRange='all';
+function prodRecsFiltered(p){
+  return db.records.filter(r=>r.pid===p.id&&acctMatch(acctOf(r),prodAcct)&&inRange(r.date,prodRange));
+}
+function prodTotalOrders(pid){
+  return db.records.filter(r=>r.pid===pid&&acctMatch(acctOf(r),prodAcct)&&inRange(r.date,prodRange)).reduce((s,r)=>s+recOrders(r),0);
+}
 function renderProducts(){
-  const list=db.products.slice().sort((a,b)=>{
+  const all=db.products.slice();
+  const list=all.sort((a,b)=>{
     if(prodSort==='orders')return prodTotalOrders(b.id)-prodTotalOrders(a.id);
     return (b.last||'').localeCompare(a.last||'');
   });
   const el=document.getElementById('prodList');
-  if(!list.length){el.innerHTML=emptyHTML('还没有视频记录，点右下角 + 记一条带货视频');return;}
-  const filtered=list.filter(p=>{
-    if(prodAcct!=='all'){
-      const has=db.records.some(r=>r.pid===p.id&&acctMatch(acctOf(r),prodAcct));
-      if(!has)return false;
-    }
-    return true;
-  });
-  if(!filtered.length){el.innerHTML=emptyHTML('该账号下没有产品');return;}
+  const tip=document.getElementById('prodRangeTip');
+  if(!all.length){el.innerHTML=emptyHTML('还没有出单记录，点右下角 + 记出单');if(tip)tip.textContent='';return;}
+  // 只保留真正出过单的品（0 单的是视频发布记录，归"视频发布"视图）
+  const filtered=list.filter(p=>prodRecsFiltered(p).some(isOrderRec));
+  let totO=0,totR=0;
+  filtered.forEach(p=>{const st=prodStats(p.id,prodAcct,prodRange);totO+=st.orders;totR+=st.revenue;});
+  const acctTxt=prodAcct==='all'?'全部账号':ACCT_NAME[prodAcct];
+  if(tip)tip.textContent=RANGE_NAME[prodRange]+' · '+acctTxt+'：'+filtered.length+' 个品 · '+totO+' 单 · 卖 '+money(totR);
+  if(!filtered.length){el.innerHTML=emptyHTML(RANGE_NAME[prodRange]+'（'+acctTxt+'）没有出单记录');return;}
   el.innerHTML=filtered.map(p=>{
-    const st=prodStats(p.id,prodAcct);
+    const st=prodStats(p.id,prodAcct,prodRange);
     const recs=st.recs;
     const revenue=st.revenue;
     const good=recs.filter(r=>r.rate&&r.rate>=4).length;
@@ -1203,14 +1378,23 @@ function renderProducts(){
     const avg=avgRate(p.id,prodAcct);
     const copyCount=db.copies.filter(c=>c.name===p.name).length;
     const avgTxt=avg>0?avg.toFixed(1)+' 分':'未评';
+    // 账号维度拆分（仅在"全部账号"下展示）
+    let acctChips='';
+    if(prodAcct==='all'){
+      acctChips=['big','small'].map(a=>{
+        const s=prodStats(p.id,a,prodRange);
+        if(!s.recs.some(isOrderRec))return '';
+        return `<span class="chip" style="background:${a==='big'?'#fff3e0':'#e8f0ff'};color:${a==='big'?'var(--orange)':'var(--blue)'}">${ACCT_NAME[a]} 出 ${s.orders} 单</span>`;
+      }).join('');
+    }
     return `<div class="card" style="margin-bottom:10px"><div class="prod" onclick="openProduct('${String(p.id).replace(/'/g,"\\'")}')">
       <div class="thumb" style="background:${hueOf(p.name)}">${esc(initials(p.name))}</div>
       <div class="grow">
         <div class="prod-name">${esc(p.name)}</div>
         <div class="prod-meta">
-          <span class="chip hl">发 ${st.videos} 条视频</span>
           ${st.orders>0?`<span class="chip gr">出 ${st.orders} 单</span>`:`<span class="chip" style="background:#eee;color:#8a8f99">出 0 单</span>`}
           <span class="chip" style="background:#e8f0ff;color:#3a7afe">卖 ${money(revenue)}</span>
+          ${acctChips}
           ${avg>0?`<span class="chip ${avg>=3.5?'gr':avg>=2.5?'or':'bl'}">均分 ${avg.toFixed(1)}</span>`:''}
           ${good?`<span class="chip gr">好 ${good}</span>`:''}${mid?`<span class="chip or">中 ${mid}</span>`:''}${bad?`<span class="chip" style="background:#ffe3e3;color:#ff3d4a">差 ${bad}</span>`:''}
         </div>
@@ -1277,10 +1461,47 @@ function emptyHTML(msg){return '<div class="empty"><svg viewBox="0 0 24 24" stro
 
 /* ============ render samples ============ */
 let sampleFilter='all';
+/* ===== 逾期提醒 =====
+  样品记录收货日期 recv；收货后 RECV_GRACE(20) 天内须把状态改为已完成(done)。
+  完成期限 = recv+20；超过期限未完成 → 逾期天数=超出部分 */
+const RECV_GRACE=20;
+function addDays(dateStr,days){
+  if(!dateStr)return'';
+  const d=new Date(dateStr+'T00:00:00');
+  if(isNaN(d))return '';
+  d.setDate(d.getDate()+days);
+  return isoDate(d);
+}
+function recvLimit(s){return s&&s.recv?addDays(s.recv,RECV_GRACE):'';}
+function overdueDays(s){
+  if(!s||s.status==='done')return 0;
+  const lim=recvLimit(s);
+  if(!lim)return 0;
+  const d=Math.round((Date.parse(today())-Date.parse(lim))/86400000);
+  return d>0?d:0;
+}
+function overdueKind(s){return '完成期限';}
+function overdueDue(s){return recvLimit(s);}
+function renderHomeOverdue(){
+  const sec=document.getElementById('homeOverdueSec');
+  const box=document.getElementById('homeOverdue');
+  const cnt=document.getElementById('odCnt');
+  if(!sec)return;
+  const list=db.samples.filter(s=>overdueDays(s)>0).sort((a,b)=>overdueDays(b)-overdueDays(a)||String(a.name||'').localeCompare(String(b.name||''),'zh'));
+  // 有样品才展示该区；逾期 0 时显示空态并置灰
+  sec.style.display=db.samples.length?'':'none';
+  if(!db.samples.length)return;
+  if(cnt)cnt.textContent=list.length;
+  if(!list.length){
+    box.innerHTML='<div class="row" style="padding:16px;justify-content:center;gap:8px;color:var(--green);font-weight:600;font-size:13px"><svg viewBox="0 0 24 24" style="width:18px;height:18px;fill:none;stroke:currentColor;stroke-width:2.2;stroke-linecap:round;stroke-linejoin:round"><path d="M20 6L9 17l-5-5"/></svg>暂无逾期，收货后 20 天内记得完成</div>';
+    return;
+  }
+  box.innerHTML=list.map(s=>`<div class="row" style="cursor:pointer" onclick="openSample('${s.id}')"><div class="thumb" style="background:${hueOf(s.name)}">${esc(initials(s.name))}</div><div class="grow"><div class="t">${esc(s.name)}</div><div class="d">${ACCT_NAME[acctOf(s)]} · 收货 ${fmtDate(s.recv)} · 期限 ${fmtDate(recvLimit(s))}</div></div><span class="badge" style="background:#ff3d4a;color:#fff;flex-shrink:0">逾期 ${overdueDays(s)} 天</span></div>`).join('');
+}
 function renderSamples(f){sampleFilter=f||sampleFilter;
   const list=[...db.samples].filter(s=>acctMatch(acctOf(s),sampleAcct)).sort((a,b)=>{
     const rank={inway:0,todo:1,shoot:2,done:3};
-    const adate=(x)=>x.pub||x.shoot||x.created||'';
+    const adate=(x)=>x.recv||x.created||'';
     if(sampleFilter==='all')return (adate(b)).localeCompare(adate(a));
     return (rank[a.status]||9)-(rank[b.status]||9)||(adate(a)).localeCompare(adate(b));
   });
@@ -1296,7 +1517,7 @@ function renderSamples(f){sampleFilter=f||sampleFilter;
   };
   el.innerHTML=filtered.map(s=>{
     const m=statusMeta[s.status]||statusMeta.todo;
-    const overdueShoot=!s.shoot&&s.status==='todo';
+    const od=overdueDays(s);
     const acctTag=`<span class="chip" style="background:${s.acct==='small'?'#e8f0ff':'#fff3e0'};color:${s.acct==='small'?'var(--blue)':'var(--orange)'}">${ACCT_NAME[acctOf(s)]}</span>`;
     return `<div class="card" style="margin-bottom:10px"><div class="prod" onclick="openSample('${s.id}')">
       <div class="thumb" style="background:${hueOf(s.name)}">${esc(initials(s.name))}</div>
@@ -1304,8 +1525,9 @@ function renderSamples(f){sampleFilter=f||sampleFilter;
         <div class="prod-name" style="display:flex;align-items:center;gap:6px">${esc(s.name)}${acctTag}</div>
         <div class="prod-meta">
           <span class="badge" style="background:${m.bg};color:${m.c}">${m.t}</span>
-          ${s.shoot?`<span class="chip">拍 ${fmtDate(s.shoot)}</span>`:''}
-          ${s.pub?`<span class="chip" style="background:${m.bg}">发 ${fmtDate(s.pub)}</span>`:''}
+          ${od?`<span class="badge" style="background:#ff3d4a;color:#fff">逾期 ${od} 天</span>`:''}
+          ${s.recv?`<span class="chip">收货 ${fmtDate(s.recv)}</span>`:''}
+          ${recvLimit(s)?`<span class="chip" style="${od?'color:#ff3d4a;font-weight:700;':''}">期限 ${fmtDate(recvLimit(s))}</span>`:''}
         </div>
         ${s.note?`<div class="prod-info">${esc(s.note)}</div>`:''}
       </div>
@@ -1316,6 +1538,7 @@ function renderSamples(f){sampleFilter=f||sampleFilter;
 
 /* ============ render copies 文案 ============ */
 let copyFilter='all';
+let copySearch='';
 function copyProducts(){const set=new Set();db.copies.forEach(c=>{if(c.name)set.add(c.name);});return [...set].sort((a,b)=>a.localeCompare(b,'zh'));}
 function renderCopyPills(){
   const seg=document.getElementById('cpProdSeg');if(!seg)return;
@@ -1343,15 +1566,18 @@ function renderCopies(f){if(f)copyFilter=f||copyFilter;
   const byProd={};
   db.copies.forEach(c=>{
     const k=c.name||'未命名';
-    if(!byProd[k])byProd[k]={name:k,total:0,used:0,sold:0,hot:0,unused:0,latest:c.date||''};
+    if(!byProd[k])byProd[k]={name:k,total:0,used:0,hot:0,unused:0,latest:c.date||''};
     const g=byProd[k];
     g.total++;
     if(c.used)g.used++;else g.unused++;
-    if(c.sold)g.sold++;
     if(c.hot)g.hot++;
     if((c.date||'')>g.latest)g.latest=c.date;
   });
-  const prods=Object.values(byProd).sort((a,b)=>(b.latest||'').localeCompare(a.latest||''));
+  const q=copySearch.toLowerCase();
+  const prods=Object.values(byProd)
+    .filter(p=>!q||p.name.toLowerCase().includes(q))
+    .sort((a,b)=>(b.latest||'').localeCompare(a.latest||''));
+  if(!prods.length){el.innerHTML=q?emptyHTML('没有找到含「'+esc(copySearch)+'」的产品文案'):emptyHTML('还没有文案记录。点右下角 + 添加，或进入产品详情使用「批量导入」');return;}
   el.innerHTML=prods.map(p=>{
     return `<div class="prod-row" onclick="enterCopyList('${esc(p.name).replace(/'/g,"\\'")}')" style="background:#fff;border-radius:18px;border:1px solid #fbe5ef;padding:16px 18px;margin-bottom:12px;display:flex;align-items:center;gap:14px;cursor:pointer;box-shadow:0 2px 12px rgba(255,126,182,.05)">
       <div class="thumb" style="background:${hueOf(p.name)};width:46px;height:46px;border-radius:14px">${esc(initials(p.name))}</div>
@@ -1360,7 +1586,6 @@ function renderCopies(f){if(f)copyFilter=f||copyFilter;
         <div style="display:flex;gap:8px;flex-wrap:wrap;margin-top:6px;font-size:12px;color:var(--text2)">
           <span>共 ${p.total} 条</span>
           <span>${p.used} 已用过</span>
-          <span>${p.sold} 已出单</span>
           ${p.hot?`<span style="color:#ff3d4a;font-weight:600">${p.hot} 爆单</span>`:''}
         </div>
       </div>
@@ -1378,8 +1603,6 @@ function renderPcList(){
   const list=db.copies.filter(c=>c.name===name).sort((a,b)=>(b.date||'').localeCompare(a.date||''));
   const filtered=list.filter(c=>{
     if(pcState==='all')return true;
-    if(pcState==='sold')return !!c.sold;
-    if(pcState==='notsold')return !c.sold;
     if(pcState==='hot')return !!c.hot;
     if(pcState==='unused')return !c.used;
     return true;
@@ -1388,19 +1611,14 @@ function renderPcList(){
   if(!el)return;
   if(!filtered.length){el.innerHTML=emptyHTML('这个产品还没有文案');return;}
   el.innerHTML=filtered.map(c=>{
-    const rateC=c.rate>=4?'#0bb07b':c.rate===3?'#ff9500':'#ff3d4a';
-    const rateT=c.rate>=4?'爆单':c.rate===3?'一般':'差';
     const txt=copyTextOf(c);
     return `<div class="card-copy" onclick="enterCopyDetail('${c.id}')">
-      <div class="copy-body-text" style="margin-bottom:12px">${esc(txt)||'<span style="color:var(--text3)">（暂无正文）</span>'}</div>
-      <div style="display:flex;align-items:center;gap:6px;flex-wrap:wrap;margin-bottom:8px"><span class="badge" style="background:${rateC};color:#fff;font-size:11px">${rateT} ${'★'.repeat(c.rate||0)}</span>
-      ${c.date?`<span class="chip">${fmtYMD(c.date)}</span>`:''}${c.views?`<span class="chip">播放 ${c.views}</span>`:''}${c.likes?`<span class="chip">赞 ${c.likes}</span>`:''}</div>
+      <div class="copy-body-text" style="margin-bottom:10px">${esc(txt)||'<span style="color:var(--text3)">（暂无正文）</span>'}</div>
+      <div style="display:flex;align-items:center;gap:6px;flex-wrap:wrap;margin-bottom:8px">${c.date?`<span class="chip">${fmtYMD(c.date)}</span>`:''}</div>
       <div style="display:flex;gap:6px;flex-wrap:wrap;margin-bottom:8px">
         <span class="st-pill ${c.used?'st-on':''}" onclick="event.stopPropagation();toggleCopyFlagStay('${c.id}','used');renderPcList();return false">${c.used?'✓ 用过':'用过'}</span>
-        <span class="st-pill ${c.sold?'st-on':''}" onclick="event.stopPropagation();toggleCopyFlagStay('${c.id}','sold');renderPcList();return false">${c.sold?'✓ 出单':'出单'}</span>
         <span class="st-pill hot ${c.hot?'st-on':''}" onclick="event.stopPropagation();toggleCopyFlagStay('${c.id}','hot');renderPcList();return false">${c.hot?'🔥 爆单':'爆单'}</span>
       </div>
-      ${(c.tags&&c.tags.length)?`<div style="margin-bottom:10px;display:flex;flex-wrap:wrap;gap:4px">${c.tags.slice(0,5).map(t=>`<span class="tag-bubble" style="font-size:11px;padding:3px 9px" onclick="event.stopPropagation();copyText('#${esc(t)}');toast('已复制话题 #${esc(t)}')">#${esc(t)}</span>`).join('')}${c.tags.length>5?`<span class="chip">+${c.tags.length-5}</span>`:''}</div>`:''}
       <div style="display:flex;gap:8px;justify-content:flex-end"><button class="copy-mini" onclick="event.stopPropagation();copyOne('${c.id}')"><svg viewBox="0 0 24 24"><rect x="9" y="9" width="12" height="12" rx="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg>复制文案</button></div>
     </div>`;
   }).join('');
@@ -1414,8 +1632,6 @@ function enterCopyList(name){
   <button onclick="addCopySheet('${esc(name).replace(/'/g,"\\'")}')" style="border:none;background:var(--brand);color:#fff;border-radius:10px;font-size:12px;font-weight:700;padding:7px 12px;flex-shrink:0">+ 新文案</button></div>
   <div style="display:flex;gap:6px;align-items:center;margin-bottom:12px"><div class="seg" style="flex:1;flex-wrap:nowrap;overflow-x:auto" id="pcStateSeg">
     <button class="on" data-f="all">全部</button>
-    <button data-f="sold">出单</button>
-    <button data-f="notsold">未出单</button>
     <button data-f="hot">爆单</button>
     <button data-f="unused">未用过</button>
   </div></div>
@@ -1432,30 +1648,24 @@ function enterCopyList(name){
 function enterCopyDetail(id){
   const c=db.copies.find(x=>x.id===id);if(!c)return;
   copyListName=c.name;
-  const same=[...db.copies].filter(x=>x.name===c.name&&x.id!==id).sort((a,b)=>b.rate-a.rate);
+  const same=[...db.copies].filter(x=>x.name===c.name&&x.id!==id).sort((a,b)=>String(b.date||'').localeCompare(String(a.date||'')));
   document.getElementById('copyDrill').innerHTML=`
   <div class="drill-bar"><button class="drill-back" onclick="enterCopyList('${esc(c.name).replace(/'/g,"\\'")}')"><svg viewBox="0 0 24 24"><path d="M15 18l-6-6 6-6"/></svg></button><div class="drill-title">${esc(c.name)}</div></div>
-  <div style="display:flex;align-items:center;gap:8px;flex-wrap:wrap;margin-bottom:8px"><span class="badge" style="background:${c.rate>=4?'#0bb07b':c.rate===3?'#ff9500':'#ff3d4a'};color:#fff;font-size:11px">${c.rate>=4?'爆单':c.rate===3?'一般':'差'} · ${c.rate}星</span>
-  ${c.date?`<span class="chip">${fmtYMD(c.date)}</span>`:''}${c.views?`<span class="chip">播放 ${c.views}</span>`:''}${c.likes?`<span class="chip">赞 ${c.likes}</span>`:''}</div>
+  ${c.date?`<div style="display:flex;align-items:center;gap:8px;flex-wrap:wrap;margin-bottom:8px"><span class="chip">${fmtYMD(c.date)}</span></div>`:''}
   <div class="btn-row" style="margin-top:6px">
     <button class="btn primary" style="display:flex;align-items:center;justify-content:center;gap:6px;flex:1" onclick="copyOne('${c.id}')"><svg viewBox="0 0 24 24" style="width:16px;height:16px;fill:none;stroke:#fff;stroke-width:2;stroke-linecap:round;stroke-linejoin:round"><rect x="9" y="9" width="12" height="12" rx="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg>复制文案</button>
-    <button class="btn secondary" style="display:flex;align-items:center;justify-content:center;gap:6px;flex:1" onclick="copyTags('${c.id}')"><svg viewBox="0 0 24 24" style="width:16px;height:16px;fill:none;stroke:#fff;stroke-width:2;stroke-linecap:round;stroke-linejoin:round"><path d="M4 9h16M4 15h16M10 3L8 21M16 3l-2 18"/></svg>复制话题</button>
   </div>
   <div class="copy-body-text" id="cp_body_view" style="margin-top:14px">${esc(copyTextOf(c))}</div>
-  ${(c.tags&&c.tags.length)?`<div class="copy-tags-label"># 文案自带话题</div><div style="margin-top:4px;margin-bottom:8px">${c.tags.map(t=>`<span class="tag-bubble" onclick="copyText('#${esc(t)}');toast('已复制话题 #${esc(t)}')">#${esc(t)}</span>`).join('')}</div>`:''}
   <div class="copy-used-time">✓ 用过 · ${c.lastUsed ? fmtYMD(c.lastUsed) : (c.date ? (fmtYMD(c.date) + ' 录入') : '未用过')}</div>
   <div class="f-label" style="margin-top:10px;color:var(--text2)">文案正文</div>
   <textarea class="f-textarea" id="cp_body" style="min-height:120px;background:#fffafc;font-size:15px;line-height:1.6">${esc(copyTextOf(c))}</textarea>
-  <div class="f-label" style="margin-top:12px;color:var(--text2)">单独新增话题 <span class="hint" style="font-weight:400">用空格分隔</span></div>
-  <input class="f-input" id="cp_tags" value="${esc((c.tags||[]).map(t=>'#'+t).join(' '))}" style="background:#fffafc">
   <button class="btn ghost" style="margin-top:14px" onclick="updateCopyBody('${c.id}')">保存修改</button>
   <div class="copy-status-row">
     <span class="chip ${c.used?'on':''}" onclick="enterToggleCopyFlag('${c.id}','used')">✓ 用过</span>
-    <span class="chip ${c.sold?'on':''}" onclick="enterToggleCopyFlag('${c.id}','sold')">出单</span>
     <span class="chip hot ${c.hot?'on':''}" onclick="enterToggleCopyFlag('${c.id}','hot')">${c.hot?'🔥 ':''}爆单</span>
     <span class="chip" onclick="document.getElementById('cp_body').focus()">编辑</span>
   </div>
-  ${same.length?`<div class="f-label" style="margin-top:16px;color:var(--text2)">同产品的其他文案</div>${same.map(s=>`<div class="row" style="padding:8px 0"><div class="grow"><div class="d">${fmtYMD(s.date)}</div></div><span class="badge" style="background:${s.rate>=4?'#0bb07b':s.rate===3?'#ff9500':'#ff3d4a'};color:#fff;font-size:11px">${s.rate}星</span></div>`).join('')}`:''}
+  ${same.length?`<div class="f-label" style="margin-top:16px;color:var(--text2)">同产品的其他文案</div>${same.map(s=>`<div class="row" style="padding:8px 0;cursor:pointer" onclick="enterCopyDetail('${s.id}')"><div class="grow"><div class="d" style="white-space:nowrap;overflow:hidden;text-overflow:ellipsis">${copyTextOf(s).slice(0,40)||fmtYMD(s.date)}</div></div>${s.used?`<span class="chip gr">用过</span>`:''}${s.hot?`<span class="chip" style="background:#ffe3e3;color:#ff3d4a;font-weight:600">爆单</span>`:''}</div>`).join('')}`:''}
   <div class="btn-row" style="margin-top:18px"><button class="btn ghost" onclick="delCopy('${c.id}')" style="color:var(--brand);border-color:#ffcce0">删除</button><button class="btn ghost" onclick="addCopySheet()">再记一条</button></div>`;
   showCopyDrill();
 }
@@ -1471,50 +1681,140 @@ function enterToggleCopyFlag(id,flag){toggleCopyFlagStay(id,flag);const c=db.cop
 /* ============ render ledger ============ */
 let ledgerMonth=new Date();ledgerMonth.setDate(1);
 let ledgerAcct='all',sampleAcct='all';
+let ledTab='detail';
 function monthKey(d){return d.getFullYear()+'-'+String(d.getMonth()+1).padStart(2,'0');}
 function acctOf(r){return (r.acct)||'big';}
 function acctMatch(a,f){return f==='all'||a===f;}
 const ACCT_NAME={big:'大号',small:'小号'};
 function shiftMonth(n){ledgerMonth=new Date(ledgerMonth.getFullYear(),ledgerMonth.getMonth()+n,1);renderLedger();}
+/* 月份选择器：双栏年份/月份 */
+function openMonthPicker(){
+  const now=new Date();const curY=ledgerMonth.getFullYear();const curM=ledgerMonth.getMonth()+1;
+  const ys=[];for(let y=curY-3;y<=curY+1;y++)ys.push(y);
+  const ms=Array.from({length:12},(_,i)=>i+1);
+  let pickY=curY,pickM=curM;
+  openSheet(`
+  <div class="grip"></div><div class="sheet-head"><span class="tt">选择月份</span><button class="close" onclick="closeSheet()">×</button></div>
+  <div class="sheet-body">
+    <div class="month-pick">
+      <div class="mp-col">${ys.map(y=>`<div class="mp-cell ${y===pickY?'on':''}" data-y="${y}" onclick="mpSelY(${y})">${y}年</div>`).join('')}</div>
+      <div class="mp-col">${ms.map(m=>`<div class="mp-cell ${m===pickM?'on':''}" data-m="${m}" onclick="mpSelM(${m})">${String(m).padStart(2,'0')}月</div>`).join('')}</div>
+    </div>
+    <div class="btn-row" style="margin-top:14px"><button class="btn ghost" onclick="closeSheet()">取消</button><button class="btn primary" onclick="mpConfirm()">确定</button></div>
+  </div>`);
+  window._mpPick={set:(y,m)=>{pickY=y;pickM=m;}};
+}
+function mpSelY(y){const c=document.querySelector('.mp-col:first-child');c.querySelectorAll('.mp-cell').forEach(b=>b.classList.toggle('on',+b.dataset.y===y));window._mpPick.set(y,parseInt(c.nextElementSibling.querySelector('.mp-cell.on')?.dataset.m||1));}
+function mpSelM(m){const c=document.querySelector('.mp-col:nth-child(2)');c.querySelectorAll('.mp-cell').forEach(b=>b.classList.toggle('on',+b.dataset.m===m));window._mpPick.set(parseInt(c.previousElementSibling.querySelector('.mp-cell.on')?.dataset.y||new Date().getFullYear()),m);}
+function mpConfirm(){
+  const yCell=document.querySelector('.mp-col:first-child .mp-cell.on');
+  const mCell=document.querySelector('.mp-col:nth-child(2) .mp-cell.on');
+  const y=yCell?+yCell.dataset.y:new Date().getFullYear();
+  const m=mCell?+mCell.dataset.m:(new Date().getMonth()+1);
+  ledgerMonth=new Date(y,m-1,1);closeSheet();renderLedger();
+}
 function renderLedger(){
   const mk=monthKey(ledgerMonth);
-  const el=document.getElementById('ledgerList');
-  document.getElementById('ledgerMonth').textContent=ledgerMonth.getFullYear()+'年'+(ledgerMonth.getMonth()+1)+'月';
-  // 记账=钱包提现流水:只看 income/expense,不混入出单管理的产品rec
-  const allMonth=db.records.filter(r=>(r.date||'').startsWith(mk)&&acctMatch(acctOf(r),ledgerAcct));
-  const list=allMonth.filter(r=>r.type==='income'||r.type==='expense').sort((a,b)=>(b.date||'').localeCompare(a.date||''));
+  // 记账不分账号
+  const list=db.records.filter(r=>r.type==='income'||r.type==='expense').filter(r=>(r.date||'').startsWith(mk));
   let inc=0,exp=0;
-  allMonth.forEach(r=>{if(r.type==='income')inc+=r.amount||0;else if(r.type==='expense')exp+=r.amount||0;});
-  document.getElementById('lIncome').textContent=money(inc);
-  document.getElementById('lExpense').textContent=money(exp);
-  document.getElementById('lBalance').textContent=money(inc-exp);
-  if(!list.length){el.innerHTML=emptyHTML('还没有记账。从抖音钱包提现到银行卡后，在这里记一笔');return;}
-  // group by date
-  let curDate='',h='';
-  list.forEach(r=>{
-    if(r.date!==curDate){curDate=r.date;if(h)h+='</div>';h+='<div class="card" style="margin-bottom:10px"><div class="row" style="padding:8px 14px;border:none;font-size:12px;color:var(--text2);font-weight:600;background:#fafafa">'+fmtYMD(r.date)+'</div>';}
-    const isIn=r.type==='income';
-    const catName=CATS[r.cat]?CATS[r.cat].name:r.cat;
-    const catColor=CATS[r.cat]?CATS[r.cat].c:'#8a8f99';
-    const amt=r.amount||0;
-    const sign=isIn?'+':'-';
-    const acctTag=r.acct?`<span class="chip" style="background:${r.acct==='big'?'#fff3e0':'#e8f0ff'};color:${r.acct==='big'?'var(--orange)':'var(--blue)'}">${ACCT_NAME[acctOf(r)]}</span>`:'';
-    h+=`<div class="row"><div class="cat-ico" style="background:${catColor}">${esc(initials(catName))}</div><div class="grow"><div class="t" style="font-size:14px">${esc(r.note||catName)}</div><div class="d" style="display:flex;gap:4px;align-items:center">${catName}${acctTag}</div></div><div style="font-weight:800;font-size:15px;color:${isIn?'var(--green)':'var(--brand)'}">${sign}${money(amt).replace('¥','¥')}</div></div>`;
-  });
-  h+='</div>';
-  el.innerHTML=h;
+  list.forEach(r=>{if(r.type==='income')inc+=r.amount||0;else if(r.type==='expense')exp+=r.amount||0;});
+  const moEl=document.getElementById('ledgerMonth');
+  if(moEl)moEl.textContent=ledgerMonth.getFullYear()+'年'+(ledgerMonth.getMonth()+1)+'月 ▾';
+  const balEl=document.getElementById('ledHeroBal');
+  if(balEl)balEl.textContent=money(inc-exp);
+  const incEl=document.getElementById('ledHeroInc');if(incEl)incEl.textContent=money(inc);
+  const expEl=document.getElementById('ledHeroExp');if(expEl)expEl.textContent=money(exp);
+  const tabs=document.querySelectorAll('#ledTabs button');
+  tabs.forEach(b=>b.classList.toggle('on',b.dataset.t===ledTab));
+  const el=document.getElementById('ledgerList');
+  if(ledTab==='detail')renderLedgerDetail(list,el);
+  else if(ledTab==='rank')renderLedgerRank(list,el);
+  else renderLedgerChart(list,el);
 }
-function productName(pid){const p=db.products.find(x=>x.id===pid);return p?p.name:'';}
-
+/* 相对日期标签（鲨鱼记账风：今天/昨天/周X） */
+function relDayLabel(d){
+  if(!d)return'';
+  const y=new Date(d+'T00:00:00');
+  if(isNaN(y))return d;
+  const n=new Date(),nt=new Date(n.getFullYear(),n.getMonth(),n.getDate());
+  const diff=Math.round((nt-y)/86400000);
+  if(diff===0)return'今天';
+  if(diff===1)return'昨天';
+  if(diff===2)return'前天';
+  const wd=['日','一','二','三','四','五','六'][y.getDay()];
+  return (y.getMonth()+1)+'月'+y.getDate()+'日 周'+wd;
+}
+function renderLedgerDetail(list,el){
+  const sorted=list.slice().sort((a,b)=>(b.date||'').localeCompare(a.date||''));
+  if(!sorted.length){el.innerHTML=emptyHTML('还没有记账，点右下角 + 记一笔');return;}
+  const groups={};
+  sorted.forEach(r=>{(groups[r.date]=groups[r.date]||[]).push(r);});
+  let inc=0,exp=0;sorted.forEach(r=>{if(r.type==='income')inc+=r.amount||0;else exp+=r.amount||0;});
+  let h='';
+  Object.keys(groups).forEach(d=>{
+    const items=groups[d];let dInc=0,dExp=0;
+    items.forEach(r=>{if(r.type==='income')dInc+=r.amount||0;else dExp+=r.amount||0;});
+    const dn=(dExp>dInc)?('支出 '+money(dExp)):(dInc>0?('收入 '+money(dInc)):'结余 '+money(dInc-dExp));
+    h+=`<div class="date-h"><span>${relDayLabel(d)}</span><span>${dn}</span></div>`;
+    items.forEach(r=>{
+      const isIn=r.type==='income';
+      const cat=CATS[r.cat];const catN=cat?cat.name:r.cat;const catC=cat?cat.c:'#8a8f99';
+      const amt=r.amount||0;
+      h+=`<div class="ledger-row"><div class="cat-ico" style="background:${catC}">${catIconSvg(r.cat)}</div><div class="grow" style="min-width:0"><div class="r-date">${esc(r.date||'')}</div><div class="t" style="font-size:14px">${esc(r.note||catN)}</div><div class="d" style="color:var(--text3);font-size:11px">${esc(catN)}</div></div><div class="lr-amt ${isIn?'up':'dn'}">${isIn?'+':'-'}${money(amt).replace('¥','')}</div></div>`;
+    });
+  });
+  el.innerHTML=`<div class="ledger-list">${h}</div>`;
+}
+function renderLedgerRank(list,el){
+  const sorted=list.filter(r=>r.type==='expense').slice().sort((a,b)=>(b.date||'').localeCompare(a.date||''));
+  const totals={};sorted.forEach(r=>{totals[r.cat]=(totals[r.cat]||0)+(r.amount||0);});
+  const arr=Object.keys(totals).map(k=>({k,amt:totals[k]})).sort((a,b)=>b.amt-a.amt);
+  if(!arr.length){el.innerHTML=emptyHTML('本月没有支出记录');return;}
+  const total=arr.reduce((s,x)=>s+x.amt,0);
+  let h='';
+  arr.forEach(x=>{
+    const cat=CATS[x.k];const catN=cat?cat.name:x.k;const catC=cat?cat.c:'#8a8f99';
+    const pct=total?(x.amt/total*100):0;
+    h+=`<div class="ledger-rank"><div class="cat-ico" style="background:${catC}">${catIconSvg(x.k)}</div><div style="min-width:0;flex:1"><div style="display:flex;justify-content:space-between;font-size:13px;color:var(--text2)"><span>${esc(catN)} <span style="color:var(--text3);font-size:11px">${pct.toFixed(1)}%</span></span></div><div class="lr-bar" style="margin-top:6px"><i style="width:${pct}%;background:${catC}"></i></div></div><div class="lr-val">${money(x.amt).replace('¥','¥')}</div></div>`;
+  });
+  el.innerHTML=`<div class="led-rank-list"><div style="padding:12px 14px;display:flex;justify-content:space-between;align-items:center;font-size:13px;color:var(--text2);border-bottom:1px solid var(--line)">本月总支出 <span style="color:var(--brand);font-weight:800">${money(total).replace('¥','¥')}</span></div>${h}</div>`;
+}
+function renderLedgerChart(list,el){
+  const sorted=list.filter(r=>r.type==='expense').slice().sort((a,b)=>(a.date||'').localeCompare(b.date||''));
+  if(!sorted.length){el.innerHTML=emptyHTML('本月没有支出数据');return;}
+  // 按天汇总
+  const byDay={};sorted.forEach(r=>{byDay[r.date]=(byDay[r.date]||0)+(r.amount||0);});
+  const dates=Object.keys(byDay).sort();
+  const vals=dates.map(d=>byDay[d]);
+  const max=Math.max.apply(null,vals);
+  const W=600,H=120;
+  const stepX=dates.length>1?W/(dates.length-1):W;
+  const pts=vals.map((v,i)=>`${i*stepX},${H-(v/max)*H}`).join(' ');
+  const total=vals.reduce((a,b)=>a+b,0);
+  const avg=total/vals.length;
+  const dots=vals.map((v,i)=>`<circle cx="${i*stepX}" cy="${H-(v/max)*H}" r="4" fill="#ff7eb6"/>`).join('');
+  const labels=dates.map((d,i)=>`<text x="${i*stepX}" y="${H+12}" text-anchor="middle" font-size="11" fill="#8a8f99">${d.slice(5)}</text>`).join('');
+  el.innerHTML=`<div class="ledger-chart"><div class="stat"><span>本月支出</span><span style="color:var(--brand);font-weight:800">${money(total).replace('¥','¥')}</span></div><div class="stat"><span>日均</span><span style="color:var(--text);font-weight:700">${money(avg).replace('¥','¥')}</span></div><svg viewBox="0 0 ${W} ${H+18}" preserveAspectRatio="none"><polyline fill="none" stroke="#ff7eb6" stroke-width="2" points="${pts}"/>${dots}${labels}</svg></div>`;
+}
 /* ============ render home ============ */
+/* 从总览今日发视频卡快捷跳转出单管理并预选今天 */
+function quickGoToday(){
+  prodRange='today';prodAcct='all';prodMonth='';prodSort='last';
+  const m=document.getElementById('prodMonth');if(m)m.value='';
+  document.querySelectorAll('#prodAcctSeg .f-pill').forEach(b=>b.classList.toggle('on',b.dataset.a==='all'));
+  document.querySelectorAll('#prodRangeSeg .f-pill').forEach(b=>b.classList.toggle('on',b.dataset.r==='today'));
+  document.querySelectorAll('#prodSortSeg .f-pill').forEach(b=>b.classList.toggle('on',b.dataset.s==='last'));
+  viewTab('product');renderProducts();
+}
 function renderHome(){
   // totals
-  const prodRecs=db.records.filter(r=>r.type==='product');
-  const totVideos=prodRecs.length;
-  let totOrders=0;prodRecs.forEach(r=>totOrders+=recOrders(r));
-  document.getElementById('hTotalProd').innerHTML=totVideos+' <small>条</small>';
-  const prodCount=db.products.length;
-  document.getElementById('hProdSub').textContent='出单 '+totOrders+' 单 · '+prodCount+' 个产品';
+  const td=today();
+  const tdRecs=db.records.filter(r=>r.type==='product'&&r.date===td);
+  document.getElementById('hTotalProd').innerHTML=tdRecs.length+' <small>条</small>';
+  const tdOrders=tdRecs.reduce((s,r)=>s+recOrders(r),0);
+  const tdProdCount=new Set(tdRecs.map(r=>r.pid)).size;
+  document.getElementById('hProdSub').textContent='出单 '+tdOrders+' 单 · '+tdProdCount+' 个产品';
   // month income
   const mk=monthKey(new Date());
   let inc=0,exp=0;
@@ -1524,13 +1824,25 @@ function renderHome(){
   // waiting
   const waiting=db.samples.filter(s=>s.status==='inway'||s.status==='todo');
   document.getElementById('hWaiting').textContent=waiting.length;
-  // best copy
-  const best=[...db.copies].sort((a,b)=>(b.rate||0)-(a.rate||0))[0];
-  document.getElementById('hBestCopy').textContent=best?(best.rate>=4?esc(best.name):(best.name?esc(best.name):'-')):'-';
-  document.getElementById('hBestSub').textContent=best&&best.rate?'评分 '+best.rate+' 星':'还没有文案评分';
-  // schedule upcoming
+  // 逾期提醒
+  renderHomeOverdue();
+  // 出单统计（累计）：大号/小号/共
+  let allBig=0,allSmall=0;
+  db.records.forEach(r=>{
+    if(r.type==='product'){
+      const o=recOrders(r);
+      if(acctOf(r)==='big')allBig+=o;else if(acctOf(r)==='small')allSmall+=o;
+    }
+  });
+  const abEl=document.getElementById('hOrdAllBig');
+  const asEl=document.getElementById('hOrdAllSmall');
+  const atEl=document.getElementById('hOrdAllTot');
+  if(abEl)abEl.textContent=allBig;
+  if(asEl)asEl.textContent=allSmall;
+  if(atEl)atEl.textContent=allBig+allSmall;
+  // schedule upcoming（按完成期限=收货+20天 排序）
   const sched=[...db.samples].filter(s=>s.status!=='done')
-    .map(s=>({s,d:(s.pub||s.shoot||s.created||'')}))
+    .map(s=>({s,d:(recvLimit(s)||s.recv||s.created||'')}))
     .filter(x=>x.d)
     .sort((a,b)=>a.d.localeCompare(b.d)).slice(0,3);
   const sh=document.getElementById('homeSchedule');
@@ -1538,55 +1850,48 @@ function renderHome(){
   else if(!sched.length){sh.innerHTML=emptyHTML('排期样品均已完成');}
   else{
     const statusMeta={inway:{t:'在途',c:'var(--orange)'},todo:{t:'待拍摄',c:'var(--blue)'},shoot:{t:'待发布',c:'var(--brand)'},done:{t:'完成',c:'var(--green)'}};
-    sh.innerHTML=sched.map(x=>{const m=statusMeta[x.s.status];const dateT=x.s.pub?'发布':(x.s.shoot?'拍摄':'创建');
+    sh.innerHTML=sched.map(x=>{const m=statusMeta[x.s.status];const dateT=x.s.recv?'完成期限':'创建';
       return `<div class="row" onclick="openSample('${x.s.id}')"><div class="thumb" style="background:${hueOf(x.s.name)}">${esc(initials(x.s.name))}</div><div class="grow"><div class="t">${esc(x.s.name)}</div><div class="d">${dateT}：${fmtDate(x.d)} · ${ACCT_NAME[acctOf(x.s)]}</div></div><span class="badge" style="background:${m.c};color:#fff">${m.t}</span></div>`;}).join('');
   }
-  // recent products
-  const rec=[...db.records].sort((a,b)=>(b.date||'').localeCompare(a.date||'')).slice(0,4);
+  // recent products（0 单的视频发布记录不进"最近出单"）
+  const rec=[...db.records].filter(r=>r.type!=='product'||recOrders(r)>0).sort((a,b)=>(b.date||'').localeCompare(a.date||'')).slice(0,4);
   const rh=document.getElementById('homeRecent');
   if(!rec.length){rh.innerHTML=emptyHTML('最近还没有出单');}
   else{rh.innerHTML=rec.map(r=>{
     const p=db.products.find(x=>x.id===r.pid);
     const nm=r.type==='product'?(p?p.name:'出单'):(r.note||CATS[r.cat]?.name||'记账');
     const isProd=r.type==='product';
-    return `<div class="row" ${isProd?`onclick="openProduct('${String(r.pid).replace(/'/g,"\\'")}')"`:'style=cursor:default'}><div class="thumb" style="background:${isProd?hueOf(nm):(CATS[r.cat]?CATS[r.cat].c:'#8a8f99')}">${esc(initials(isProd?nm:(CATS[r.cat]?CATS[r.cat].name:'账')))}</div><div class="grow"><div class="t">${esc(nm)}</div><div class="d">${fmtYMD(r.date)}${isProd&&r.rate?' · '+r.rate+' 星':''}</div></div></div>`;}).join('');
+    const aTag=isProd?`<span class="badge" style="background:${acctOf(r)==='big'?'var(--orange)':'var(--blue)'};color:#fff">${ACCT_NAME[acctOf(r)]}</span>`:'';
+    return `<div class="row" ${isProd?`onclick="openProduct('${String(r.pid).replace(/'/g,"\\'")}')"`:'style=cursor:default'}><div class="thumb" style="background:${isProd?hueOf(nm):(CATS[r.cat]?CATS[r.cat].c:'#8a8f99')}">${esc(initials(isProd?nm:(CATS[r.cat]?CATS[r.cat].name:'账')))}</div><div class="grow"><div class="t">${esc(nm)}</div><div class="d">${fmtYMD(r.date)}${isProd&&r.rate?' · '+r.rate+' 星':''}${isProd&&recOrders(r)>0?' · 出 '+recOrders(r)+' 单':''}</div></div>${aTag}</div>`;}).join('');
   }
 }
 
-/* 总览首页"最佳文案"卡点击：进入文案库对应产品的文案列表 */
-function enterBestCopy(){
-  const best=[...db.copies].sort((a,b)=>(b.rate||0)-(a.rate||0))[0];
-  if(!best||!best.name){viewTab('copy');return;}
-  viewTab('copy');
-  showCopyHome();
-  enterCopyList(best.name);
-}
 
 /* ============ details open ============ */
 function openProduct(pid){
   const p=db.products.find(x=>x.id===pid);if(!p)return;
   const st=prodStats(pid);
-  const recs=st.recs;
+  const recs=st.recs.filter(isOrderRec);
   const hasDetail=recs.some(r=>r.note);
   openSheet(`
   <div class="grip"></div><div class="sheet-head"><span class="tt">${esc(p.name)}</span><button class="close" onclick="closeSheet()">×</button></div>
   <div class="sheet-body">
-    <div class="stat-grid" style="grid-template-columns:repeat(3,1fr)">
-      <div class="stat-card" style="padding:10px"><div class="lab">发视频</div><div class="num" style="font-size:22px">${st.videos}<small> 条</small></div></div>
-      <div class="stat-card" style="padding:10px"><div class="lab">出单</div><div class="num" style="font-size:22px;color:var(--green)">${st.orders}<small> 单</small></div></div>
-      <div class="stat-card" style="padding:10px"><div class="lab">销售额</div><div class="num" style="font-size:22px">${money(st.revenue)}</div></div>
+    <div class="stat-grid" style="grid-template-columns:repeat(2,1fr)">
+      <div class="stat-card" style="padding:10px"><div class="lab">累计出单</div><div class="num" style="font-size:22px;color:var(--green)">${st.orders}<small> 单</small></div></div>
+      <div class="stat-card" style="padding:10px"><div class="lab">累计销售额</div><div class="num" style="font-size:22px">${money(st.revenue)}</div></div>
     </div>
-    ${st.soldVideos?`<div class="hint" style="margin-top:6px">其中 ${st.soldVideos} 条视频出过单</div>`:''}
-    <div class="f-label" style="margin-top:14px">视频记录（${recs.length} 条）</div>
-    ${recs.length?recs.map(r=>`<div style="display:flex;align-items:center;gap:10px;padding:9px 0;border-bottom:1px solid var(--line)">
+    <div class="f-label" style="margin-top:14px">出单记录（${recs.length} 条）</div>
+    ${recs.length?recs.map(r=>`<div style="display:flex;align-items:center;gap:10px;padding:9px 0;border-bottom:1px solid var(--line);cursor:pointer" onclick="addProductSheet('${r.id}')">
       <div style="font-size:12px;color:var(--text2);width:64px;flex-shrink:0">${fmtDate(r.date)}</div>
+      <span class="badge" style="background:${acctOf(r)==='big'?'var(--orange)':'var(--blue)'};color:#fff;flex-shrink:0">${ACCT_NAME[acctOf(r)]}</span>
       <div style="flex:1;font-size:13px;color:var(--text2);overflow:hidden;text-overflow:ellipsis;white-space:nowrap">${r.note||'—'}</div>
       ${r.rate?`<span style="color:#ff9500;font-size:12px;flex-shrink:0">${'★'.repeat(r.rate)}</span>`:''}
       ${recOrders(r)>0?`<span class="chip gr" style="flex-shrink:0">出 ${recOrders(r)} 单</span>`:`<span class="chip" style="background:#eee;color:#8a8f99;flex-shrink:0">0 单</span>`}
-    </div>`).join(''):'<div class="hint">还没有视频记录，点下面“记一条视频”</div>'}
+      <span style="color:var(--text3);font-size:14px;flex-shrink:0">›</span>
+    </div>`).join(''):'<div class="hint">还没有出单记录，点下面"记出单"</div>'}
     <div class="btn-row">
       <button class="btn danger" onclick="delProduct('${pid}')">删除产品</button>
-      <button class="btn ghost" onclick="quickAdd('product')">记一条视频</button>
+      <button class="btn ghost" onclick="quickAdd('product')">记出单</button>
     </div>
   </div>`);
 }
@@ -1595,9 +1900,7 @@ function delCopy(id){if(!confirm('删除该文案记录？'))return;const nm=(db
   if(nm){if(db.copies.some(x=>x.name===nm)){enterCopyList(nm);}else{showCopyHome();}}}
 function updateCopyBody(id){const c=db.copies.find(x=>x.id===id);if(!c)return;
   const el=document.getElementById('cp_body');if(!el)return;
-  const tg=document.getElementById('cp_tags');
   c.text=el.value;c.note=c.text;
-  if(tg)c.tags=parseTags(tg.value);
   save();toast('文案已保存');
 }
 function openSample(id){const s=db.samples.find(x=>x.id===id);if(!s)return;
@@ -1619,8 +1922,7 @@ function openSample(id){const s=db.samples.find(x=>x.id===id);if(!s)return;
       <option value="shoot" ${s.status==='shoot'?'selected':''}>已拍摄，待发布</option>
       <option value="done" ${s.status==='done'?'selected':''}>已完成（已发布）</option>
     </select>
-    <div class="f-label">拍摄日期</div><input class="f-input" name="ss_shoot" type="date" value="${s.shoot||''}">
-    <div class="f-label">发布日期</div><input class="f-input" name="ss_pub" type="date" value="${s.pub||''}">
+    <div class="f-label">收货日期 <span class="hint" style="font-weight:400">收货后 20 天内需完成</span></div><input class="f-input" name="ss_recv" type="date" value="${s.recv||''}">
     <div class="f-label">备注</div><textarea class="f-textarea" name="ss_note">${esc(s.note||'')}</textarea>
     <div class="btn-row"><button class="btn ghost" onclick="delSample('${id}')">删除</button><button class="btn primary" onclick="updateSample('${id}')">保存更改</button></div>
   </div>`);
@@ -1628,8 +1930,7 @@ function openSample(id){const s=db.samples.find(x=>x.id===id);if(!s)return;
 function updateSample(id){const s=db.samples.find(x=>x.id===id);if(!s)return;
   s.acct=document.querySelector('[name="ss_acct"]').value||'big';
   s.status=document.querySelector('[name="ss_status"]').value;
-  s.shoot=document.querySelector('[name="ss_shoot"]').value;
-  s.pub=document.querySelector('[name="ss_pub"]').value;
+  s.recv=document.querySelector('[name="ss_recv"]').value;
   s.note=document.querySelector('[name="ss_note"]').value;
   save();closeSheet();viewTab('sample');renderSamples('all');toast('已更新');
 }
@@ -1637,17 +1938,43 @@ function delSample(id){if(!confirm('删除该样品排期？'))return;db.samples
 
 /* ============ seg buttons ============ */
 document.addEventListener('click',e=>{
-  const seg=e.target.closest('.seg button');
-  if(seg){seg.parentNode.querySelectorAll('button').forEach(b=>b.classList.remove('on'));seg.classList.add('on');
-    const parent=seg.closest('.seg');
-    if(parent.id==='prodAcctSeg'){prodAcct=seg.dataset.a;renderProducts();}
-    else if(parent.id==='prodSortSeg'){prodSort=seg.dataset.s;renderProducts();}
-    else if(parent.id==='sampleSeg')renderSamples(seg.dataset.f);
-    else if(parent.id==='copySeg')renderCopies(seg.dataset.f);
-    else if(parent.id==='sampleAcctSeg'){sampleAcct=seg.dataset.a;renderSamples();}
-    else if(parent.id==='ledgerAcctSeg'){ledgerAcct=seg.dataset.a;renderLedger();}
-    else if(parent.id==='publishAcctSeg'){publishAcct=seg.dataset.a;renderPublish();}
+  const btn=e.target.closest('.seg button, .f-pill, .led-tabs button, .mp-cell');
+  if(!btn)return;
+  // 月份输入框点击不参与切换
+  if(btn.id==='prodMonth')return;
+  // mp-cell 由 openMonthPicker 内的 mpSelY/mpSelM 直接处理，不走 .on 切换
+  if(btn.classList.contains('mp-cell'))return;
+  btn.parentNode.querySelectorAll('button').forEach(b=>b.classList.remove('on'));
+  btn.classList.add('on');
+  const parent=btn.closest('.seg, .fb-seg, .led-tabs');
+  if(!parent)return;
+  if(parent.id==='prodAcctSeg'){prodAcct=btn.dataset.a;renderProducts();}
+  else if(parent.id==='prodRangeSeg'){
+    prodRange=btn.dataset.r;
+    if(prodRange!=='custom'){
+      prodMonth='';
+      const m=document.getElementById('prodMonth');if(m)m.value='';
+    }
+    renderProducts();
   }
+  else if(parent.id==='prodSortSeg'){prodSort=btn.dataset.s;renderProducts();}
+  else if(parent.id==='sampleSeg')renderSamples(btn.dataset.f);
+  else if(parent.id==='copySeg')renderCopies(btn.dataset.f);
+  else if(parent.id==='sampleAcctSeg'){sampleAcct=btn.dataset.a;renderSamples();}
+  else if(parent.id==='publishAcctSeg'){publishAcct=btn.dataset.a;renderPublish();}
+  else if(parent.id==='ledTabs'){ledTab=btn.dataset.t;renderLedger();}
+});
+/* 指定月份：选了之后视作自定义范围 */
+document.getElementById('prodMonth')?.addEventListener('change',e=>{
+  prodMonth=e.target.value;
+  if(prodMonth){
+    prodRange='custom';
+    document.querySelectorAll('#prodRangeSeg .f-pill').forEach(b=>b.classList.remove('on'));
+  }else if(prodRange==='custom'){
+    prodRange='all';
+    const a=document.querySelector('#prodRangeSeg .f-pill[data-r="all"]');if(a)a.classList.add('on');
+  }
+  renderProducts();
 });
 
 /* ============ master render ============ */
@@ -1661,10 +1988,10 @@ function renderAll(){renderHome();renderProducts();renderSamples();renderCopies(
 
 /* filter listeners already via delegation */
 /* init */
-document.addEventListener('DOMContentLoaded',()=>{load();renderAll();setCloudUI();cloudMaybeRecover();});
-window.addEventListener('load',()=>{load();renderAll();setCloudUI();});
+document.addEventListener('DOMContentLoaded',()=>{load();renderAll();setCloudUI();cloudMaybeRecover();notifyUpdated();});
+window.addEventListener('load',()=>{load();renderAll();setCloudUI();notifyUpdated();});
 /* also run immediately if not DOMContentLoaded yet */
-if(document.readyState!=='loading'){load();renderAll();setCloudUI();cloudMaybeRecover();}
+if(document.readyState!=='loading'){load();renderAll();setCloudUI();cloudMaybeRecover();notifyUpdated();}
 </script>
 </body>
 </html>
