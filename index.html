@@ -524,7 +524,7 @@ body{
 /* ============ 应用版本 / 检查更新 ============
    发布新版时把 APP_VER 递增，并同步把同目录 ver.json 的 latest 改成相同值。
    checkUpdate() 拉同域 ver.json 对比：有新版立刻强刷加载新版。 */
-var APP_VER=48;
+var APP_VER=49;
 /* 检查是否有新版（手动触发）— 无确认弹窗，点「更新」直接拉新版 */
 function checkUpdate(){
   const now=Date.now();
@@ -1292,12 +1292,13 @@ function addMoneySheet(){
     <input type="hidden" name="m_type" value="in">
     <div class="f-label">金额 ¥ <span class="req">*</span></div><input class="f-input" name="m_amount" type="number" inputmode="decimal" placeholder="0.00" style="font-size:18px;font-weight:700">
     <div class="f-label">分类</div>
-    <div id="m_cat_grid" class="cat-grid"></div>
+    <div id="m_cat_grid"></div>
     <input type="hidden" name="m_cat" value="">
     <div class="f-label">说明</div><input class="f-input" name="m_note" placeholder="如：xx产品 坑位费 / 买样品">
     <div class="f-label">日期</div><input class="f-input" name="m_date" type="date" value="${today()}">
     <div class="btn-row"><button class="btn ghost" onclick="closeSheet()">取消</button><button class="btn primary" onclick="saveMoney()">保存</button></div>
   </div>`);
+  fillCat();
 }
 let curMoneyType='in';
 function pickAcct(el,name){el.parentNode.querySelectorAll('button').forEach(b=>b.classList.remove('on'));el.classList.add('on');document.querySelector('[name="'+name+'"]').value=el.dataset.a;}

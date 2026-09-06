@@ -1,4 +1,4 @@
 {
-  "latest": 48,
-  "note": "记账页配色统一到主题粉色系：hero 黄→粉渐变、进度条橙→粉、图表橙→粉、收入浅绿/支出白统一"
+  "latest": 49,
+  "note": "修记账记一笔弹窗：去掉外层 cat-grid 类让分组标题不再被挤成竖排；addMoneySheet 末尾调 fillCat 让默认 tab 也有分类"
 }
