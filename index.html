@@ -196,6 +196,8 @@ body{
 /* form */
 .f-label{font-size:13px;color:var(--text2);margin:12px 0 6px;font-weight:500}
 .f-label:first-child{margin-top:2px}
+.locked-field{display:flex;align-items:center;justify-content:space-between;gap:8px;width:100%;border:1px solid var(--line);background:#f6f7f9;border-radius:10px;padding:11px 12px;font-size:15px;font-weight:600;color:var(--text);font-family:inherit}
+.lock-tag{flex-shrink:0;border:none;background:var(--brand-soft);color:var(--brand);font-size:11px;font-weight:700;padding:3px 9px;border-radius:999px;cursor:default}
 .f-input,.f-textarea,.f-select{
   width:100%;border:1px solid var(--line);background:var(--bg);border-radius:10px;
   padding:11px 12px;font-size:15px;font-family:inherit;color:var(--text);outline:none;
@@ -258,8 +260,8 @@ body{
 .prod-new-meta{font-size:12px;color:var(--text2);margin-top:4px;display:flex;gap:5px;align-items:center}
 .prod-new-tags{display:flex;gap:6px;flex-wrap:wrap;margin-top:6px}
 .prod-new-tag{font-size:11px;font-weight:600;padding:3px 9px;border-radius:10px;background:#fff3e0;color:var(--orange)}
-.prod-new-count{flex-shrink:0;text-align:center;margin-right:4px;display:flex;flex-direction:column;align-items:center;justify-content:center;min-width:36px}
-.prod-new-count .num{font-size:26px;font-weight:800;color:var(--brand);line-height:1}
+.prod-new-count{flex-shrink:0;text-align:center;margin-right:4px;display:flex;flex-direction:row;align-items:baseline;justify-content:center;min-width:36px;gap:2px;white-space:nowrap}
+.prod-new-count .num{font-size:20px;font-weight:800;color:var(--brand);line-height:1}
 .prod-new-count .unit{font-size:12px;color:var(--text2);font-weight:600}
 /* 出单记录行（截图风格） */
 .order-row{display:flex;align-items:center;gap:10px;padding:11px 0;border-bottom:1px solid var(--line);cursor:pointer}
@@ -272,7 +274,7 @@ body{
 .order-del svg{width:16px;height:16px;fill:none;stroke:currentColor;stroke-width:2;stroke-linecap:round;stroke-linejoin:round}
 .arrow{color:var(--text3);flex-shrink:0;display:flex;align-items:center}
 .arrow svg{width:18px;height:18px;fill:none;stroke:currentColor;stroke-width:2;stroke-linecap:round;stroke-linejoin:round}
-.sample-edit{flex-shrink:0;border:1px solid var(--line);background:#fff;border-radius:10px;padding:6px 12px;font-size:13px;font-weight:600;color:var(--text);cursor:pointer;font-family:inherit}
+.sample-edit{flex-shrink:0;border:1px solid var(--brand-soft);background:var(--brand-soft);border-radius:10px;padding:6px 12px;font-size:13px;font-weight:600;color:var(--brand);cursor:pointer;font-family:inherit}
 .sample-edit:active{background:var(--bg)}
 .copy-mini{flex-shrink:0;display:flex;align-items:center;gap:4px;border:none;background:#fff0f6;color:#ff7eb6;font-size:12px;font-weight:700;font-family:inherit;padding:8px 12px;border-radius:10px;cursor:pointer;border:1px solid #ffcce0}
 .copy-mini:active{filter:brightness(.95)}
@@ -529,6 +531,23 @@ body{
         <button data-a="big">大号</button>
         <button data-a="small">小号</button>
       </div>
+      <div class="filter filter-lock">
+        <div class="filter-scroll-in">
+          <span class="fb-seg" id="pubRangeSeg">
+            <button class="f-pill on" data-r="all">全部</button>
+            <button class="f-pill" data-r="today">今天</button>
+            <button class="f-pill" data-r="yest">昨天</button>
+            <button class="f-pill" data-r="week">本周</button>
+            <button class="f-pill" data-r="month">本月</button>
+            <button class="f-pill" data-r="lastmonth">上月</button>
+          </span>
+        </div>
+        <span class="fb-sep"></span>
+        <span class="filter-month-lock">
+          <input type="month" class="f-month" id="pubMonth" value="">
+        </span>
+      </div>
+      <div class="hint" id="pubRangeTip" style="margin:8px 2px 0"></div>
       <div style="margin-top:10px" id="publishList"></div>
     </div>
 
@@ -1213,19 +1232,28 @@ function quickAdd(type){
   else if(type==='money')addMoneySheet();
   else if(type==='detail')addDetailSheet();
 }
-function addProductSheet(rid){
+function addProductSheet(rid,pid){
   const rec=rid?db.records.find(r=>r.id===rid):null;
   const editing=!!rec;
-  const preName=rec?(db.products.find(p=>p.id===rec.pid)||{}).name:'';
+  const bound=pid&&!editing?db.products.find(p=>p.id===pid):null;
+  const preName=rec?(db.products.find(p=>p.id===rec.pid)||{}).name:(bound?bound.name:'');
   const preDate=rec?rec.date:today();
   const preOrders=rec?(rec.orders!=null?rec.orders:(rec.price>0?1:0)):0;
   const prePrice=rec?(rec.price||''):'';
   const preNote=rec?(rec.note||''):'';
-  const preAcct=rec?acctOf(rec):'big';
+  const preAcct=rec?acctOf(rec):(bound?acctOf(bound):'big');
+  // 从产品详情「记出单」进入：产品已锁定为当前产品，不可改
+  const nameField=bound
+    ? `<div class="f-label">产品 <span class="req">*</span></div>
+       <div class="locked-field">${esc(bound.name)}<span class="lock-tag">已锁定</span></div>
+       <input type="hidden" name="p_name" value="${esc(bound.name)}">
+       <input type="hidden" name="p_pid" value="${bound.id}">
+       <div class="hint" style="font-weight:400;margin:-2px 0 2px">已绑定当前产品，不可修改</div>`
+    : productPicker('p_name',preName);
   openSheet(`
   <div class="grip"></div><div class="sheet-head"><span class="tt">${editing?'编辑出单':'记出单'}</span><button class="close" onclick="closeSheet()">×</button></div>
   <div class="sheet-body">
-    ${productPicker('p_name',preName)}
+    ${nameField}
     <div class="f-label">归属账号</div>
     <div class="seg-2">
       <button data-a="big" ${preAcct!=='small'?'class="on"':''} onclick="pickAcct(this,'p_acct')">大号</button>
@@ -1281,6 +1309,22 @@ function saveProduct(rid){
     newProd.last=dateVal>(newProd.last||'')?dateVal:(newProd.last||dateVal);
     save();
     toast(orders>0?('已更新：'+name+' · 出单'+orders+'单'):('已更新：'+name+' · 0单'));
+    closeSheet();
+    viewTab('product');
+    renderProducts('all');
+    return;
+  }
+  // 从产品详情「记出单」进入：产品已锁定，直接绑定该 pid
+  const boundPid=formVal('p_pid');
+  if(boundPid){
+    const prod=db.products.find(p=>p.id===boundPid);
+    if(!prod){toast('产品不存在');return;}
+    prod.count=(prod.count||0)+1;
+    prod.last=dateVal>(prod.last||'')?dateVal:(prod.last||dateVal);
+    const rec={id:uid(),pid:prod.id,date:dateVal,orders,price,note,acct:acctVal,type:'product'};
+    db.records.unshift(rec);
+    save();
+    toast(orders>0?('已记录：'+name+' · 出单'+orders+'单'):('已记录：'+name+' · 0单'));
     closeSheet();
     viewTab('product');
     renderProducts('all');
@@ -1549,12 +1593,17 @@ function renderProducts(){
 }
 
 /* ============ render publish 视频发布 ============ */
-let publishAcct='all';
+let publishAcct='all',publishRange='all',publishMonth='';
 function renderPublish(f){
   if(f)publishAcct=f||publishAcct;
   const el=document.getElementById('publishList');
-  const recs=db.records.filter(r=>r.type==='product'&&!(r.note||'').includes('汇总')&&acctMatch(acctOf(r),publishAcct));
-  if(!recs.length){el.innerHTML=emptyHTML('还没有视频发布记录，点右下角 + 记一条');return;}
+  const tip=document.getElementById('pubRangeTip');
+  let recs=db.records.filter(r=>r.type==='product'&&!(r.note||'').includes('汇总')&&acctMatch(acctOf(r),publishAcct));
+  if(publishMonth)recs=recs.filter(r=>(r.date||'').startsWith(publishMonth));
+  else if(publishRange!=='all')recs=recs.filter(r=>inRange(r.date,publishRange));
+  const rangeTxt=publishMonth?publishMonth+' 月':RANGE_NAME[publishRange];
+  const acctTxt=publishAcct==='all'?'全部账号':ACCT_NAME[publishAcct];
+  if(!recs.length){el.innerHTML=emptyHTML(rangeTxt+'（'+acctTxt+'）没有视频发布记录');if(tip)tip.textContent='';return;}
   const groups={};
   recs.forEach(r=>{
     const p=db.products.find(x=>x.id===r.pid);
@@ -1567,6 +1616,7 @@ function renderPublish(f){
     if(r.date>(groups[key].last||''))groups[key].last=r.date;
   });
   const list=Object.values(groups).sort((a,b)=>b.last.localeCompare(a.last));
+  if(tip)tip.textContent=rangeTxt+' · '+acctTxt+'：'+list.length+' 个品 · '+recs.length+' 次';
   el.innerHTML=list.map(g=>{
     return `<div class="card" style="margin-bottom:10px"><div class="prod-new" onclick="openPublishProduct('${esc(g.name).replace(/'/g,"\\'")}','${g.acct}')">
       <div class="prod-new-main">
@@ -1604,7 +1654,52 @@ function openPublishProduct(name,acct){
       <div class="order-qty">+${daily[d]} 次</div>
       <button class="order-del" onclick="event.stopPropagation();delPublishDate('${esc(name).replace(/'/g,"\\'")}','${acct}','${d}')"><svg viewBox="0 0 24 24"><path d="M3 6h18M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6m3 0V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2"/></svg></button>
     </div>`).join(''):emptyHTML('没有发布记录')}
+    <div style="margin-top:14px">
+      <button class="btn primary pub-add-btn" style="width:100%" data-name="${esc(name)}" data-acct="${acct}">+ 添加发布</button>
+    </div>
   </div>`);
+}
+/* 添加发布：轻量表单，产品名预填且锁定为当前产品 */
+function openPublishAddSheet(name,acct){
+  openSheet(`
+  <div class="grip"></div><div class="sheet-head"><span class="tt">添加发布</span><button class="close" onclick="closeSheet()">×</button></div>
+  <div class="sheet-body">
+    <input type="hidden" name="pub_name" value="${esc(name)}">
+    <div class="f-label">产品</div>
+    <div style="padding:11px 12px;background:var(--brand-soft);color:var(--brand);border-radius:10px;font-weight:700">${esc(name)}</div>
+    <p class="hint" style="margin:4px 0 10px">已锁定为当前产品，不可修改</p>
+    <div class="f-label">归属账号</div>
+    <div class="seg-2">
+      <button data-a="big" ${acct!=='small'?'class="on"':''} onclick="pickAcct(this,'pub_acct')">大号</button>
+      <button data-a="small" ${acct==='small'?'class="on"':''} onclick="pickAcct(this,'pub_acct')">小号</button>
+    </div>
+    <input type="hidden" name="pub_acct" value="${acct}">
+    <div class="f-label">发布日期 <span class="hint" style="font-weight:400">默认今天</span></div>
+    <input class="f-input" id="pub_add_date" type="date" value="${today()}">
+    <div class="f-label">发布条数 <span class="hint" style="font-weight:400">同一天发了几天就填几</span></div>
+    <input class="f-input" id="pub_add_qty" type="number" inputmode="numeric" min="1" value="1">
+    <div class="btn-row"><button class="btn ghost" onclick="closeSheet()">取消</button><button class="btn primary pub-save-btn">保存</button></div>
+  </div>`);
+}
+function savePublishAdd(){
+  const name=formVal('pub_name');
+  const acct=formVal('pub_acct')||'big';
+  const dateVal=(document.getElementById('pub_add_date')||{}).value||today();
+  const qty=Math.max(1,parseInt((document.getElementById('pub_add_qty')||{}).value)||1);
+  const ids=db.products.filter(p=>p.name===name).map(p=>p.id);
+  if(!name||!ids.length){toast('未找到该产品');return;}
+  const lastRec=db.records.filter(r=>r.type==='product'&&ids.includes(r.pid)&&acctOf(r)===acct)
+    .sort((a,b)=>(b.date||'').localeCompare(a.date||''))[0];
+  const pid=lastRec?lastRec.pid:ids[0];
+  const prod=db.products.find(p=>p.id===pid);
+  for(let i=0;i<qty;i++){
+    db.records.unshift({id:uid(),pid,date:dateVal,orders:0,price:0,note:'',acct,type:'product'});
+  }
+  if(prod)prod.last=dateVal>(prod.last||'')?dateVal:(prod.last||dateVal);
+  save();
+  closeSheet();
+  renderPublish();renderHome();renderProducts();
+  toast('已添加：'+name+' · '+fmtDateSlash(dateVal)+' 发布 '+qty+' 条');
 }
 function delPublishDate(name,acct,date){
   if(!confirm('删除 '+ACCT_NAME[acct]+' 在 '+fmtDateSlash(date)+' 的发布记录？'))return;
@@ -2056,7 +2151,7 @@ function openProduct(pid){
     </div>`).join(''):'<div class="hint">还没有出单记录，点下面"记出单"</div>'}
     <div class="btn-row">
       <button class="btn danger" onclick="delProduct('${pid}')">删除产品</button>
-      <button class="btn ghost" onclick="quickAdd('product')">记出单</button>
+      <button class="btn ghost" onclick="addProductSheet('','${pid}')">记出单</button>
     </div>
   </div>`);
 }
@@ -2144,7 +2239,27 @@ document.addEventListener('click',e=>{
   else if(parent.id==='copySeg')renderCopies(btn.dataset.f);
   else if(parent.id==='sampleAcctSeg'){sampleAcct=btn.dataset.a;renderSamples();}
   else if(parent.id==='publishAcctSeg'){publishAcct=btn.dataset.a;renderPublish();}
+  else if(parent.id==='pubRangeSeg'){
+    publishRange=btn.dataset.r;
+    if(publishRange!=='custom'){
+      publishMonth='';
+      const m=document.getElementById('pubMonth');if(m)m.value='';
+    }
+    renderPublish();
+  }
   else if(parent.id==='ledTabs'){ledTab=btn.dataset.t;renderLedger();}
+});
+/* 指定月份：选了之后视作自定义范围 */
+document.getElementById('pubMonth')?.addEventListener('change',e=>{
+  publishMonth=e.target.value;
+  if(publishMonth){
+    publishRange='custom';
+    document.querySelectorAll('#pubRangeSeg .f-pill').forEach(b=>b.classList.remove('on'));
+  }else if(publishRange==='custom'){
+    publishRange='all';
+    const a=document.querySelector('#pubRangeSeg .f-pill[data-r="all"]');if(a)a.classList.add('on');
+  }
+  renderPublish();
 });
 /* 指定月份：选了之后视作自定义范围 */
 document.getElementById('prodMonth')?.addEventListener('change',e=>{
@@ -2266,6 +2381,13 @@ setTimeout(function(){try{showErrBar();}catch(e){}},600);
   },true);
 })();
 
+/* 「+添加发布」按钮：不走内联 onclick，直接捕获阶段绑定，避免 onclick 找不到全局函数导致误弹记出单 */
+document.addEventListener('click',function(e){
+  var b=e.target&&e.target.closest?e.target.closest('.pub-add-btn'):null;
+  if(b){e.preventDefault();e.stopPropagation();openPublishAddSheet(b.dataset.name,b.dataset.acct);return;}
+  var s=e.target&&e.target.closest?e.target.closest('.pub-save-btn'):null;
+  if(s){e.preventDefault();e.stopPropagation();savePublishAdd();}
+},true);
 /* ============ 全局函数挂载（关键修复） ============
    预览/沙箱环境可能把脚本包成 IIFE，导致 `function NAME` 不再是全局属性，
    而 HTML 的 onclick="NAME()" 字符串在浏览器里只查全局 → ReferenceError。
@@ -2299,6 +2421,62 @@ setTimeout(function(){try{showErrBar();}catch(e){}},600);
       }
     }catch(_){}
   },0);
+})();
+
+/* ============ FAB 悬浮按钮可拖动（位置记忆） ============ */
+(function(){
+  var FAB_KEY='wb_fab_pos';
+  var fab=document.getElementById('fabBtn');
+  if(!fab)return;
+  fab.style.touchAction='none';
+  var justDragged=false;
+  function clampX(x){return Math.max(4,Math.min(x,window.innerWidth-(fab.offsetWidth||50)-4));}
+  function clampY(y){return Math.max(4,Math.min(y,window.innerHeight-(fab.offsetHeight||50)-4));}
+  function applyPos(x,y){
+    x=clampX(x);y=clampY(y);
+    fab.style.left=x+'px';fab.style.top=y+'px';
+    fab.style.right='auto';fab.style.bottom='auto';
+    return {x:x,y:y};
+  }
+  try{
+    var saved=JSON.parse(localStorage.getItem(FAB_KEY)||'null');
+    if(saved&&typeof saved.x==='number'&&typeof saved.y==='number')applyPos(saved.x,saved.y);
+  }catch(_){}
+  var startX=0,startY=0,originX=0,originY=0,moved=false,dragging=false;
+  fab.addEventListener('pointerdown',function(e){
+    var r=fab.getBoundingClientRect();
+    originX=r.left;originY=r.top;startX=e.clientX;startY=e.clientY;
+    moved=false;dragging=true;
+    try{fab.setPointerCapture(e.pointerId);}catch(_){}
+  });
+  fab.addEventListener('pointermove',function(e){
+    if(!dragging)return;
+    var dx=e.clientX-startX,dy=e.clientY-startY;
+    if(!moved&&Math.abs(dx)<6&&Math.abs(dy)<6)return;
+    moved=true;
+    e.preventDefault();
+    applyPos(originX+dx,originY+dy);
+  });
+  function endDrag(e){
+    if(!dragging)return;
+    dragging=false;
+    try{fab.releasePointerCapture(e.pointerId);}catch(_){}
+    if(moved){
+      var r=fab.getBoundingClientRect();
+      var p=applyPos(r.left,r.top);
+      try{localStorage.setItem(FAB_KEY,JSON.stringify(p));}catch(_){}
+      justDragged=true;
+      setTimeout(function(){justDragged=false;},350);
+    }
+  }
+  fab.addEventListener('pointerup',endDrag);
+  fab.addEventListener('pointercancel',function(){dragging=false;});
+  // 拖动结束后抑制随之而来的 click（避免误触发新增菜单）
+  window.addEventListener('click',function(e){
+    if(justDragged&&e.target&&e.target.closest&&e.target.closest('#fabBtn')){
+      e.stopImmediatePropagation();e.preventDefault();justDragged=false;
+    }
+  },true);
 })();
 
 /* ============ v73 启动完成标记 ============ */
