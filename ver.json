@@ -1,4 +1,4 @@
 {
-  "latest": 54,
-  "note": "细分云端错误提示：401/403 报「令牌无效」，其它报「连不上 GitHub」；saveCloudToken/cloudPull/cloudPush/onRestoreBtn 的 catch 同步细化；APP_VER 53→54"
+  "latest": 55,
+  "note": "出单管理：月份选择框移入日期筛选组，紧跟「上月」按钮；按钮内边距微调；APP_VER 54→55"
 }
