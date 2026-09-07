@@ -261,6 +261,8 @@ body{
 .order-del svg{width:16px;height:16px;fill:none;stroke:currentColor;stroke-width:2;stroke-linecap:round;stroke-linejoin:round}
 .arrow{color:var(--text3);flex-shrink:0;display:flex;align-items:center}
 .arrow svg{width:18px;height:18px;fill:none;stroke:currentColor;stroke-width:2;stroke-linecap:round;stroke-linejoin:round}
+.sample-edit{flex-shrink:0;border:1px solid var(--line);background:#fff;border-radius:10px;padding:6px 12px;font-size:13px;font-weight:600;color:var(--text);cursor:pointer;font-family:inherit}
+.sample-edit:active{background:var(--bg)}
 .copy-mini{flex-shrink:0;display:flex;align-items:center;gap:4px;border:none;background:#fff0f6;color:#ff7eb6;font-size:12px;font-weight:700;font-family:inherit;padding:8px 12px;border-radius:10px;cursor:pointer;border:1px solid #ffcce0}
 .copy-mini:active{filter:brightness(.95)}
 .copy-mini svg{width:14px;height:14px;fill:none;stroke:currentColor;stroke-width:2;stroke-linecap:round;stroke-linejoin:round}
@@ -549,7 +551,7 @@ body{
 /* ============ 应用版本 / 检查更新 ============
    发布新版时把 APP_VER 递增，并同步把同目录 ver.json 的 latest 改成相同值。
    checkUpdate() 拉同域 ver.json 对比：有新版立刻强刷加载新版。 */
-var APP_VER=59;
+var APP_VER=60;
 /* 检查是否有新版（手动触发）— 无确认弹窗，点「更新」直接拉新版 */
 function checkUpdate(){
   const now=Date.now();
@@ -1573,7 +1575,7 @@ function renderSamples(f){sampleFilter=f||sampleFilter;
         </div>
         ${s.note?`<div class="prod-info">${esc(s.note)}</div>`:''}
       </div>
-      <div class="arrow"><svg viewBox="0 0 24 24"><path d="M9 18l6-6-6-6"/></svg></div>
+      <button class="sample-edit" onclick="event.stopPropagation();openSample('${s.id}')">编辑</button>
     </div></div>`;
   }).join('');
 }
