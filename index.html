@@ -529,7 +529,7 @@ body{
 /* ============ 应用版本 / 检查更新 ============
    发布新版时把 APP_VER 递增，并同步把同目录 ver.json 的 latest 改成相同值。
    checkUpdate() 拉同域 ver.json 对比：有新版立刻强刷加载新版。 */
-var APP_VER=55;
+var APP_VER=56;
 /* 检查是否有新版（手动触发）— 无确认弹窗，点「更新」直接拉新版 */
 function checkUpdate(){
   const now=Date.now();
@@ -1394,7 +1394,6 @@ function renderProducts(){
     const mid=recs.filter(r=>r.rate===3).length;
     const bad=recs.filter(r=>r.rate&&r.rate<=2).length;
     const avg=avgRate(p.id,prodAcct);
-    const copyCount=db.copies.filter(c=>c.name===p.name).length;
     const avgTxt=avg>0?avg.toFixed(1)+' 分':'未评';
     // 账号维度拆分（仅在"全部账号"下展示）
     let acctChips='';
@@ -1416,7 +1415,6 @@ function renderProducts(){
           ${avg>0?`<span class="chip ${avg>=3.5?'gr':avg>=2.5?'or':'bl'}">均分 ${avg.toFixed(1)}</span>`:''}
           ${good?`<span class="chip gr">好 ${good}</span>`:''}${mid?`<span class="chip or">中 ${mid}</span>`:''}${bad?`<span class="chip" style="background:#ffe3e3;color:#ff3d4a">差 ${bad}</span>`:''}
         </div>
-        <div class="prod-info">${st.soldVideos?st.soldVideos+' 条出过单':''}${p.last?' · 最近 '+fmtDate(p.last):''}${copyCount?' · 文案 '+copyCount+' 条':''}</div>
       </div>
       <div class="arrow"><svg viewBox="0 0 24 24"><path d="M9 18l6-6-6-6"/></svg></div>
     </div></div>`;
