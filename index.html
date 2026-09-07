@@ -381,8 +381,8 @@ body{
 .note-edit textarea{width:100%;border:none;outline:none;font-family:inherit;font-size:14px;resize:none;background:var(--bg);border-radius:10px;padding:10px;margin-top:8px;min-height:70px}
 
 .view-title{font-size:17px;font-weight:800;padding:4px 0 12px}
-.fab-btn{position:fixed;bottom:80px;right:calc(50% - 220px);width:50px;height:50px;border-radius:50%;background:var(--brand);color:#fff;border:none;box-shadow:0 4px 14px rgba(255,61,74,.4);cursor:grab;display:flex;align-items:center;justify-content:center;z-index:25;touch-action:none;user-select:none;-webkit-user-select:none;transition:box-shadow .15s}
-.fab-btn:active{transform:scale(.95);cursor:grabbing}
+.fab-btn{position:fixed;bottom:80px;right:calc(50% - 220px);width:50px;height:50px;border-radius:50%;background:var(--brand);color:#fff;border:none;box-shadow:0 4px 14px rgba(255,61,74,.4);cursor:pointer;display:flex;align-items:center;justify-content:center;z-index:25}
+.fab-btn:active{transform:scale(.95)}
 .fab-btn svg{width:24px;height:24px;fill:none;stroke:#fff;stroke-width:2.4;stroke-linecap:round}
 @media(max-width:480px){.fab-btn{right:16px}}
 </style>
@@ -529,7 +529,7 @@ body{
 
     </div>
 
-  <div class="fab-btn" id="fabBtn"><svg viewBox="0 0 24 24"><path d="M12 5v14M5 12h14"/></svg></div>
+  <div class="fab-btn" onclick="contextFab()"><svg viewBox="0 0 24 24"><path d="M12 5v14M5 12h14"/></svg></div>
 </div>
 
 <!-- ============ TABBAR ============ -->
@@ -551,7 +551,7 @@ body{
 /* ============ 应用版本 / 检查更新 ============
    发布新版时把 APP_VER 递增，并同步把同目录 ver.json 的 latest 改成相同值。
    checkUpdate() 拉同域 ver.json 对比：有新版立刻强刷加载新版。 */
-var APP_VER=62;
+var APP_VER=63;
 /* 检查是否有新版（手动触发）— 无确认弹窗，点「更新」直接拉新版 */
 function checkUpdate(){
   const now=Date.now();
@@ -2053,68 +2053,6 @@ document.addEventListener('DOMContentLoaded',()=>{load();renderAll();setCloudUI(
 window.addEventListener('load',()=>{load();renderAll();setCloudUI();notifyUpdated();});
 /* also run immediately if not DOMContentLoaded yet */
 if(document.readyState!=='loading'){load();renderAll();setCloudUI();cloudMaybeRecover();notifyUpdated();}
-
-/* ============ draggable FAB（可拖动的新增按钮） ============ */
-(function(){
-  const fab=document.getElementById('fabBtn');
-  if(!fab)return;
-  const KEY='dl_fab_pos_v1';
-  function clamp(v,min,max){return Math.max(min,Math.min(v,max));}
-  function applySaved(){
-    try{
-      const s=JSON.parse(localStorage.getItem(KEY)||'null');
-      if(s&&typeof s.x==='number'&&typeof s.y==='number'){
-        fab.style.right='auto';fab.style.bottom='auto';
-        fab.style.left=s.x+'px';fab.style.top=s.y+'px';
-      }
-    }catch(e){}
-  }
-  applySaved();
-  let dragging=false,moved=false,dragged=false,sx=0,sy=0,ol=0,ot=0,ow=0,oh=0;
-  fab.addEventListener('pointerdown',function(e){
-    dragging=true;moved=false;dragged=false;
-    sx=e.clientX;sy=e.clientY;
-    const r=fab.getBoundingClientRect();
-    ol=r.left;ot=r.top;ow=r.width;oh=r.height;
-    fab.style.right='auto';fab.style.bottom='auto';
-    fab.style.left=ol+'px';fab.style.top=ot+'px';
-    try{fab.setPointerCapture(e.pointerId);}catch(_){}
-    e.preventDefault();
-  });
-  fab.addEventListener('pointermove',function(e){
-    if(!dragging)return;
-    const dx=e.clientX-sx,dy=e.clientY-sy;
-    if(!moved&&Math.hypot(dx,dy)>5)moved=true;
-    if(moved){
-      dragged=true;
-      let nx=clamp(ol+dx,4,window.innerWidth-ow-4);
-      let ny=clamp(ot+dy,4,window.innerHeight-oh-4);
-      fab.style.left=nx+'px';fab.style.top=ny+'px';
-    }
-  });
-  function finish(e){
-    if(!dragging)return;
-    dragging=false;
-    if(dragged){
-      try{const r=fab.getBoundingClientRect();localStorage.setItem(KEY,JSON.stringify({x:r.left,y:r.top}));}catch(_){}
-      if(e&&e.stopPropagation)e.stopPropagation();
-      if(e&&e.preventDefault)e.preventDefault();
-      fab._suppress=true; // 拦截紧随其后的 click，避免拖完误触发新增
-    }
-  }
-  fab.addEventListener('pointerup',finish);
-  fab.addEventListener('pointercancel',finish);
-  fab.addEventListener('click',function(e){
-    if(fab._suppress){fab._suppress=false;e.stopPropagation();e.preventDefault();return;}
-    contextFab();
-  });
-  window.addEventListener('resize',function(){
-    try{
-      const s=JSON.parse(localStorage.getItem(KEY)||'null');
-      if(s){const r=fab.getBoundingClientRect();let nx=clamp(s.x,4,window.innerWidth-r.width-4);let ny=clamp(s.y,4,window.innerHeight-r.height-4);fab.style.left=nx+'px';fab.style.top=ny+'px';}
-    }catch(_){}
-  });
-})();
 
 </body>
 </html>
