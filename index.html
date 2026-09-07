@@ -551,7 +551,7 @@ body{
 /* ============ 应用版本 / 检查更新 ============
    发布新版时把 APP_VER 递增，并同步把同目录 ver.json 的 latest 改成相同值。
    checkUpdate() 拉同域 ver.json 对比：有新版立刻强刷加载新版。 */
-var APP_VER=63;
+var APP_VER=64;
 /* 检查是否有新版（手动触发）— 无确认弹窗，点「更新」直接拉新版 */
 function checkUpdate(){
   const now=Date.now();
@@ -587,7 +587,22 @@ function notifyUpdated(){
 /* ============ store helpers ============ */
 const DB_KEY='dl_dairen_workbench_v1';
 let db={products:[],samples:[],records:[],copies:[]};
-function load(){try{db=JSON.parse(localStorage.getItem(DB_KEY))||db}catch(e){};normalize();ensureSeedCopies();ensureSeedCopiesExtra();ensureSeedVideos();ensureSeedVideosSmall();ensureSeedSamples();ensureSeedOrders();ensureSeedOrdersSmall();migrateSeedDatesToToday();}
+/* 种子 flag 集合：用于「默认数据丢失」兜底恢复 */
+function seedFlags(){return [SEED_KEY,SEED_KEY2,VSEED_KEY,VSEED_KEY2,SSEED_KEY,OSEED_KEY,ASEED_KEY,MSEED_KEY];}
+function clearSeedFlags(){seedFlags().forEach(k=>{try{localStorage.removeItem(k);}catch(e){}});}
+function dbIsEmpty(){return !db.products.length&&!db.samples.length&&!db.records.length&&!db.copies.length;}
+function allSeedFlagsSet(){return seedFlags().every(k=>{try{return !!localStorage.getItem(k);}catch(e){return false;}});}
+function runSeeds(){
+  ensureSeedCopies();ensureSeedCopiesExtra();ensureSeedVideos();ensureSeedVideosSmall();
+  ensureSeedSamples();ensureSeedOrders();ensureSeedOrdersSmall();migrateSeedDatesToToday();
+}
+function load(){
+  try{db=JSON.parse(localStorage.getItem(DB_KEY))||db}catch(e){}
+  normalize();
+  runSeeds();
+  // 兜底：种子 flag 都已置位但默认数据整体丢失（被清空等）→ 清 flag 强制重种，恢复「默认数据」
+  if(dbIsEmpty()&&allSeedFlagsSet()){clearSeedFlags();runSeeds();}
+}
 function save(){localStorage.setItem(DB_KEY,JSON.stringify(db));renderAll();cloudSchedule();}
 
 /* ===== 内置示例文案：这些是「爆单」文案。
