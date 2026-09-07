@@ -1,5 +1,5 @@
 {
-  "latest": 74,
+  "latest": 75,
   "releaseDate": "2026-09-07",
-  "note": "v74: 出单管理'日期选择器'单独一行固定(独立 .filter-month-row)，其他筛选(账号/时间/排序)放 .filter-scroll 容器横向滚动(flex-wrap:nowrap + overflow-x:auto + 隐藏滚动条)。真实浏览器验证：新布局生效、prodMonth 仍可点击填值、0 错误。"
+  "note": "v75: 出单管理布局改对——一行布局：左账号段/中横向滚动区(时间段+排序)/右日期选择器固定。新加 .filter-lock + .filter-scroll-in(flex:1 min-width:0 overflow-x:auto nowrap)+ .filter-month-lock(flex:0 0 auto 右侧固定)。真实浏览器验证：sameLine=true monthInLock=true month贴右、fill 2026-08 工作、0 error。"
 }
