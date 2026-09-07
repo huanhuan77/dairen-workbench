@@ -554,10 +554,12 @@ body{
 /* ============ 全局诊断：把运行时错误显示在页面顶部（便于截图定位） ============ */
 var __WB_ERR=[];
 function __wbErr(msg,src){
+try{window.__wbErr=__wbErr;}catch(e){}
   try{__WB_ERR.push((src||'')+' '+(msg||''));}catch(e){}
   showErrBar();
 }
 function showErrBar(){
+try{window.showErrBar=showErrBar;}catch(e){}
   try{
     if(document.getElementById('wbErrBar'))return;
     var d=document.createElement('div');
@@ -576,7 +578,7 @@ try{console._wbe=__wbErr;var _oe=console.error;console.error=function(){__wbErr(
 /* ============ 应用版本 / 检查更新 ============
    发布新版时把 APP_VER 递增，并同步把同目录 ver.json 的 latest 改成相同值。
    checkUpdate() 拉同域 ver.json 对比：有新版立刻强刷加载新版。 */
-var APP_VER=69;
+var APP_VER=70;
 /* ============ 存储兼容兜底 ============
    部分嵌入环境（如预览沙箱 iframe）禁用 localStorage，访问即抛 SecurityError，
    会导致 load() 中断、页面全空。此处探测一次：不可用就用内存模拟，保证页面能正常
@@ -602,6 +604,7 @@ var APP_VER=69;
 })();
 /* 检查是否有新版（手动触发）— 无确认弹窗，点「更新」直接拉新版 */
 function checkUpdate(){
+try{window.checkUpdate=checkUpdate;}catch(e){}
   const now=Date.now();
   fetch('./ver.json?v='+now,{cache:'no-store'})
   .then(r=>{if(!r.ok)throw new Error('HTTP '+r.status);return r.json();})
@@ -615,6 +618,7 @@ function checkUpdate(){
 }
 /* 强刷加载：用版本号作查询串绕开浏览器缓存 */
 function reloadApp(latest){
+try{window.reloadApp=reloadApp;}catch(e){}
   try{closeSheet();}catch(e){}
   const v=latest||APP_VER||Date.now();
   try{sessionStorage.setItem(DB_KEY+'_just_updated',String(v));}catch(e){}
@@ -623,6 +627,7 @@ function reloadApp(latest){
 }
 /* 重载完成后提示「已更新到新版」 */
 function notifyUpdated(){
+try{window.notifyUpdated=notifyUpdated;}catch(e){}
   try{
     const k=DB_KEY+'_just_updated';
     const v=sessionStorage.getItem(k);
@@ -637,15 +642,21 @@ const DB_KEY='dl_dairen_workbench_v1';
 let db={products:[],samples:[],records:[],copies:[]};
 /* 种子 flag 集合：用于「默认数据丢失」兜底恢复 */
 function seedFlags(){return [SEED_KEY,SEED_KEY2,VSEED_KEY,VSEED_KEY2,SSEED_KEY,OSEED_KEY,ASEED_KEY,MSEED_KEY];}
+try{window.seedFlags=seedFlags;}catch(e){}
 function clearSeedFlags(){seedFlags().forEach(k=>{try{localStorage.removeItem(k);}catch(e){}});}
+try{window.clearSeedFlags=clearSeedFlags;}catch(e){}
 function dbIsEmpty(){return !db.products.length&&!db.samples.length&&!db.records.length&&!db.copies.length;}
+try{window.dbIsEmpty=dbIsEmpty;}catch(e){}
 function allSeedFlagsSet(){return seedFlags().every(k=>{try{return !!localStorage.getItem(k);}catch(e){return false;}});}
+try{window.allSeedFlagsSet=allSeedFlagsSet;}catch(e){}
 function runSeeds(){
+try{window.runSeeds=runSeeds;}catch(e){}
   ensureSeedCopies();ensureSeedCopiesExtra();ensureSeedVideos();ensureSeedVideosSmall();
   ensureSeedSamples();ensureSeedOrders();ensureSeedOrdersSmall();migrateSeedDatesToToday();
 }
 var HAD_LOCAL=false;   // 本次打开前本地是否已有存档（在种入种子数据前探测，供云端恢复判断）
 function load(){
+try{window.load=load;}catch(e){}
   try{HAD_LOCAL=!!localStorage.getItem(DB_KEY);}catch(e){HAD_LOCAL=false;}
   try{db=JSON.parse(localStorage.getItem(DB_KEY))||db}catch(e){}
   normalize();
@@ -654,6 +665,7 @@ function load(){
   if(dbIsEmpty()&&allSeedFlagsSet()){clearSeedFlags();runSeeds();}
 }
 function save(){localStorage.setItem(DB_KEY,JSON.stringify(db));renderAll();cloudSchedule();}
+try{window.save=save;}catch(e){}
 
 /* ===== 内置示例文案：这些是「爆单」文案。
    首次打开把 3 条示例种入一次并带上「爆单」话题标签；
@@ -661,6 +673,7 @@ function save(){localStorage.setItem(DB_KEY,JSON.stringify(db));renderAll();clou
    只影响这几条内置产品名，绝不改动用户其它数据；用户删掉的也不会再种回。 */
 var SEED_KEY=DB_KEY+'_seeded_v1';
 function ensureSeedCopies(){
+try{window.ensureSeedCopies=ensureSeedCopies;}catch(e){}
   const seeded=!!localStorage.getItem(SEED_KEY);
   const defs=[
     ['芭比安睡裤','资本你赢了\n幸好9.💰①条时忍住\n没买🙄'],
@@ -698,6 +711,7 @@ function ensureSeedCopies(){
    趣味车润喉糖O糖O脂清凉糖果（=趣味到润喉糖）/ 益美滋组合装香体糖。标记 hot=爆单。 */
 var SEED_KEY2=DB_KEY+'_seeded_v2';
 function ensureSeedCopiesExtra(){
+try{window.ensureSeedCopiesExtra=ensureSeedCopiesExtra;}catch(e){}
   const seeded2=!!localStorage.getItem(SEED_KEY2);
   const BOOM='爆单';
   const defs=[
@@ -734,6 +748,7 @@ function ensureSeedCopiesExtra(){
    出单数/金额先记 0（0 单 0 元），用户后续可在产品详情里手动补真实出单与销售额。 */
 var VSEED_KEY=DB_KEY+'_vseed_2026_09';
 function ensureSeedVideos(){
+try{window.ensureSeedVideos=ensureSeedVideos;}catch(e){}
   try{if(localStorage.getItem(VSEED_KEY))return;}catch(e){}
   const spec=[['倍思充电器',2],['益美滋润喉糖',4],['维特健灵小黄条',1],['噗噗片',2],['巧尼芙抹茶巧克力',3],['x-it润喉糖',2],['快乐点安睡裤',2],['益美滋18味深润糖',1],['益美滋组合装香体糖',1],['珀芙研小样套组',1],['珀芙研屏安修护面膜',1]];
   const y=new Date().getFullYear();
@@ -760,6 +775,7 @@ function ensureSeedVideos(){
    0 单 0 元，日期 9 月 1~5 日轮排。 */
 var VSEED_KEY2=DB_KEY+'_vseed_2026_09_small';
 function ensureSeedVideosSmall(){
+try{window.ensureSeedVideosSmall=ensureSeedVideosSmall;}catch(e){}
   try{if(localStorage.getItem(VSEED_KEY2))return;}catch(e){}
   const spec=[['益美滋七夕约会香体糖',2],['x-it润喉糖',2],['益美滋润喉糖',1],['趣味车润喉糖O糖O脂清凉糖果',2],['益美滋18味深润糖',1]];
   const y=new Date().getFullYear();
@@ -785,6 +801,7 @@ function ensureSeedVideosSmall(){
    （产品名已去掉「（小美）」「（小美桌拍）」等括号备注） */
 var SSEED_KEY=DB_KEY+'_sseed_2026_09';
 function ensureSeedSamples(){
+try{window.ensureSeedSamples=ensureSeedSamples;}catch(e){}
   try{if(localStorage.getItem(SSEED_KEY))return;}catch(e){}
   const list=['珀芙研传明酸次抛','WINY益生菌','韩束面膜','林清轩面膜','自然堂水乳','自然堂眼霜'];
   let added=0;
@@ -802,6 +819,7 @@ function ensureSeedSamples(){
    orders=订单数、price=销售额、note='9月大号汇总'。佣金/净佣金暂不录入出单管理(用记账→带货收入记)。 */
 var OSEED_KEY=DB_KEY+'_oseed_2026_09';
 function ensureSeedOrders(){
+try{window.ensureSeedOrders=ensureSeedOrders;}catch(e){}
   try{if(localStorage.getItem(OSEED_KEY))return;}catch(e){}
   const y=new Date().getFullYear();
   const date=y+'-09-30';
@@ -834,6 +852,7 @@ function ensureSeedOrders(){
 /* ===== 内置9月小号出单产品：首次种入一次，与大号同名产品归并；产品名已精简(去【李雪琴代言】等标签) ===== */
 var ASEED_KEY=DB_KEY+'_aseed_2026_09';
 function ensureSeedOrdersSmall(){
+try{window.ensureSeedOrdersSmall=ensureSeedOrdersSmall;}catch(e){}
   try{if(localStorage.getItem(ASEED_KEY))return;}catch(e){}
   const y=new Date().getFullYear();
   const date=y+'-09-30';
@@ -867,6 +886,7 @@ function ensureSeedOrdersSmall(){
    同时更新 prod.last。MSEED_KEY 防止重复执行。 */
 var MSEED_KEY=DB_KEY+'_migrated_dates_2026_09';
 function migrateSeedDatesToToday(){
+try{window.migrateSeedDatesToToday=migrateSeedDatesToToday;}catch(e){}
   try{if(localStorage.getItem(MSEED_KEY))return;}catch(e){}
   const todayS=today();
   const y=new Date().getFullYear();
@@ -899,11 +919,17 @@ var GH_FILE='dairen_workbench_backup.json';
 var CLOUD_STATE='off';      // off|busy|ok|fail
 var _cloudTimer=null;
 function ghToken(){try{return localStorage.getItem(DB_KEY+'_gh_token')||sessionStorage.getItem(DB_KEY+'_gh_token')||'';}catch(e){return '';}}
+try{window.ghToken=ghToken;}catch(e){}
 function ghGist(){try{return localStorage.getItem(DB_KEY+'_gist')||'a5684932a51945f3e68d4f20fc8f2066';}catch(e){return 'a5684932a51945f3e68d4f20fc8f2066';}}
+try{window.ghGist=ghGist;}catch(e){}
 function cloudReady(){return !!ghToken();}
+try{window.cloudReady=cloudReady;}catch(e){}
 function ghHeaders(){return {'Authorization':'Bearer '+ghToken(),'Accept':'application/vnd.github+json','X-GitHub-Api-Version':'2022-11-28','Content-Type':'application/json'};}
+try{window.ghHeaders=ghHeaders;}catch(e){}
 function cloudSchedule(){if(!cloudReady())return;if(_cloudTimer)clearTimeout(_cloudTimer);_cloudTimer=setTimeout(cloudPush,1200);}
+try{window.cloudSchedule=cloudSchedule;}catch(e){}
 function cloudPush(){
+try{window.cloudPush=cloudPush;}catch(e){}
   if(!cloudReady())return;CLOUD_STATE='busy';setCloudUI();
   const gistId=ghGist()||'';
   const body=JSON.stringify(db);
@@ -917,6 +943,7 @@ function cloudPush(){
   .catch(e=>{CLOUD_STATE='fail';setCloudUI();toast('云端备份失败：连不上 GitHub');console.warn('云备份失败',e);});
 }
 function cloudPull(){
+try{window.cloudPull=cloudPull;}catch(e){}
   /* gist 本身可匿名读取（备份内容非敏感）；有 token 则带上，无 token 也能拉，保证新设备/新地址首次打开可自动恢复 */
   const gistId=ghGist()||'';
   if(!gistId)return Promise.reject('no gist yet');
@@ -929,10 +956,12 @@ function cloudPull(){
 /* 首次打开：打开前本地就没存档(HAD_LOCAL=false)且云端有 → 自动拉回。
    注意不能用"当前 db 是否为空"判断——种子数据已先入库，会把恢复机会挤掉。 */
 function cloudMaybeRecover(){
+try{window.cloudMaybeRecover=cloudMaybeRecover;}catch(e){}
   if(HAD_LOCAL)return;
   cloudPull().then(cd=>{if(cd&&cd.products&&cd.records){db=cd;normalize();save();toast('已从云端恢复数据');}}).catch(()=>{});
 }
 function setCloudUI(){
+try{window.setCloudUI=setCloudUI;}catch(e){}
   // 右上角 header 云备点
   const d=document.getElementById('cloudDot');const t=document.getElementById('cloudTxt');
   if(!cloudReady()){
@@ -947,7 +976,9 @@ function setCloudUI(){
 }
 /* 总览页顶部备份状态条(可复用右上角 cloud-dot 状态) */
 function barState(){if(CLOUD_STATE==='busy')return ['busy','备份中…','备份中'];if(CLOUD_STATE==='fail')return ['fail','备份失败，点击重试','立即备份'];return ['ok','自动备份已开启','立即备份'];}
+try{window.barState=barState;}catch(e){}
 function refreshBar(ready){
+try{window.refreshBar=refreshBar;}catch(e){}
   const bar=document.getElementById('backupBar');if(!bar)return;
   const dot=document.getElementById('barDot'),txt=document.getElementById('barTxt'),btn=document.getElementById('barBtn');
   if(!dot||!txt||!btn)return;
@@ -960,10 +991,12 @@ function refreshBar(ready){
 }
 /* 总览备份条右侧按钮 */
 function onBarBtn(){
+try{window.onBarBtn=onBarBtn;}catch(e){}
   if(!cloudReady()){openCloudSetup();return;}
   cloudPush();toast('正在备份…');
 }
 function onRestoreBtn(){
+try{window.onRestoreBtn=onRestoreBtn;}catch(e){}
   if(!cloudReady()){openCloudSetup();return;}
   toast('正在读取云端…');
   cloudPull().then(cd=>{
@@ -975,13 +1008,16 @@ function onRestoreBtn(){
 }
 /* header 云备按钮 / 总览 backup-bar 整条 → 统一入口(配置后看详情、未配置启用) */
 function openCloudEntry(){
+try{window.openCloudEntry=openCloudEntry;}catch(e){}
   if(cloudReady())openCloudPanel();else openCloudSetup();
 }
 function cloudLastTime(){
+try{window.cloudLastTime=cloudLastTime;}catch(e){}
   const v=parseInt(localStorage.getItem(DB_KEY+'_cloud'))||0;if(!v)return '尚未备份';
   const d=new Date(v);const p=n=>n<10?'0'+n:''+n;return d.getFullYear()+'/'+(d.getMonth()+1)+'/'+d.getDate()+' '+p(d.getHours())+':'+p(d.getMinutes());
 }
 function openCloudPanel(){
+try{window.openCloudPanel=openCloudPanel;}catch(e){}
   const itemN=(db.products?db.products.length:0)+'个产品 · '+(db.copies?db.copies.length:0)+'条文案 · '+(db.samples?db.samples.length:0)+'个样品 · '+(db.records?db.records.length:0)+'条记录';
   openSheet(`<div class="grip"></div><div class="sheet-head"><span class="tt">云端自动备份</span><button class="close" onclick="closeSheet()">×</button></div>
   <div class="sheet-body">
@@ -998,6 +1034,7 @@ function openCloudPanel(){
 }
 /* 仅用于启用流程的轻弹窗(避免和已配置后的云端面板内容重复) */
 function openCloudSetup(){
+try{window.openCloudSetup=openCloudSetup;}catch(e){}
   openSheet(`<div class="grip"></div><div class="sheet-head"><span class="tt">启用云端备份</span><button class="close" onclick="closeSheet()">×</button></div>
   <div class="sheet-body">
     <p style="font-size:14px;color:var(--text1);margin:0 0 10px">粘贴你的备份令牌就能启用自动备份。</p>
@@ -1019,6 +1056,7 @@ function openCloudSetup(){
 }
 /* 在云端面板粘贴 token 并保存(可选是否记住本机) */
 function saveCloudToken(){
+try{window.saveCloudToken=saveCloudToken;}catch(e){}
   const inp=document.getElementById('ghTokIn');const chk=document.getElementById('ghSaveChk');
   const t=inp?inp.value.trim():'';const keep=chk?chk.checked:true;
   if(!t){toast('请先粘贴你的 ghp_ 令牌');return;}
@@ -1034,14 +1072,19 @@ function saveCloudToken(){
   .catch(e=>{CLOUD_STATE='fail';setCloudUI();if(e&&e.message==='UNAUTH')toast('令牌无效：复制不完整或已被 GitHub 吊销');else toast('连不上 GitHub（网络/代理受限）');});
 }
 function normalize(){
+try{window.normalize=normalize;}catch(e){}
   db.products=db.products||[];db.samples=db.samples||[];db.records=db.records||[];db.copies=db.copies||[];
 }
 function uid(){return Date.now().toString(36)+Math.random().toString(36).slice(2,7);}
+try{window.uid=uid;}catch(e){}
 function today(){const d=new Date();return isoDate(d);}
+try{window.today=today;}catch(e){}
 function isoDate(d){return d.getFullYear()+'-'+String(d.getMonth()+1).padStart(2,'0')+'-'+String(d.getDate()).padStart(2,'0');}
+try{window.isoDate=isoDate;}catch(e){}
 /* 时间范围 → [起始日, 结束日]，'all' 返回 [null,null] */
 let prodMonth='';
 function rangeBounds(r){
+try{window.rangeBounds=rangeBounds;}catch(e){}
   const d=new Date();d.setHours(0,0,0,0);
   if(r==='today')return [isoDate(d),isoDate(d)];
   if(r==='yest'){const y=new Date(d);y.setDate(y.getDate()-1);return [isoDate(y),isoDate(y)];}
@@ -1052,14 +1095,19 @@ function rangeBounds(r){
   return [null,null];
 }
 function inRange(date,r){const b=rangeBounds(r);if(!b[0])return true;return (date||'')>=b[0]&&(date||'')<=b[1];}
+try{window.inRange=inRange;}catch(e){}
 const RANGE_NAME={all:'全部',today:'今天',yest:'昨天',week:'本周',month:'本月',lastmonth:'上个月',custom:'指定月份'};
 function fmtDate(s){if(!s)return '-';const d=new Date(s);const n=new Date();d.setHours(0,0,0,0);n.setHours(0,0,0,0);const diff=Math.round((d-n)/86400000);
+try{window.fmtDate=fmtDate;}catch(e){}
   if(diff===0)return '今天';if(diff===1)return '明天';if(diff===2)return '后天';
   const mo=['1','2','3','4','5','6','7','8','9','10','11','12'];
   return (d.getFullYear()===n.getFullYear()?'':d.getFullYear()+'年')+mo[d.getMonth()]+'月'+d.getDate()+'日';}
 function fmtYMD(s){if(!s)return'';const d=new Date(s);return d.getFullYear()+'年'+(d.getMonth()+1)+'月'+d.getDate()+'日';}
+try{window.fmtYMD=fmtYMD;}catch(e){}
 function fmtDateSlash(s){if(!s)return '-';const d=new Date(s);return d.getFullYear()+'/'+String(d.getMonth()+1).padStart(2,'0')+'/'+String(d.getDate()).padStart(2,'0');}
+try{window.fmtDateSlash=fmtDateSlash;}catch(e){}
 function money(n){n=n||0;return '¥'+Number(n).toLocaleString('zh-CN',{minimumFractionDigits:0,maximumFractionDigits:2});}
+try{window.money=money;}catch(e){}
 /* 记账分类：参考鲨鱼记账，日常开销 + 生意相关 + 带货收入 */
 const CATS={
   /* 收入来源 */
@@ -1094,6 +1142,7 @@ const CATS={
 /* ============ navigation ============ */
 let curTab='home';
 function viewTab(v){curTab=v;
+try{window.viewTab=viewTab;}catch(e){}
   document.querySelectorAll('.tab').forEach(t=>t.classList.toggle('on',t.dataset.v===v));
   document.querySelectorAll('.view').forEach(x=>x.classList.toggle('on',x.id==='view-'+v));
   const map={home:'今日概览',product:'出单管理',sample:'样品排期',copy:'文案库',ledger:'记账',publish:'视频发布'};
@@ -1103,6 +1152,7 @@ function viewTab(v){curTab=v;
   closeSheet();refreshNav();
 }
 function contextFab(){
+try{window.contextFab=contextFab;}catch(e){}
   if(curTab==='product')quickAdd('product');
   else if(curTab==='sample')quickAdd('sample');
   else if(curTab==='ledger')quickAdd('money');
@@ -1111,6 +1161,7 @@ function contextFab(){
 }
 document.querySelectorAll('.tab').forEach(t=>t.addEventListener('click',()=>viewTab(t.dataset.v)));
 function refreshNav(){
+try{window.refreshNav=refreshNav;}catch(e){}
   const now=new Date();
   const todayS=now.toISOString().slice(0,10);
   const waiting=db.samples.filter(s=>s.status==='inway'||s.status==='todo').length;
@@ -1119,31 +1170,41 @@ function refreshNav(){
   const bad30=db.copies.filter(c=>c.rate<=2&&c.date&&c.date>=now.toISOString().slice(0,10)).length;
 }
 function toast(m){const t=document.getElementById('toast');t.textContent=m;t.classList.add('show');clearTimeout(t._h);t._h=setTimeout(()=>t.classList.remove('show'),1800);}
+try{window.toast=toast;}catch(e){}
 
 /* ============ sheet ============ */
 function openSheet(html){document.getElementById('sheet').innerHTML=html;requestAnimationFrame(()=>{document.getElementById('mask').classList.add('show');document.getElementById('sheet').classList.add('show');});}
+try{window.openSheet=openSheet;}catch(e){}
 function closeSheet(){document.getElementById('mask').classList.remove('show');document.getElementById('sheet').classList.remove('show');setTimeout(()=>{document.getElementById('sheet').innerHTML='';},300);}
+try{window.closeSheet=closeSheet;}catch(e){}
 function formVal(name){const el=document.querySelector('[name="'+name+'"]');if(!el)return'';return el.type==='checkbox'?(el.checked?'1':'0'):el.value.trim();}
+try{window.formVal=formVal;}catch(e){}
 
 /* ============ helper: product / copy name input ============ */
 function productPicker(sel,val){
+try{window.productPicker=productPicker;}catch(e){}
   const names=[...new Set(db.products.map(p=>p.name))].filter(Boolean);
   const v=val?(' value="'+String(val).replace(/"/g,'&quot;')+'"'):'';
   const html='<div class="f-label">产品名称 <span class="req">*</span></div><input class="f-input" name="'+sel+'" list="prodOpts-'+sel+'"'+v+' placeholder="输入或选择已有产品" autocomplete="off"><datalist id="prodOpts-'+sel+'">'+names.map(n=>'<option value="'+n.replace(/"/g,'&quot;')+'">').join('')+'</datalist>';
   return html;
 }
 function productOptions(name){
+try{window.productOptions=productOptions;}catch(e){}
   const ids=[];
   db.products.forEach(p=>{if(p.name===name&&!ids.includes(p.id))ids.push(p.id);});
   return ids;
 }
 /* 单条视频记录：出单数 / 是否出单（兼容旧数据：旧记录没有 orders 时按金额>0 视为出了1单） */
 function recOrders(r){return r.orders!=null?(Number(r.orders)||0):((r.price||0)>0?1:0);}
+try{window.recOrders=recOrders;}catch(e){}
 function recSold(r){return recOrders(r)>0;}
+try{window.recSold=recSold;}catch(e){}
 /* 出单口径：0 单的属于"视频发布记录"，不进出单管理/出单记录表 */
 function isOrderRec(r){return r.type==='product'&&recOrders(r)>0;}
+try{window.isOrderRec=isOrderRec;}catch(e){}
 /* 一个产品的汇总统计 */
 function prodStats(pid,acctFilter='all',range='all'){
+try{window.prodStats=prodStats;}catch(e){}
   const recs=db.records.filter(r=>r.pid===pid&&acctMatch(acctOf(r),acctFilter)&&inRange(r.date,range));
   let days=recs.length, orders=0, revenue=0, soldDays=0;
   recs.forEach(r=>{const o=recOrders(r);orders+=o;revenue+=(r.price||0);if(o>0)soldDays++;});
@@ -1152,6 +1213,7 @@ function prodStats(pid,acctFilter='all',range='all'){
 
 /* ============ ADD PRODUCT (记出单) ============ */
 function quickAdd(type){
+try{window.quickAdd=quickAdd;}catch(e){}
   if(type==='product')addProductSheet();
   else if(type==='copy')addCopySheet();
   else if(type==='sample')addSampleSheet();
@@ -1159,6 +1221,7 @@ function quickAdd(type){
   else if(type==='detail')addDetailSheet();
 }
 function addProductSheet(rid){
+try{window.addProductSheet=addProductSheet;}catch(e){}
   const rec=rid?db.records.find(r=>r.id===rid):null;
   const editing=!!rec;
   const preName=rec?(db.products.find(p=>p.id===rec.pid)||{}).name:'';
@@ -1189,6 +1252,7 @@ function addProductSheet(rid){
   </div>`);
 }
 function pickStat(el,name){document.querySelectorAll('[data-r]').forEach(b=>b.classList.remove('on'));el.classList.add('on');document.querySelector('[name="'+name+'"]').value=el.dataset.r;
+try{window.pickStat=pickStat;}catch(e){}
   if(name==='p_stat'&&el.dataset.r==='1'){
     const m=document.querySelector('[name="p_name"]').value;
     const list=db.products.filter(p=>p.name===m);
@@ -1199,12 +1263,14 @@ function pickStat(el,name){document.querySelectorAll('[data-r]').forEach(b=>b.cl
   } else {document.getElementById('p_related').style.display='none';}
 }
 function setStars(el,max,key){const wrap=el.parentNode;const val=parseInt(el.dataset.i);
+try{window.setStars=setStars;}catch(e){}
   wrap.querySelectorAll('.star-btn').forEach(b=>b.classList.toggle('on',parseInt(b.dataset.i)<=val));
   document.getElementById(key==='p'?'pRate':'cRate').value=val;
   if(key==='c')curCopyRate=val;
 }
 let curCopyRate=0;
 function saveProduct(rid){
+try{window.saveProduct=saveProduct;}catch(e){}
   const name=formVal('p_name');
   if(!name){toast('请填写产品名称');return;}
   const orders=Math.max(0,parseInt(formVal('p_orders'))||0);
@@ -1246,6 +1312,7 @@ function saveProduct(rid){
   renderProducts('all');
 }
 function delRec(rid){
+try{window.delRec=delRec;}catch(e){}
   if(!rid)return;
   if(!confirm('删除这条出单记录？'))return;
   db.records=db.records.filter(r=>r.id!==rid);
@@ -1256,12 +1323,16 @@ function delRec(rid){
   toast('已删除');
 }
 function esc(s){return String(s==null?'':s).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;');}
+try{window.esc=esc;}catch(e){}
 function initials(name){return name?String(name).slice(0,1):'?'}
+try{window.initials=initials;}catch(e){}
 const HUE=['#ff6b6b','#ff9500','#ffa94d','#0bb07b','#3a7afe','#5c7cfa','#b06bff','#f06595','#22b8cf','#fab005'];
 function hueOf(name){let s=0;for(const ch of String(name||''))s=(s+ch.charCodeAt(0)*31)%997;return HUE[s%HUE.length];}
+try{window.hueOf=hueOf;}catch(e){}
 
 /* ============ ADD COPY 文案 ============ */
 function addCopySheet(preName){
+try{window.addCopySheet=addCopySheet;}catch(e){}
   openSheet(`
   <div class="grip"></div><div class="sheet-head"><span class="tt">新增文案</span><button class="close" onclick="closeSheet()">×</button></div>
   <div class="sheet-body">
@@ -1274,6 +1345,7 @@ function addCopySheet(preName){
   </div>`);
 }
 function saveCopy(){
+try{window.saveCopy=saveCopy;}catch(e){}
   const name=formVal('c_name');
   const text=formVal('c_text');
   if(!text){toast('请填写文案正文');return;}
@@ -1287,35 +1359,42 @@ function saveCopy(){
   else{viewTab('copy');renderCopies('all');toast('文案已保存');}
 }
 function parseTags(s){
+try{window.parseTags=parseTags;}catch(e){}
   return String(s||'').split(/[\s,，;；\n\r\t]+/).map(x=>x.replace(/^#+/,'').trim()).filter(Boolean);
 }
 
 /* copy文案到剪贴板 */
 function copyTextOf(c){return (c&&(c.text||c.note))?String(c.text||c.note):'';}
+try{window.copyTextOf=copyTextOf;}catch(e){}
 function copyOne(id){const c=db.copies.find(x=>x.id===id);if(!c)return;
+try{window.copyOne=copyOne;}catch(e){}
   let t=copyTextOf(c);
   if(!t.trim()){t=(c.name||'')+(c.note?'\n'+c.note:'');}
   copyText(t);
 }
 function copyText(txt){
+try{window.copyText=copyText;}catch(e){}
   txt=String(txt||'');
   const done=()=>toast('已复制，可直接去粘贴发视频');
   if(navigator.clipboard&&window.isSecureContext){navigator.clipboard.writeText(txt).then(done).catch(()=>legacyCopy(txt,done));}
   else legacyCopy(txt,done);
 }
 function legacyCopy(txt,done){
+try{window.legacyCopy=legacyCopy;}catch(e){}
   const ta=document.createElement('textarea');ta.value=txt;ta.style.position='fixed';ta.style.opacity='0';
   document.body.appendChild(ta);ta.select();
   try{document.execCommand('copy');done();}catch(e){prompt('长按复制以下文案：',txt);}
   document.body.removeChild(ta);
 }
 function copyTags(id){
+try{window.copyTags=copyTags;}catch(e){}
   const c=db.copies.find(x=>x.id===id);if(!c)return;
   const tags=(c.tags||[]).filter(Boolean);
   if(!tags.length){toast('这条没有话题');return;}
   copyText(tags.map(t=>'#'+t).join(' '));
 }
 function bulkImportCopy(lockName){
+try{window.bulkImportCopy=bulkImportCopy;}catch(e){}
   const locked=lockName&&lockName.trim();
   const hint=locked
     ? '每段文案用空行或 <code>---</code> 分隔。默认将导入到「'+esc(locked)+'」；如需分到其他产品，每段开头写 <code>【产品名】</code>，例如 <code>【无糖草本润喉糖】正文…</code>。'
@@ -1331,6 +1410,7 @@ function bulkImportCopy(lockName){
   </div>`);
 }
 function doBulkImport(){
+try{window.doBulkImport=doBulkImport;}catch(e){}
   const defaultName=formVal('bi_name');if(!defaultName){toast('请填写默认产品名');return;}
   const body=document.getElementById('biBody').value;
   if(!body.trim()){toast('请粘贴文案内容');return;}
@@ -1354,6 +1434,7 @@ function doBulkImport(){
 
 /* ============ ADD SAMPLE 样品排期 ============ */
 function addSampleSheet(){
+try{window.addSampleSheet=addSampleSheet;}catch(e){}
   openSheet(`
   <div class="grip"></div><div class="sheet-head"><span class="tt">添加样品排期</span><button class="close" onclick="closeSheet()">×</button></div>
   <div class="sheet-body">
@@ -1378,10 +1459,12 @@ function addSampleSheet(){
   </div>`);
 }
 function sampleStatusHint(v){
+try{window.sampleStatusHint=sampleStatusHint;}catch(e){}
   const map={inway:'还没到货就先不填收货日期，到货后改为“待拍摄”并填收货日期',todo:'填上收货日期，20 天内拍完并发布，避免逾期',shoot:'发布后记得记一笔带货收入，并把状态改成“已完成”',done:''};
   document.getElementById('s_hint').textContent=map[v]||'';
 }
 function saveSample(){
+try{window.saveSample=saveSample;}catch(e){}
   const name=formVal('s_name');
   if(!name){toast('请填写样品/产品名');return;}
   const d={id:uid(),name,acct:formVal('s_acct')||'big',status:formVal('s_status')||'inway',recv:formVal('s_recv'),shoot:'',pub:'',note:formVal('s_note'),created:today()};
@@ -1391,6 +1474,7 @@ function saveSample(){
 
 /* ============ ADD MONEY 记账 ============ */
 function addMoneySheet(){
+try{window.addMoneySheet=addMoneySheet;}catch(e){}
   openSheet(`
   <div class="grip"></div><div class="sheet-head"><span class="tt">记一笔</span><button class="close" onclick="closeSheet()">×</button></div>
   <div class="sheet-body">
@@ -1408,8 +1492,11 @@ function addMoneySheet(){
 }
 let curMoneyType='in';
 function pickAcct(el,name){el.parentNode.querySelectorAll('button').forEach(b=>b.classList.remove('on'));el.classList.add('on');document.querySelector('[name="'+name+'"]').value=el.dataset.a;}
+try{window.pickAcct=pickAcct;}catch(e){}
 function pickType(el){curMoneyType=el.dataset.t;document.querySelectorAll('[data-t]').forEach(b=>b.classList.toggle('on',b===el));document.querySelector('[name="m_type"]').value=el.dataset.t;fillCat();}
+try{window.pickType=pickType;}catch(e){}
 function catIconSvg(catKey){const k=CATS[catKey];if(!k)return '';return `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="${k.icon}"/></svg>`;}
+try{window.catIconSvg=catIconSvg;}catch(e){}
 /* 记账分类分组（参考鲨鱼记账：日常开销 / 生意相关 / 收入来源） */
 const LED_GROUPS={
   in:[{t:'收入来源',items:['commission','salary','bonus','parttime','invest','income_other']}],
@@ -1419,6 +1506,7 @@ const LED_GROUPS={
   ]
 };
 function fillCat(){
+try{window.fillCat=fillCat;}catch(e){}
   const box=document.getElementById('m_cat_grid');if(!box)return;
   const groups=LED_GROUPS[curMoneyType]||[];
   const sel=document.querySelector('[name="m_cat"]');
@@ -1438,10 +1526,12 @@ function fillCat(){
   if(cell)pickCat(cell,target);
 }
 function pickCat(cell,k){
+try{window.pickCat=pickCat;}catch(e){}
   document.querySelectorAll('#m_cat_grid .cat-cell').forEach(b=>b.classList.toggle('on',b===cell));
   document.querySelector('[name="m_cat"]').value=k;
 }
 function saveMoney(){
+try{window.saveMoney=saveMoney;}catch(e){}
   const amount=parseFloat(formVal('m_amount'));
   if(!(amount>0)){toast('请填写金额');return;}
   const type=formVal('m_type');
@@ -1454,12 +1544,15 @@ let prodAcct='all';
 let prodSort='last';
 let prodRange='all';
 function prodRecsFiltered(p){
+try{window.prodRecsFiltered=prodRecsFiltered;}catch(e){}
   return db.records.filter(r=>r.pid===p.id&&acctMatch(acctOf(r),prodAcct)&&inRange(r.date,prodRange));
 }
 function prodTotalOrders(pid){
+try{window.prodTotalOrders=prodTotalOrders;}catch(e){}
   return db.records.filter(r=>r.pid===pid&&acctMatch(acctOf(r),prodAcct)&&inRange(r.date,prodRange)).reduce((s,r)=>s+recOrders(r),0);
 }
 function renderProducts(){
+try{window.renderProducts=renderProducts;}catch(e){}
   const all=db.products.slice();
   const list=all.sort((a,b)=>{
     if(prodSort==='orders')return prodTotalOrders(b.id)-prodTotalOrders(a.id);
@@ -1496,6 +1589,7 @@ function renderProducts(){
 /* ============ render publish 视频发布 ============ */
 let publishAcct='all';
 function renderPublish(f){
+try{window.renderPublish=renderPublish;}catch(e){}
   if(f)publishAcct=f||publishAcct;
   const el=document.getElementById('publishList');
   const recs=db.records.filter(r=>r.type==='product'&&!(r.note||'').includes('汇总')&&acctMatch(acctOf(r),publishAcct));
@@ -1525,6 +1619,7 @@ function renderPublish(f){
   }).join('');
 }
 function openPublishProduct(name,acct){
+try{window.openPublishProduct=openPublishProduct;}catch(e){}
   const ids=db.products.filter(p=>p.name===name).map(p=>p.id);
   const recs=db.records.filter(r=>{
     if(r.type!=='product'||(r.note||'').includes('汇总'))return false;
@@ -1552,6 +1647,7 @@ function openPublishProduct(name,acct){
   </div>`);
 }
 function delPublishDate(name,acct,date){
+try{window.delPublishDate=delPublishDate;}catch(e){}
   if(!confirm('删除 '+ACCT_NAME[acct]+' 在 '+fmtDateSlash(date)+' 的发布记录？'))return;
   const ids=db.products.filter(p=>p.name===name).map(p=>p.id);
   db.records=db.records.filter(r=>{
@@ -1566,8 +1662,10 @@ function delPublishDate(name,acct,date){
 }
 
 function avgRate(pid,acctFilter='all'){const rs=db.records.filter(r=>r.pid===pid&&acctMatch(acctOf(r),acctFilter)&&r.rate);if(!rs.length)return 0;return rs.reduce((s,r)=>s+r.rate,0)/rs.length;}
+try{window.avgRate=avgRate;}catch(e){}
 
 function emptyHTML(msg){return '<div class="empty"><svg viewBox="0 0 24 24" stroke="currentColor" fill="none"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/></svg><div>'+esc(msg)+'</div></div>';}
+try{window.emptyHTML=emptyHTML;}catch(e){}
 
 /* ============ render samples ============ */
 let sampleFilter='all';
@@ -1576,6 +1674,7 @@ let sampleFilter='all';
   完成期限 = recv+20；超过期限未完成 → 逾期天数=超出部分 */
 const RECV_GRACE=20;
 function addDays(dateStr,days){
+try{window.addDays=addDays;}catch(e){}
   if(!dateStr)return'';
   const d=new Date(dateStr+'T00:00:00');
   if(isNaN(d))return '';
@@ -1583,7 +1682,9 @@ function addDays(dateStr,days){
   return isoDate(d);
 }
 function recvLimit(s){return s&&s.recv?addDays(s.recv,RECV_GRACE):'';}
+try{window.recvLimit=recvLimit;}catch(e){}
 function overdueDays(s){
+try{window.overdueDays=overdueDays;}catch(e){}
   if(!s||s.status==='done')return 0;
   const lim=recvLimit(s);
   if(!lim)return 0;
@@ -1591,8 +1692,11 @@ function overdueDays(s){
   return d>0?d:0;
 }
 function overdueKind(s){return '完成期限';}
+try{window.overdueKind=overdueKind;}catch(e){}
 function overdueDue(s){return recvLimit(s);}
+try{window.overdueDue=overdueDue;}catch(e){}
 function renderHomeOverdue(){
+try{window.renderHomeOverdue=renderHomeOverdue;}catch(e){}
   const sec=document.getElementById('homeOverdueSec');
   const box=document.getElementById('homeOverdue');
   const cnt=document.getElementById('odCnt');
@@ -1609,6 +1713,7 @@ function renderHomeOverdue(){
   box.innerHTML=list.map(s=>`<div class="row" style="cursor:pointer" onclick="openSample('${s.id}')"><div class="thumb" style="background:${hueOf(s.name)}">${esc(initials(s.name))}</div><div class="grow"><div class="t">${esc(s.name)}</div><div class="d">${ACCT_NAME[acctOf(s)]} · 收货 ${fmtDate(s.recv)} · 期限 ${fmtDate(recvLimit(s))}</div></div><span class="badge" style="background:#ff3d4a;color:#fff;flex-shrink:0">逾期 ${overdueDays(s)} 天</span></div>`).join('');
 }
 function renderSamples(f){sampleFilter=f||sampleFilter;
+try{window.renderSamples=renderSamples;}catch(e){}
   const list=[...db.samples].filter(s=>acctMatch(acctOf(s),sampleAcct)).sort((a,b)=>{
     const rank={inway:0,todo:1,shoot:2,done:3};
     const adate=(x)=>x.recv||x.created||'';
@@ -1650,13 +1755,17 @@ function renderSamples(f){sampleFilter=f||sampleFilter;
 let copyFilter='all';
 let copySearch='';
 function copyProducts(){const set=new Set();db.copies.forEach(c=>{if(c.name)set.add(c.name);});return [...set].sort((a,b)=>a.localeCompare(b,'zh'));}
+try{window.copyProducts=copyProducts;}catch(e){}
 function renderCopyPills(){
+try{window.renderCopyPills=renderCopyPills;}catch(e){}
   const seg=document.getElementById('cpProdSeg');if(!seg)return;
   const names=['',...copyProducts()];
   seg.innerHTML=names.map(n=>`<button class="${copyFilter==='p:'+n?'on':''}" data-name="${esc(n).replace(/"/g,'&quot;')}" onclick="pickCopyProd(this)">${n?esc(n):'全部产品'}</button>`).join('');
 }
 function pickCopyProd(btn){copyFilter='p:'+(btn.dataset.name||'');document.querySelectorAll('#cpProdSeg button').forEach(b=>b.classList.remove('on'));btn.classList.add('on');renderCopies();}
+try{window.pickCopyProd=pickCopyProd;}catch(e){}
 function copyMatchFilter(c){
+try{window.copyMatchFilter=copyMatchFilter;}catch(e){}
   if(copyFilter==='all')return true;
   if(copyFilter==='good')return c.rate>=4;
   if(copyFilter==='mid')return c.rate===3;
@@ -1669,6 +1778,7 @@ function copyMatchFilter(c){
   return true;
 }
 function renderCopies(f){if(f)copyFilter=f||copyFilter;
+try{window.renderCopies=renderCopies;}catch(e){}
   const topStat=document.getElementById('cpTopStat');if(topStat)topStat.textContent='文案 '+db.copies.length+' 条';
   const el=document.getElementById('copyList');
   if(!db.copies.length){el.innerHTML=emptyHTML('还没有文案记录。点右上角"+新文案"添加，或进入产品详情使用「批量导入」');return;}
@@ -1704,11 +1814,14 @@ function renderCopies(f){if(f)copyFilter=f||copyFilter;
   }).join('');
 }
 function showCopyHome(){copyDrillMode='list';document.getElementById('copyHome').style.display='';document.getElementById('copyDrill').style.display='none';}
+try{window.showCopyHome=showCopyHome;}catch(e){}
 function showCopyDrill(){copyDrillMode='detail';document.getElementById('copyHome').style.display='none';document.getElementById('copyDrill').style.display='';window.scrollTo(0,0);}
+try{window.showCopyDrill=showCopyDrill;}catch(e){}
 let copyDrillMode='list';     // 'list' 表示列表页（list当前所在产品），'detail' 表示详情页
 let copyListName='';          // 当前产品文案列表所属的产品名
 let pcState='all';            // 产品文案列表当前筛选
 function renderPcList(){
+try{window.renderPcList=renderPcList;}catch(e){}
   const name=copyListName;
   const list=db.copies.filter(c=>c.name===name).sort((a,b)=>(b.date||'').localeCompare(a.date||''));
   const filtered=list.filter(c=>{
@@ -1736,6 +1849,7 @@ function renderPcList(){
   }).join('');
 }
 function enterCopyList(name){
+try{window.enterCopyList=enterCopyList;}catch(e){}
   copyListName=name;pcState='all';
   const el=document.getElementById('copyDrill');
   el.innerHTML=`
@@ -1758,6 +1872,7 @@ function enterCopyList(name){
 }
 /* 详情页：进入文案详情（整页，非弹窗） */
 function enterCopyDetail(id){
+try{window.enterCopyDetail=enterCopyDetail;}catch(e){}
   const c=db.copies.find(x=>x.id===id);if(!c)return;
   copyListName=c.name;
   const same=[...db.copies].filter(x=>x.name===c.name&&x.id!==id).sort((a,b)=>String(b.date||'').localeCompare(String(a.date||'')));
@@ -1782,6 +1897,7 @@ function enterCopyDetail(id){
   showCopyDrill();
 }
 function toggleCopyFlagStay(id,flag){
+try{window.toggleCopyFlagStay=toggleCopyFlagStay;}catch(e){}
   const c=db.copies.find(x=>x.id===id);if(!c)return;
   c[flag]=!c[flag];
   if(flag==='used')c.lastUsed=today();
@@ -1789,18 +1905,24 @@ function toggleCopyFlagStay(id,flag){
   toast(c[flag]?'已标记为'+(flag==='used'?'用过':flag==='sold'?'出单':'爆单'):'已取消');
 }
 function enterToggleCopyFlag(id,flag){toggleCopyFlagStay(id,flag);const c=db.copies.find(x=>x.id===id);if(c)enterCopyDetail(id);}
+try{window.enterToggleCopyFlag=enterToggleCopyFlag;}catch(e){}
 
 /* ============ render ledger ============ */
 let ledgerMonth=new Date();ledgerMonth.setDate(1);
 let ledgerAcct='all',sampleAcct='all';
 let ledTab='detail';
 function monthKey(d){return d.getFullYear()+'-'+String(d.getMonth()+1).padStart(2,'0');}
+try{window.monthKey=monthKey;}catch(e){}
 function acctOf(r){return (r.acct)||'big';}
+try{window.acctOf=acctOf;}catch(e){}
 function acctMatch(a,f){return f==='all'||a===f;}
+try{window.acctMatch=acctMatch;}catch(e){}
 const ACCT_NAME={big:'大号',small:'小号'};
 function shiftMonth(n){ledgerMonth=new Date(ledgerMonth.getFullYear(),ledgerMonth.getMonth()+n,1);renderLedger();}
+try{window.shiftMonth=shiftMonth;}catch(e){}
 /* 月份选择器：双栏年份/月份 */
 function openMonthPicker(){
+try{window.openMonthPicker=openMonthPicker;}catch(e){}
   const now=new Date();const curY=ledgerMonth.getFullYear();const curM=ledgerMonth.getMonth()+1;
   const ys=[];for(let y=curY-3;y<=curY+1;y++)ys.push(y);
   const ms=Array.from({length:12},(_,i)=>i+1);
@@ -1817,8 +1939,11 @@ function openMonthPicker(){
   window._mpPick={set:(y,m)=>{pickY=y;pickM=m;}};
 }
 function mpSelY(y){const c=document.querySelector('.mp-col:first-child');c.querySelectorAll('.mp-cell').forEach(b=>b.classList.toggle('on',+b.dataset.y===y));window._mpPick.set(y,parseInt(c.nextElementSibling.querySelector('.mp-cell.on')?.dataset.m||1));}
+try{window.mpSelY=mpSelY;}catch(e){}
 function mpSelM(m){const c=document.querySelector('.mp-col:nth-child(2)');c.querySelectorAll('.mp-cell').forEach(b=>b.classList.toggle('on',+b.dataset.m===m));window._mpPick.set(parseInt(c.previousElementSibling.querySelector('.mp-cell.on')?.dataset.y||new Date().getFullYear()),m);}
+try{window.mpSelM=mpSelM;}catch(e){}
 function mpConfirm(){
+try{window.mpConfirm=mpConfirm;}catch(e){}
   const yCell=document.querySelector('.mp-col:first-child .mp-cell.on');
   const mCell=document.querySelector('.mp-col:nth-child(2) .mp-cell.on');
   const y=yCell?+yCell.dataset.y:new Date().getFullYear();
@@ -1826,6 +1951,7 @@ function mpConfirm(){
   ledgerMonth=new Date(y,m-1,1);closeSheet();renderLedger();
 }
 function renderLedger(){
+try{window.renderLedger=renderLedger;}catch(e){}
   const mk=monthKey(ledgerMonth);
   // 记账不分账号
   const list=db.records.filter(r=>r.type==='income'||r.type==='expense').filter(r=>(r.date||'').startsWith(mk));
@@ -1846,6 +1972,7 @@ function renderLedger(){
 }
 /* 相对日期标签（鲨鱼记账风：今天/昨天/周X） */
 function relDayLabel(d){
+try{window.relDayLabel=relDayLabel;}catch(e){}
   if(!d)return'';
   const y=new Date(d+'T00:00:00');
   if(isNaN(y))return d;
@@ -1858,6 +1985,7 @@ function relDayLabel(d){
   return (y.getMonth()+1)+'月'+y.getDate()+'日 周'+wd;
 }
 function renderLedgerDetail(list,el){
+try{window.renderLedgerDetail=renderLedgerDetail;}catch(e){}
   const sorted=list.slice().sort((a,b)=>(b.date||'').localeCompare(a.date||''));
   if(!sorted.length){el.innerHTML=emptyHTML('还没有记账，点右下角 + 记一笔');return;}
   const groups={};
@@ -1879,6 +2007,7 @@ function renderLedgerDetail(list,el){
   el.innerHTML=`<div class="ledger-list">${h}</div>`;
 }
 function renderLedgerRank(list,el){
+try{window.renderLedgerRank=renderLedgerRank;}catch(e){}
   const sorted=list.filter(r=>r.type==='expense').slice().sort((a,b)=>(b.date||'').localeCompare(a.date||''));
   const totals={};sorted.forEach(r=>{totals[r.cat]=(totals[r.cat]||0)+(r.amount||0);});
   const arr=Object.keys(totals).map(k=>({k,amt:totals[k]})).sort((a,b)=>b.amt-a.amt);
@@ -1893,6 +2022,7 @@ function renderLedgerRank(list,el){
   el.innerHTML=`<div class="led-rank-list"><div style="padding:12px 14px;display:flex;justify-content:space-between;align-items:center;font-size:13px;color:var(--text2);border-bottom:1px solid var(--line)">本月总支出 <span style="color:var(--brand);font-weight:800">${money(total).replace('¥','¥')}</span></div>${h}</div>`;
 }
 function renderLedgerChart(list,el){
+try{window.renderLedgerChart=renderLedgerChart;}catch(e){}
   const sorted=list.filter(r=>r.type==='expense').slice().sort((a,b)=>(a.date||'').localeCompare(b.date||''));
   if(!sorted.length){el.innerHTML=emptyHTML('本月没有支出数据');return;}
   // 按天汇总
@@ -1912,6 +2042,7 @@ function renderLedgerChart(list,el){
 /* ============ render home ============ */
 /* 从总览今日发视频卡快捷跳转出单管理并预选今天 */
 function quickGoToday(){
+try{window.quickGoToday=quickGoToday;}catch(e){}
   prodRange='today';prodAcct='all';prodMonth='';prodSort='last';
   const m=document.getElementById('prodMonth');if(m)m.value='';
   document.querySelectorAll('#prodAcctSeg .f-pill').forEach(b=>b.classList.toggle('on',b.dataset.a==='all'));
@@ -1920,6 +2051,7 @@ function quickGoToday(){
   viewTab('product');renderProducts();
 }
 function renderHome(){
+try{window.renderHome=renderHome;}catch(e){}
   // totals
   const td=today();
   const tdRecs=db.records.filter(r=>r.type==='product'&&r.date===td);
@@ -1981,6 +2113,7 @@ function renderHome(){
 
 /* ============ details open ============ */
 function openProduct(pid){
+try{window.openProduct=openProduct;}catch(e){}
   const p=db.products.find(x=>x.id===pid);if(!p)return;
   const st=prodStats(pid);
   const recs=st.recs.filter(isOrderRec).sort((a,b)=>(b.date||'').localeCompare(a.date||''));
@@ -2006,7 +2139,9 @@ function openProduct(pid){
   </div>`);
 }
 function delProduct(pid){if(!confirm('删除该产品及其全部出单记录？'))return;db.records=db.records.filter(r=>r.pid!==pid);db.products=db.products.filter(p=>p.id!==pid);save();closeSheet();viewTab('product');renderProducts('all');toast('已删除');}
+try{window.delProduct=delProduct;}catch(e){}
 function delOrder(rid){
+try{window.delOrder=delOrder;}catch(e){}
   const r=db.records.find(x=>x.id===rid);if(!r)return;
   if(!confirm('删除这条出单记录？'))return;
   const pid=r.pid;
@@ -2024,13 +2159,16 @@ function delOrder(rid){
   toast('已删除');
 }
 function delCopy(id){if(!confirm('删除该文案记录？'))return;const nm=(db.copies.find(x=>x.id===id)||{}).name;db.copies=db.copies.filter(x=>x.id!==id);save();renderCopies('all');toast('已删除');
+try{window.delCopy=delCopy;}catch(e){}
   if(nm){if(db.copies.some(x=>x.name===nm)){enterCopyList(nm);}else{showCopyHome();}}}
 function updateCopyBody(id){const c=db.copies.find(x=>x.id===id);if(!c)return;
+try{window.updateCopyBody=updateCopyBody;}catch(e){}
   const el=document.getElementById('cp_body');if(!el)return;
   c.text=el.value;c.note=c.text;
   save();toast('文案已保存');
 }
 function openSample(id){const s=db.samples.find(x=>x.id===id);if(!s)return;
+try{window.openSample=openSample;}catch(e){}
   const statusMeta={inway:{t:'在途',o:'#ff9500'},todo:{t:'待拍摄',o:'#3a7afe'},shoot:{t:'待发布',o:'#ff3d4a'},done:{t:'已完成',o:'#0bb07b'}};
   const m=statusMeta[s.status];
   openSheet(`
@@ -2055,6 +2193,7 @@ function openSample(id){const s=db.samples.find(x=>x.id===id);if(!s)return;
   </div>`);
 }
 function updateSample(id){const s=db.samples.find(x=>x.id===id);if(!s)return;
+try{window.updateSample=updateSample;}catch(e){}
   s.acct=document.querySelector('[name="ss_acct"]').value||'big';
   s.status=document.querySelector('[name="ss_status"]').value;
   s.recv=document.querySelector('[name="ss_recv"]').value;
@@ -2062,6 +2201,7 @@ function updateSample(id){const s=db.samples.find(x=>x.id===id);if(!s)return;
   save();closeSheet();viewTab('sample');renderSamples('all');toast('已更新');
 }
 function delSample(id){if(!confirm('删除该样品排期？'))return;db.samples=db.samples.filter(x=>x.id!==id);save();closeSheet();viewTab('sample');renderSamples('all');toast('已删除');}
+try{window.delSample=delSample;}catch(e){}
 
 /* ============ seg buttons ============ */
 document.addEventListener('click',e=>{
@@ -2106,6 +2246,7 @@ document.getElementById('prodMonth')?.addEventListener('change',e=>{
 
 /* ============ master render ============ */
 function renderAll(){renderHome();renderProducts();renderSamples();renderCopies();renderLedger();renderPublish();
+try{window.renderAll=renderAll;}catch(e){}
   // totals in stat cards already via renderHome
   // nav badges
   const w=db.samples.filter(s=>s.status!=='done').length;
@@ -2125,6 +2266,7 @@ if(document.readyState!=='loading'){load();renderAll();setCloudUI();cloudMaybeRe
    同时给所有 .tab 与 .fab-btn 走一次强制委托，确保即使被剥也能点。 */
 (function(){
   function ok(){return false;}
+  try{window.ok=ok;}catch(e){}
   setTimeout(function(){
     try{
       // 1) 校验底部 tab 都绑了点击（源码用 addEventListener，理论上始终在）

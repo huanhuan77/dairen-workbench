@@ -1,4 +1,4 @@
 {
-  "latest": 69,
-  "note": "用eval把40个onclick引用的函数强制挂到window，根除预览/沙箱IIFE化导致的contextFab is not defined"
+  "latest": 70,
+  "note": "v69的eval方案在沙箱重打包后失效，v70改为在每个function声明后显式try{window.X=X}（共142个+2个诊断函数），彻底根除IIFE化后onclick未定义"
 }
