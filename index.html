@@ -558,9 +558,13 @@ body{
    v72 在 script 第 1 行立刻改 title 证明启动；DOMContentLoaded 后
    在页面顶部固定一个绿底状态条显示 typeof viewTab 等关键变量——
    用户刷新页面直接看顶端标题和绿色状态条即可定位问题，无需开 DevTools。 */
-try{document.title='WBv72-start '+Date.now();}catch(e){}
+try{document.title='婷婷工作台';}catch(e){}
 function __wbShowDiag(){
   try{
+    // 仅当 URL 带 ?debug=1 或 ?diag=1 时显示诊断条（避免默认 UI 干扰）
+    var sp=new URLSearchParams(location.search);
+    var showDiag=sp.get('debug')==='1'||sp.get('diag')==='1';
+    if(!showDiag)return;
     if(document.getElementById('wbDiag'))return;
     var d=document.createElement('div');
     d.id='wbDiag';
@@ -574,7 +578,6 @@ function __wbShowDiag(){
     info.push('typeof window.contextFab='+typeof window.contextFab);
     info.push('typeof window.quickAdd='+typeof window.quickAdd);
     info.push('script.done='+window.__wbScriptDone);
-    info.push('seedOK='+window.__wbSeedOK);
     try{info.push('title='+document.title);}catch(e){}
     d.textContent='诊断: '+info.join(' | ');
     document.body.appendChild(d);
@@ -591,6 +594,10 @@ function __wbErr(msg,src){
 }
 function showErrBar(){
   try{
+    // 仅 debug 模式显示错误条
+    var sp=new URLSearchParams(location.search);
+    var showErr=sp.get('debug')==='1'||sp.get('diag')==='1';
+    if(!showErr)return;
     if(document.getElementById('wbErrBar'))return;
     var d=document.createElement('div');
     d.id='wbErrBar';
@@ -608,7 +615,7 @@ try{console._wbe=__wbErr;var _oe=console.error;console.error=function(){__wbErr(
 /* ============ 应用版本 / 检查更新 ============
    发布新版时把 APP_VER 递增，并同步把同目录 ver.json 的 latest 改成相同值。
    checkUpdate() 拉同域 ver.json 对比：有新版立刻强刷加载新版。 */
-var APP_VER=72;
+var APP_VER=73;
 /* ============ 存储兼容兜底 ============
    部分嵌入环境（如预览沙箱 iframe）禁用 localStorage，访问即抛 SecurityError，
    会导致 load() 中断、页面全空。此处探测一次：不可用就用内存模拟，保证页面能正常
@@ -2278,12 +2285,8 @@ setTimeout(function(){try{showErrBar();}catch(e){}},600);
   },0);
 })();
 
-/* ============ v72 启动完成标记 + 诊断显示 ============ */
+/* ============ v73 启动完成标记 ============ */
 try{window.__wbScriptDone=1;}catch(e){}
-if(document.readyState==='loading'){
-  document.addEventListener('DOMContentLoaded',__wbShowDiag);
-}else{
-  __wbShowDiag();
-}
+</script>
 </body>
 </html>

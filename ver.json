@@ -1,5 +1,5 @@
 {
-  "latest": 72,
+  "latest": 73,
   "releaseDate": "2026-09-07",
-  "note": "v72: 启动诊断条（顶部绿底显示typeof viewTab等，无需DevTools即可定位）；__wbErr同步触发诊断；脚本首行改title证明启动；用户刷新后看页面顶部绿条即可判断函数是否真挂上"
+  "note": "v73: 修复核心bug——内联 <script> 缺 </script> 闭合标签（6个版本未执行真凶）。所有function声明、tab绑定、window挂载全都因未闭合script而浏览器从未执行过。Node smoke测试用new Function手动截取body绕过了浏览器解析假象。v73加 </script> 闭合、清理诊断条默认隐藏（?debug=1 时显示），用真实Chrome headless验证全部6 tab切换+fab点击+所有函数typeof=function。"
 }
