@@ -551,11 +551,43 @@ body{
 <div id="toast"></div>
 
 <script>
+/* ============ v72 启动诊断 ============
+   用户反馈 v66~v71 全部"还是点不动"。从截图控制台看
+   viewTab/contextFab/quickAdd/quickGoToday 全部 is not defined，
+   浏览器加载的就是带这些错误的版本。
+   v72 在 script 第 1 行立刻改 title 证明启动；DOMContentLoaded 后
+   在页面顶部固定一个绿底状态条显示 typeof viewTab 等关键变量——
+   用户刷新页面直接看顶端标题和绿色状态条即可定位问题，无需开 DevTools。 */
+try{document.title='WBv72-start '+Date.now();}catch(e){}
+function __wbShowDiag(){
+  try{
+    if(document.getElementById('wbDiag'))return;
+    var d=document.createElement('div');
+    d.id='wbDiag';
+    d.style.cssText='position:fixed;top:0;left:0;right:0;z-index:100000;background:#0d8a4a;color:#fff;font-size:11px;line-height:1.5;padding:6px 10px;word-break:break-all;font-family:monospace';
+    var info=[];
+    info.push('APP_VER='+APP_VER);
+    info.push('typeof viewTab='+typeof viewTab);
+    info.push('typeof contextFab='+typeof contextFab);
+    info.push('typeof quickAdd='+typeof quickAdd);
+    info.push('typeof window.viewTab='+typeof window.viewTab);
+    info.push('typeof window.contextFab='+typeof window.contextFab);
+    info.push('typeof window.quickAdd='+typeof window.quickAdd);
+    info.push('script.done='+window.__wbScriptDone);
+    info.push('seedOK='+window.__wbSeedOK);
+    try{info.push('title='+document.title);}catch(e){}
+    d.textContent='诊断: '+info.join(' | ');
+    document.body.appendChild(d);
+  }catch(e){}
+}
+
 /* ============ 全局诊断：把运行时错误显示在页面顶部（便于截图定位） ============ */
 var __WB_ERR=[];
 function __wbErr(msg,src){
   try{__WB_ERR.push((src||'')+' '+(msg||''));}catch(e){}
   showErrBar();
+  // 同步显示诊断条，反映当前 typeof 状态（即使脚本后半段抛错也能看到）
+  try{__wbShowDiag();}catch(e){}
 }
 function showErrBar(){
   try{
@@ -576,7 +608,7 @@ try{console._wbe=__wbErr;var _oe=console.error;console.error=function(){__wbErr(
 /* ============ 应用版本 / 检查更新 ============
    发布新版时把 APP_VER 递增，并同步把同目录 ver.json 的 latest 改成相同值。
    checkUpdate() 拉同域 ver.json 对比：有新版立刻强刷加载新版。 */
-var APP_VER=71;
+var APP_VER=72;
 /* ============ 存储兼容兜底 ============
    部分嵌入环境（如预览沙箱 iframe）禁用 localStorage，访问即抛 SecurityError，
    会导致 load() 中断、页面全空。此处探测一次：不可用就用内存模拟，保证页面能正常
@@ -2245,5 +2277,13 @@ setTimeout(function(){try{showErrBar();}catch(e){}},600);
     }catch(_){}
   },0);
 })();
+
+/* ============ v72 启动完成标记 + 诊断显示 ============ */
+try{window.__wbScriptDone=1;}catch(e){}
+if(document.readyState==='loading'){
+  document.addEventListener('DOMContentLoaded',__wbShowDiag);
+}else{
+  __wbShowDiag();
+}
 </body>
 </html>

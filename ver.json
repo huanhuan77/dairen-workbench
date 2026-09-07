@@ -1,4 +1,5 @@
 {
-  "latest": 71,
-  "note": "v70挂载位置错位全失效。v71改在文件末尾统一挂40个onclick函数到window（此时所有function已声明完成）+document捕获级click委托(用new Function执行onclick字符串)，绝对根除"
+  "latest": 72,
+  "releaseDate": "2026-09-07",
+  "note": "v72: 启动诊断条（顶部绿底显示typeof viewTab等，无需DevTools即可定位）；__wbErr同步触发诊断；脚本首行改title证明启动；用户刷新后看页面顶部绿条即可判断函数是否真挂上"
 }
