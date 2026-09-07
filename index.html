@@ -247,7 +247,7 @@ body{
 .prod-new-meta{font-size:12px;color:var(--text2);margin-top:4px;display:flex;gap:5px;align-items:center}
 .prod-new-tags{display:flex;gap:6px;flex-wrap:wrap;margin-top:6px}
 .prod-new-tag{font-size:11px;font-weight:600;padding:3px 9px;border-radius:10px;background:#fff3e0;color:var(--orange)}
-.prod-new-count{flex-shrink:0;text-align:right;margin-right:4px}
+.prod-new-count{flex-shrink:0;text-align:right;margin-right:4px;display:flex;align-items:baseline;gap:2px;white-space:nowrap}
 .prod-new-count .num{font-size:26px;font-weight:800;color:var(--brand);line-height:1}
 .prod-new-count .unit{font-size:13px;color:var(--brand);font-weight:600}
 /* 出单记录行（截图风格） */
@@ -549,7 +549,7 @@ body{
 /* ============ 应用版本 / 检查更新 ============
    发布新版时把 APP_VER 递增，并同步把同目录 ver.json 的 latest 改成相同值。
    checkUpdate() 拉同域 ver.json 对比：有新版立刻强刷加载新版。 */
-var APP_VER=57;
+var APP_VER=58;
 /* 检查是否有新版（手动触发）— 无确认弹窗，点「更新」直接拉新版 */
 function checkUpdate(){
   const now=Date.now();
@@ -1438,41 +1438,63 @@ function renderPublish(f){
     const name=p?p.name:'未知产品';
     const acct=acctOf(r);
     const key=name+'|'+acct;
-    if(!groups[key])groups[key]={name,acct,total:0,daily:{}};
+    if(!groups[key])groups[key]={name,acct,total:0,daily:{},last:''};
     groups[key].total++;
     groups[key].daily[r.date]=(groups[key].daily[r.date]||0)+1;
+    if(r.date>(groups[key].last||''))groups[key].last=r.date;
   });
-  const list=Object.values(groups).sort((a,b)=>{
-    const aLast=Object.keys(a.daily).sort().pop()||'';
-    const bLast=Object.keys(b.daily).sort().pop()||'';
-    return bLast.localeCompare(aLast);
-  });
+  const list=Object.values(groups).sort((a,b)=>b.last.localeCompare(a.last));
   el.innerHTML=list.map(g=>{
-    const dates=Object.keys(g.daily).sort();
-    const dailyHtml=dates.map(d=>`<span>${fmtDate(d)}×${g.daily[d]}</span>`).join('');
-    return `<div class="card publish-card" style="margin-bottom:10px">
-      <div class="publish-head">
-        <div class="publish-title">${esc(g.name)}</div>
-        <button class="publish-del" onclick="delPublishGroup('${esc(g.name).replace(/'/g,"\\'")}','${g.acct}')">删除</button>
+    return `<div class="card" style="margin-bottom:10px"><div class="prod-new" onclick="openPublishProduct('${esc(g.name).replace(/'/g,"\\'")}','${g.acct}')">
+      <div class="prod-new-main">
+        <div class="prod-new-name">${esc(g.name)}</div>
+        <div class="prod-new-meta"><span>共记 ${g.total} 次</span><span>·</span><span>最近 ${fmtDateSlash(g.last)}</span></div>
+        <div class="prod-new-tags"><span class="prod-new-tag" style="background:${g.acct==='big'?'#fff3e0':'#e8f0ff'};color:${g.acct==='big'?'var(--orange)':'var(--blue)'}">${ACCT_NAME[g.acct]}</span></div>
       </div>
-      <div class="publish-tags">
-        <span class="chip" style="background:${g.acct==='small'?'#e8f0ff':'#fff3e0'};color:${g.acct==='small'?'var(--blue)':'var(--orange)'}">${ACCT_NAME[g.acct]}</span>
-        <span class="chip hl">发布 ${g.total} 条</span>
-      </div>
-      <div class="publish-dates" title="${dates.map(d=>fmtDate(d)+'×'+g.daily[d]).join('  ')}">${dailyHtml}</div>
-    </div>`;
+      <div class="prod-new-count"><div class="num">${g.total}</div><div class="unit">次</div></div>
+      <div class="arrow"><svg viewBox="0 0 24 24"><path d="M9 18l6-6-6-6"/></svg></div>
+    </div></div>`;
   }).join('');
 }
-function delPublishGroup(name,acct){
-  if(!confirm('删除「'+name+'」在'+ACCT_NAME[acct]+'下的全部视频发布记录？'))return;
+function openPublishProduct(name,acct){
+  const ids=db.products.filter(p=>p.name===name).map(p=>p.id);
+  const recs=db.records.filter(r=>{
+    if(r.type!=='product'||(r.note||'').includes('汇总'))return false;
+    if(!ids.includes(r.pid))return false;
+    if(acctOf(r)!==acct)return false;
+    return true;
+  }).sort((a,b)=>(b.date||'').localeCompare(a.date||''));
+  const daily={};
+  recs.forEach(r=>{daily[r.date]=(daily[r.date]||0)+1;});
+  const dates=Object.keys(daily).sort((a,b)=>b.localeCompare(a));
+  openSheet(`<div class="grip"></div>
+  <div class="sheet-head"><span class="tt">${esc(name)}</span><button class="close" onclick="closeSheet()">×</button></div>
+  <div class="sheet-body">
+    <div style="display:flex;gap:10px;margin-bottom:12px">
+      <div class="stat-card" style="flex:1;padding:10px"><div class="lab">累计发布</div><div class="num" style="font-size:20px;color:var(--brand)">${recs.length}<small> 次</small></div></div>
+      <div class="stat-card" style="flex:1;padding:10px"><div class="lab">最近发布</div><div class="num" style="font-size:20px">${fmtDateSlash(recs[0]&&recs[0].date)}</div></div>
+    </div>
+    ${dates.length?dates.map(d=>`<div class="order-row">
+      <div class="order-dot"></div>
+      <div class="order-date">${fmtDateSlash(d)}</div>
+      <div class="order-acct" style="background:${acct==='big'?'#fff3e0':'#e8f0ff'};color:${acct==='big'?'var(--orange)':'var(--blue)'}">${ACCT_NAME[acct]}</div>
+      <div class="order-qty">+${daily[d]} 次</div>
+      <button class="order-del" onclick="event.stopPropagation();delPublishDate('${esc(name).replace(/'/g,"\\'")}','${acct}','${d}')"><svg viewBox="0 0 24 24"><path d="M3 6h18M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6m3 0V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2"/></svg></button>
+    </div>`).join(''):emptyHTML('没有发布记录')}
+  </div>`);
+}
+function delPublishDate(name,acct,date){
+  if(!confirm('删除 '+ACCT_NAME[acct]+' 在 '+fmtDateSlash(date)+' 的发布记录？'))return;
   const ids=db.products.filter(p=>p.name===name).map(p=>p.id);
   db.records=db.records.filter(r=>{
     if(r.type!=='product'||(r.note||'').includes('汇总'))return true;
     if(!ids.includes(r.pid))return true;
     if(acctOf(r)!==acct)return true;
+    if(r.date!==date)return true;
     return false;
   });
-  save();renderPublish();renderHome();renderProducts();
+  save();closeSheet();renderPublish();renderHome();renderProducts();
+  toast('已删除');
 }
 
 function avgRate(pid,acctFilter='all'){const rs=db.records.filter(r=>r.pid===pid&&acctMatch(acctOf(r),acctFilter)&&r.rate);if(!rs.length)return 0;return rs.reduce((s,r)=>s+r.rate,0)/rs.length;}
