@@ -1,4 +1,4 @@
 {
-  "latest": 68,
-  "note": "加全局错误诊断条：JS运行时错误直接红字显示页面顶部，便于截图定位点不动的原因"
+  "latest": 69,
+  "note": "用eval把40个onclick引用的函数强制挂到window，根除预览/沙箱IIFE化导致的contextFab is not defined"
 }
