@@ -1,5 +1,5 @@
 {
-  "latest": 73,
+  "latest": 74,
   "releaseDate": "2026-09-07",
-  "note": "v73: 修复核心bug——内联 <script> 缺 </script> 闭合标签（6个版本未执行真凶）。所有function声明、tab绑定、window挂载全都因未闭合script而浏览器从未执行过。Node smoke测试用new Function手动截取body绕过了浏览器解析假象。v73加 </script> 闭合、清理诊断条默认隐藏（?debug=1 时显示），用真实Chrome headless验证全部6 tab切换+fab点击+所有函数typeof=function。"
+  "note": "v74: 出单管理'日期选择器'单独一行固定(独立 .filter-month-row)，其他筛选(账号/时间/排序)放 .filter-scroll 容器横向滚动(flex-wrap:nowrap + overflow-x:auto + 隐藏滚动条)。真实浏览器验证：新布局生效、prodMonth 仍可点击填值、0 错误。"
 }

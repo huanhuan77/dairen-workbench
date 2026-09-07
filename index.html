@@ -156,6 +156,9 @@ body{
 
 /* 出单管理 filter bar */
 .filter{display:flex;flex-wrap:wrap;align-items:center;gap:6px 4px}
+.filter-scroll{flex-wrap:nowrap;overflow-x:auto;overflow-y:hidden;-webkit-overflow-scrolling:touch;padding-bottom:2px}
+.filter-scroll::-webkit-scrollbar{display:none}
+.filter-month-row{background:#fff;border:1px solid var(--line);border-radius:18px;padding:5px 8px;display:inline-block;margin-bottom:8px}
 .fb-seg{display:inline-flex;flex-wrap:wrap;gap:6px;align-items:center}
 .fb-sep{width:1px;height:18px;background:var(--line);margin:0 6px;align-self:center}
 .f-pill{padding:6px 10px;border:1px solid var(--line);border-radius:18px;background:#fff;font-size:13px;font-family:inherit;color:var(--text2);cursor:pointer;line-height:1.2}
@@ -448,7 +451,12 @@ body{
     <!-- ============ PRODUCT ============ -->
     <div id="view-product" class="view">
       <div class="view-title">出单管理</div>
-      <div class="filter">
+      <!-- v74: 日期选择器单独放一行固定 -->
+      <div class="filter-month-row">
+        <input type="month" class="f-month" id="prodMonth" value="">
+      </div>
+      <!-- 其他筛选横向滚动 -->
+      <div class="filter filter-scroll">
         <span class="fb-seg" id="prodAcctSeg">
           <button class="f-pill on" data-a="all">全部账号</button>
           <button class="f-pill" data-a="big">大号</button>
@@ -462,7 +470,6 @@ body{
           <button class="f-pill" data-r="week">本周</button>
           <button class="f-pill" data-r="month">本月</button>
           <button class="f-pill" data-r="lastmonth">上月</button>
-          <input type="month" class="f-month" id="prodMonth" value="">
         </span>
         <span class="fb-sep"></span>
         <span class="fb-seg" id="prodSortSeg">
@@ -615,7 +622,7 @@ try{console._wbe=__wbErr;var _oe=console.error;console.error=function(){__wbErr(
 /* ============ 应用版本 / 检查更新 ============
    发布新版时把 APP_VER 递增，并同步把同目录 ver.json 的 latest 改成相同值。
    checkUpdate() 拉同域 ver.json 对比：有新版立刻强刷加载新版。 */
-var APP_VER=73;
+var APP_VER=74;
 /* ============ 存储兼容兜底 ============
    部分嵌入环境（如预览沙箱 iframe）禁用 localStorage，访问即抛 SecurityError，
    会导致 load() 中断、页面全空。此处探测一次：不可用就用内存模拟，保证页面能正常
