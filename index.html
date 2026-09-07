@@ -239,6 +239,26 @@ body{
 .chip.bl{background:var(--blue-soft);color:var(--blue)}
 .prod-info{margin-top:8px;font-size:13px;color:var(--text2)}
 .prod-info b{color:var(--text);font-weight:600}
+/* 新版出单产品卡（截图风格） */
+.prod-new{padding:14px;display:flex;align-items:center;gap:12px;cursor:pointer}
+.prod-new+.prod-new{border-top:1px solid var(--line)}
+.prod-new-main{flex:1;min-width:0}
+.prod-new-name{font-weight:800;font-size:15px;color:var(--text);line-height:1.3;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.prod-new-meta{font-size:12px;color:var(--text2);margin-top:4px;display:flex;gap:5px;align-items:center}
+.prod-new-tags{display:flex;gap:6px;flex-wrap:wrap;margin-top:6px}
+.prod-new-tag{font-size:11px;font-weight:600;padding:3px 9px;border-radius:10px;background:#fff3e0;color:var(--orange)}
+.prod-new-count{flex-shrink:0;text-align:right;margin-right:4px}
+.prod-new-count .num{font-size:26px;font-weight:800;color:var(--brand);line-height:1}
+.prod-new-count .unit{font-size:13px;color:var(--brand);font-weight:600}
+/* 出单记录行（截图风格） */
+.order-row{display:flex;align-items:center;gap:10px;padding:11px 0;border-bottom:1px solid var(--line);cursor:pointer}
+.order-dot{width:8px;height:8px;border-radius:50%;background:var(--orange);flex-shrink:0}
+.order-date{font-size:13px;color:var(--text);flex-shrink:0;width:84px}
+.order-acct{font-size:11px;font-weight:600;padding:3px 8px;border-radius:10px;background:#fff3e0;color:var(--orange);flex-shrink:0}
+.order-qty{flex:1;text-align:right;font-size:14px;font-weight:700;color:var(--text)}
+.order-del{width:28px;height:28px;display:flex;align-items:center;justify-content:center;border-radius:50%;border:none;background:transparent;color:#ff3d4a;cursor:pointer;flex-shrink:0}
+.order-del:active{background:#ffe3e3}
+.order-del svg{width:16px;height:16px;fill:none;stroke:currentColor;stroke-width:2;stroke-linecap:round;stroke-linejoin:round}
 .arrow{color:var(--text3);flex-shrink:0;display:flex;align-items:center}
 .arrow svg{width:18px;height:18px;fill:none;stroke:currentColor;stroke-width:2;stroke-linecap:round;stroke-linejoin:round}
 .copy-mini{flex-shrink:0;display:flex;align-items:center;gap:4px;border:none;background:#fff0f6;color:#ff7eb6;font-size:12px;font-weight:700;font-family:inherit;padding:8px 12px;border-radius:10px;cursor:pointer;border:1px solid #ffcce0}
@@ -529,7 +549,7 @@ body{
 /* ============ 应用版本 / 检查更新 ============
    发布新版时把 APP_VER 递增，并同步把同目录 ver.json 的 latest 改成相同值。
    checkUpdate() 拉同域 ver.json 对比：有新版立刻强刷加载新版。 */
-var APP_VER=56;
+var APP_VER=57;
 /* 检查是否有新版（手动触发）— 无确认弹窗，点「更新」直接拉新版 */
 function checkUpdate(){
   const now=Date.now();
@@ -970,6 +990,7 @@ function fmtDate(s){if(!s)return '-';const d=new Date(s);const n=new Date();d.se
   const mo=['1','2','3','4','5','6','7','8','9','10','11','12'];
   return (d.getFullYear()===n.getFullYear()?'':d.getFullYear()+'年')+mo[d.getMonth()]+'月'+d.getDate()+'日';}
 function fmtYMD(s){if(!s)return'';const d=new Date(s);return d.getFullYear()+'年'+(d.getMonth()+1)+'月'+d.getDate()+'日';}
+function fmtDateSlash(s){if(!s)return '-';const d=new Date(s);return d.getFullYear()+'/'+String(d.getMonth()+1).padStart(2,'0')+'/'+String(d.getDate()).padStart(2,'0');}
 function money(n){n=n||0;return '¥'+Number(n).toLocaleString('zh-CN',{minimumFractionDigits:0,maximumFractionDigits:2});}
 /* 记账分类：参考鲨鱼记账，日常开销 + 生意相关 + 带货收入 */
 const CATS={
@@ -1388,34 +1409,17 @@ function renderProducts(){
   if(!filtered.length){el.innerHTML=emptyHTML(RANGE_NAME[prodRange]+'（'+acctTxt+'）没有出单记录');return;}
   el.innerHTML=filtered.map(p=>{
     const st=prodStats(p.id,prodAcct,prodRange);
-    const recs=st.recs;
-    const revenue=st.revenue;
-    const good=recs.filter(r=>r.rate&&r.rate>=4).length;
-    const mid=recs.filter(r=>r.rate===3).length;
-    const bad=recs.filter(r=>r.rate&&r.rate<=2).length;
-    const avg=avgRate(p.id,prodAcct);
-    const avgTxt=avg>0?avg.toFixed(1)+' 分':'未评';
-    // 账号维度拆分（仅在"全部账号"下展示）
-    let acctChips='';
-    if(prodAcct==='all'){
-      acctChips=['big','small'].map(a=>{
-        const s=prodStats(p.id,a,prodRange);
-        if(!s.recs.some(isOrderRec))return '';
-        return `<span class="chip" style="background:${a==='big'?'#fff3e0':'#e8f0ff'};color:${a==='big'?'var(--orange)':'var(--blue)'}">${ACCT_NAME[a]} 出 ${s.orders} 单</span>`;
-      }).join('');
-    }
-    return `<div class="card" style="margin-bottom:10px"><div class="prod" onclick="openProduct('${String(p.id).replace(/'/g,"\\'")}')">
-      <div class="thumb" style="background:${hueOf(p.name)}">${esc(initials(p.name))}</div>
-      <div class="grow">
-        <div class="prod-name">${esc(p.name)}</div>
-        <div class="prod-meta">
-          ${st.orders>0?`<span class="chip gr">出 ${st.orders} 单</span>`:`<span class="chip" style="background:#eee;color:#8a8f99">出 0 单</span>`}
-          <span class="chip" style="background:#e8f0ff;color:#3a7afe">卖 ${money(revenue)}</span>
-          ${acctChips}
-          ${avg>0?`<span class="chip ${avg>=3.5?'gr':avg>=2.5?'or':'bl'}">均分 ${avg.toFixed(1)}</span>`:''}
-          ${good?`<span class="chip gr">好 ${good}</span>`:''}${mid?`<span class="chip or">中 ${mid}</span>`:''}${bad?`<span class="chip" style="background:#ffe3e3;color:#ff3d4a">差 ${bad}</span>`:''}
-        </div>
+    const recs=st.recs.filter(isOrderRec);
+    const orderCount=recs.length;
+    const acctSet=[...new Set(recs.map(r=>acctOf(r)))];
+    const acctTags=acctSet.map(a=>`<span class="prod-new-tag" style="background:${a==='big'?'#fff3e0':'#e8f0ff'};color:${a==='big'?'var(--orange)':'var(--blue)'}">${ACCT_NAME[a]}</span>`).join('');
+    return `<div class="card" style="margin-bottom:10px"><div class="prod-new" onclick="openProduct('${String(p.id).replace(/'/g,"\\'")}')">
+      <div class="prod-new-main">
+        <div class="prod-new-name">${esc(p.name)}</div>
+        <div class="prod-new-meta"><span>共记 ${orderCount} 笔</span><span>·</span><span>最近 ${fmtDateSlash(p.last)}</span></div>
+        ${acctTags?`<div class="prod-new-tags">${acctTags}</div>`:''}
       </div>
+      <div class="prod-new-count"><div class="num">${st.orders}</div><div class="unit">单</div></div>
       <div class="arrow"><svg viewBox="0 0 24 24"><path d="M9 18l6-6-6-6"/></svg></div>
     </div></div>`;
   }).join('');
@@ -1887,23 +1891,21 @@ function renderHome(){
 function openProduct(pid){
   const p=db.products.find(x=>x.id===pid);if(!p)return;
   const st=prodStats(pid);
-  const recs=st.recs.filter(isOrderRec);
-  const hasDetail=recs.some(r=>r.note);
+  const recs=st.recs.filter(isOrderRec).sort((a,b)=>(b.date||'').localeCompare(a.date||''));
+  const trashSvg='<svg viewBox="0 0 24 24"><polyline points="3 6 5 6 21 6"></polyline><path d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6m3 0V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2"></path><line x1="10" y1="11" x2="10" y2="17"></line><line x1="14" y1="11" x2="14" y2="17"></line></svg>';
   openSheet(`
   <div class="grip"></div><div class="sheet-head"><span class="tt">${esc(p.name)}</span><button class="close" onclick="closeSheet()">×</button></div>
   <div class="sheet-body">
-    <div class="stat-grid" style="grid-template-columns:repeat(2,1fr)">
-      <div class="stat-card" style="padding:10px"><div class="lab">累计出单</div><div class="num" style="font-size:22px;color:var(--green)">${st.orders}<small> 单</small></div></div>
-      <div class="stat-card" style="padding:10px"><div class="lab">累计销售额</div><div class="num" style="font-size:22px">${money(st.revenue)}</div></div>
+    <div style="display:flex;gap:10px;margin-bottom:4px">
+      <div class="stat-card" style="flex:1;padding:10px"><div class="lab">累计出单</div><div class="num" style="font-size:20px;color:var(--brand)">${st.orders}<small> 单</small></div></div>
+      <div class="stat-card" style="flex:1;padding:10px"><div class="lab">累计销售额</div><div class="num" style="font-size:20px">${money(st.revenue)}</div></div>
     </div>
-    <div class="f-label" style="margin-top:14px">出单记录（${recs.length} 条）</div>
-    ${recs.length?recs.map(r=>`<div style="display:flex;align-items:center;gap:10px;padding:9px 0;border-bottom:1px solid var(--line);cursor:pointer" onclick="addProductSheet('${r.id}')">
-      <div style="font-size:12px;color:var(--text2);width:64px;flex-shrink:0">${fmtDate(r.date)}</div>
-      <span class="badge" style="background:${acctOf(r)==='big'?'var(--orange)':'var(--blue)'};color:#fff;flex-shrink:0">${ACCT_NAME[acctOf(r)]}</span>
-      <div style="flex:1;font-size:13px;color:var(--text2);overflow:hidden;text-overflow:ellipsis;white-space:nowrap">${r.note||'—'}</div>
-      ${r.rate?`<span style="color:#ff9500;font-size:12px;flex-shrink:0">${'★'.repeat(r.rate)}</span>`:''}
-      ${recOrders(r)>0?`<span class="chip gr" style="flex-shrink:0">出 ${recOrders(r)} 单</span>`:`<span class="chip" style="background:#eee;color:#8a8f99;flex-shrink:0">0 单</span>`}
-      <span style="color:var(--text3);font-size:14px;flex-shrink:0">›</span>
+    ${recs.length?recs.map(r=>`<div class="order-row" onclick="addProductSheet('${r.id}')">
+      <div class="order-dot"></div>
+      <div class="order-date">${fmtDateSlash(r.date)}</div>
+      <div class="order-acct" style="background:${acctOf(r)==='big'?'#fff3e0':'#e8f0ff'};color:${acctOf(r)==='big'?'var(--orange)':'var(--blue)'}">${ACCT_NAME[acctOf(r)]}</div>
+      <div class="order-qty" style="color:${recOrders(r)>0?'var(--brand)':'var(--text3)'}">+${recOrders(r)}单</div>
+      <button class="order-del" onclick="event.stopPropagation();delOrder('${r.id}')">${trashSvg}</button>
     </div>`).join(''):'<div class="hint">还没有出单记录，点下面"记出单"</div>'}
     <div class="btn-row">
       <button class="btn danger" onclick="delProduct('${pid}')">删除产品</button>
@@ -1912,6 +1914,23 @@ function openProduct(pid){
   </div>`);
 }
 function delProduct(pid){if(!confirm('删除该产品及其全部出单记录？'))return;db.records=db.records.filter(r=>r.pid!==pid);db.products=db.products.filter(p=>p.id!==pid);save();closeSheet();viewTab('product');renderProducts('all');toast('已删除');}
+function delOrder(rid){
+  const r=db.records.find(x=>x.id===rid);if(!r)return;
+  if(!confirm('删除这条出单记录？'))return;
+  const pid=r.pid;
+  db.records=db.records.filter(x=>x.id!==rid);
+  const prod=db.products.find(p=>p.id===pid);
+  if(prod){
+    const rem=db.records.filter(x=>x.pid===pid);
+    prod.count=rem.length;
+    prod.last=rem.length?rem.sort((a,b)=>(b.date||'').localeCompare(a.date||''))[0].date:null;
+  }
+  save();
+  renderProducts();
+  const p=db.products.find(x=>x.id===pid);
+  if(p){openProduct(pid);}else{closeSheet();}
+  toast('已删除');
+}
 function delCopy(id){if(!confirm('删除该文案记录？'))return;const nm=(db.copies.find(x=>x.id===id)||{}).name;db.copies=db.copies.filter(x=>x.id!==id);save();renderCopies('all');toast('已删除');
   if(nm){if(db.copies.some(x=>x.name===nm)){enterCopyList(nm);}else{showCopyHome();}}}
 function updateCopyBody(id){const c=db.copies.find(x=>x.id===id);if(!c)return;
