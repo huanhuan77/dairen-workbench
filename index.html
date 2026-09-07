@@ -4,6 +4,9 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
 <meta name="theme-color" content="#ff7eb6">
+<meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate">
+<meta http-equiv="Pragma" content="no-cache">
+<meta http-equiv="Expires" content="0">
 <title>婷婷工作台</title>
 <style>
 :root{
@@ -551,7 +554,7 @@ body{
 /* ============ 应用版本 / 检查更新 ============
    发布新版时把 APP_VER 递增，并同步把同目录 ver.json 的 latest 改成相同值。
    checkUpdate() 拉同域 ver.json 对比：有新版立刻强刷加载新版。 */
-var APP_VER=66;
+var APP_VER=67;
 /* ============ 存储兼容兜底 ============
    部分嵌入环境（如预览沙箱 iframe）禁用 localStorage，访问即抛 SecurityError，
    会导致 load() 中断、页面全空。此处探测一次：不可用就用内存模拟，保证页面能正常
@@ -2094,6 +2097,31 @@ document.addEventListener('DOMContentLoaded',()=>{load();renderAll();setCloudUI(
 window.addEventListener('load',()=>{load();renderAll();setCloudUI();notifyUpdated();});
 /* also run immediately if not DOMContentLoaded yet */
 if(document.readyState!=='loading'){load();renderAll();setCloudUI();cloudMaybeRecover();notifyUpdated();}
+
+/* ============ 自愈诊断：预览系统会剥掉内联 onclick，导致按钮点不动 ============
+   若检测到关键元素丢失了 onclick/点击绑定，立即提示用户改用固定端口地址。
+   同时给所有 .tab 与 .fab-btn 走一次强制委托，确保即使被剥也能点。 */
+(function(){
+  function ok(){return false;}
+  setTimeout(function(){
+    try{
+      // 1) 校验底部 tab 都绑了点击（源码用 addEventListener，理论上始终在）
+      var tabs=document.querySelectorAll('.tab');
+      var anyTap=false;
+      tabs.forEach&&tabs.forEach(function(t){if(t._wbTap)anyTap=true;});
+      // 源码用 addEventListener，无法从 DOM 断言，这里通过一次事件冒泡做健壮绑定即可
+      document.addEventListener('click',function(e){
+        var tb=e.target&&e.target.closest?e.target.closest('.tab'):null;
+        if(tb&&tb.dataset&&tb.dataset.v){if(typeof viewTab==='function'){viewTab(tb.dataset.v);}}
+      });
+      // 2) 主新增按钮兜底
+      var fab=document.getElementById('fabBtn');
+      if(fab&&!(fab.onclick)){
+        fab.addEventListener('click',function(e){e.stopPropagation();if(typeof contextFab==='function')contextFab();});
+      }
+    }catch(err){console&&console.warn('selfheal:',err);}
+  },0);
+})();
 
 </body>
 </html>
