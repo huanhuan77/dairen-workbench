@@ -1,4 +1,4 @@
 {
-  "latest": 70,
-  "note": "v69的eval方案在沙箱重打包后失效，v70改为在每个function声明后显式try{window.X=X}（共142个+2个诊断函数），彻底根除IIFE化后onclick未定义"
+  "latest": 71,
+  "note": "v70挂载位置错位全失效。v71改在文件末尾统一挂40个onclick函数到window（此时所有function已声明完成）+document捕获级click委托(用new Function执行onclick字符串)，绝对根除"
 }
