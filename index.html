@@ -551,10 +551,32 @@ body{
 <div id="toast"></div>
 
 <script>
+/* ============ 全局诊断：把运行时错误显示在页面顶部（便于截图定位） ============ */
+var __WB_ERR=[];
+function __wbErr(msg,src){
+  try{__WB_ERR.push((src||'')+' '+(msg||''));}catch(e){}
+  showErrBar();
+}
+function showErrBar(){
+  try{
+    if(document.getElementById('wbErrBar'))return;
+    var d=document.createElement('div');
+    d.id='wbErrBar';
+    d.style.cssText='position:fixed;top:0;left:0;right:0;z-index:99999;background:#ff4d4f;color:#fff;font-size:12px;line-height:1.6;padding:8px 12px;white-space:pre-wrap;word-break:break-all;font-family:monospace;max-height:40vh;overflow:auto';
+    d.innerHTML='<b style="font-weight:800">页面有报错（点此复制）</b>\n'+__WB_ERR.join('\n');
+    d.onclick=function(){try{var ta=document.createElement('textarea');ta.value=d.textContent;document.body.appendChild(ta);ta.select();document.execCommand('copy');document.body.removeChild(ta);alert('已复制错误内容，发给助手即可');}catch(e){}};
+    document.body.appendChild(d);
+  }catch(e){}
+}
+try{
+  window.addEventListener('error',function(ev){__wbErr('ERROR: '+(ev&&ev.message||'')+' @ '+(ev&&ev.filename?ev.filename.split('/').pop():'')+':'+(ev&&ev.lineno||''));});
+  window.addEventListener('unhandledrejection',function(ev){__wbErr('PROMISE: '+(ev&&ev.reason&&ev.reason.message||ev&&ev.reason||''));});
+}catch(e){}
+try{console._wbe=__wbErr;var _oe=console.error;console.error=function(){__wbErr(Array.prototype.slice.call(arguments).join(' '));return _oe.apply(console,arguments);};}catch(e){}
 /* ============ 应用版本 / 检查更新 ============
    发布新版时把 APP_VER 递增，并同步把同目录 ver.json 的 latest 改成相同值。
    checkUpdate() 拉同域 ver.json 对比：有新版立刻强刷加载新版。 */
-var APP_VER=67;
+var APP_VER=68;
 /* ============ 存储兼容兜底 ============
    部分嵌入环境（如预览沙箱 iframe）禁用 localStorage，访问即抛 SecurityError，
    会导致 load() 中断、页面全空。此处探测一次：不可用就用内存模拟，保证页面能正常
@@ -2123,5 +2145,7 @@ if(document.readyState!=='loading'){load();renderAll();setCloudUI();cloudMaybeRe
   },0);
 })();
 
+/* DOM 就绪后若捕获到任何错误，显示诊断条 */
+setTimeout(function(){try{showErrBar();}catch(e){}},600);
 </body>
 </html>
