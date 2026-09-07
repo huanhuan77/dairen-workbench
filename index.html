@@ -164,10 +164,10 @@ body{
 .filter-month-lock{flex:0 0 auto;display:flex;align-items:center;margin-left:2px}
 .filter-month-lock .f-month{max-width:none}
 .fb-seg{display:inline-flex;flex-wrap:wrap;gap:6px;align-items:center}
-.fb-sep{width:1px;height:18px;background:var(--line);margin:0 6px;align-self:center}
+.fb-sep{width:1px;height:18px;background:#c8c8cc;margin:0 6px;align-self:center;flex:0 0 auto}
 .f-pill{padding:6px 10px;border:1px solid var(--line);border-radius:18px;background:#fff;font-size:13px;font-family:inherit;color:var(--text2);cursor:pointer;line-height:1.2}
 .f-pill.on{background:var(--brand);color:#fff;border-color:var(--brand);font-weight:600}
-.f-month{padding:5px 8px;border:1px solid var(--line);border-radius:18px;background:#fff;font-size:13px;font-family:inherit;color:var(--text2);line-height:1.2;max-width:132px}
+.f-month{padding:4px 8px;border:1px solid var(--line);border-radius:18px;background:#fff;font-size:13px;font-family:inherit;color:var(--text2);line-height:1.2;max-width:128px}
 .app-header.hide{display:none}
 
 /* 统计卡内的三连小数字 */
@@ -630,7 +630,7 @@ try{console._wbe=__wbErr;var _oe=console.error;console.error=function(){__wbErr(
 /* ============ 应用版本 / 检查更新 ============
    发布新版时把 APP_VER 递增，并同步把同目录 ver.json 的 latest 改成相同值。
    checkUpdate() 拉同域 ver.json 对比：有新版立刻强刷加载新版。 */
-var APP_VER=76;
+var APP_VER=77;
 /* ============ 存储兼容兜底 ============
    部分嵌入环境（如预览沙箱 iframe）禁用 localStorage，访问即抛 SecurityError，
    会导致 load() 中断、页面全空。此处探测一次：不可用就用内存模拟，保证页面能正常
