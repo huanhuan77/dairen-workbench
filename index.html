@@ -156,6 +156,7 @@ body{
 
 /* 出单管理 filter bar */
 .filter{display:flex;flex-wrap:wrap;align-items:center;gap:6px 4px}
+.filter-acct{margin-bottom:8px}
 /* v75: 出单管理单行布局——左侧滚动区(账号/时间/排序) + 右侧日期固定 */
 .filter-lock{flex-wrap:nowrap;gap:0}
 .filter-scroll-in{display:flex;align-items:center;gap:6px;overflow-x:auto;overflow-y:hidden;white-space:nowrap;flex:1 1 auto;min-width:0;-webkit-overflow-scrolling:touch;scrollbar-width:none}
@@ -630,7 +631,7 @@ try{console._wbe=__wbErr;var _oe=console.error;console.error=function(){__wbErr(
 /* ============ 应用版本 / 检查更新 ============
    发布新版时把 APP_VER 递增，并同步把同目录 ver.json 的 latest 改成相同值。
    checkUpdate() 拉同域 ver.json 对比：有新版立刻强刷加载新版。 */
-var APP_VER=77;
+var APP_VER=78;
 /* ============ 存储兼容兜底 ============
    部分嵌入环境（如预览沙箱 iframe）禁用 localStorage，访问即抛 SecurityError，
    会导致 load() 中断、页面全空。此处探测一次：不可用就用内存模拟，保证页面能正常

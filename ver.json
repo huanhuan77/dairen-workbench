@@ -1,5 +1,5 @@
 {
-  "latest": 77,
+  "latest": 78,
   "updated": "2026-09-07",
-  "note": "v77: 视觉微调——fb-sep 加深(灰 #c8c8cc)+f-month 紧凑(max-width 128px);沿用 v76 两层结构(账号段单独成行+下方时间/排序横向滚动+日期固定右)"
+  "note": "v78: 出单管理筛选区间距——账号段(第一行)和时间/日期行(第二行)之间 margin-bottom:8px"
 }
