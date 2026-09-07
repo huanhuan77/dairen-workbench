@@ -1,9 +1,9 @@
 <!DOCTYPE html>
-<html lang="zh-CN">
-<head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
-<meta name="theme-color" content="#ff7eb6">
+<html lang="zh-CN" data-page-node-id="RcMJqiW8dV6b9oPZ6fUSWs">
+<head data-page-node-id="1ab2Ja7OFFKFr2GSfxZ9Bl">
+<meta charset="UTF-8" data-page-node-id="E4jvLfc2msJ83CN7gIbU6V">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover" data-page-node-id="lc9d76lhIKTofrpa4P9FxD">
+<meta name="theme-color" content="#ff7eb6" data-page-node-id="vpXmhBmAMmPI7iBTTypEqP">
 <title>婷婷工作台</title>
 <style>
 :root{
@@ -387,171 +387,194 @@ body{
 @media(max-width:480px){.fab-btn{right:16px}}
 </style>
 </head>
-<body>
-<div class="page">
+<body data-page-node-id="nmgauz8CmsApoTtWUV3l7F">
+<div class="page" data-page-node-id="jIrPASXbhSby4r7GV6IO8Z">
   <!-- header -->
-  <header class="app-header"><div class="header-row">
-    <div class="brand">
-      <div class="logo"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="3" width="7" height="9" rx="1.5"/><rect x="14" y="3" width="7" height="5" rx="1.5"/><rect x="14" y="12" width="7" height="9" rx="1.5"/><rect x="3" y="16" width="7" height="5" rx="1.5"/></svg></div>
-      <div><span class="brand-t">婷婷工作台</span><span class="brand-s" id="hSub">今日概览</span></div>
+  <header class="app-header" data-page-node-id="WjOIehPINtzlFDVFgk47C5"><div class="header-row" data-page-node-id="9lfznYkXoBn3UO9Q8kQLOt">
+    <div class="brand" data-page-node-id="3t4kUbu3wZ2MW6YQ93rZZ1">
+      <div class="logo" data-page-node-id="ytde5RcNtcXVP0HQh3y8DX"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" data-page-node-id="DAj3LsGi1dPaCKlsIjrRkq"><rect x="3" y="3" width="7" height="9" rx="1.5" data-page-node-id="ipKXLgg3YVllfBnLhqhmfK"/><rect x="14" y="3" width="7" height="5" rx="1.5" data-page-node-id="8Hi0Jd1MXJBWMSV5h15D4M"/><rect x="14" y="12" width="7" height="9" rx="1.5" data-page-node-id="Fln5ZDsRK7iaxYCVMIVC6j"/><rect x="3" y="16" width="7" height="5" rx="1.5" data-page-node-id="f7JjHE6eewmd8JoI28IzN5"/></svg></div>
+      <div data-page-node-id="JsHB8XjV4BrNo0aFAHn9t0"><span class="brand-t" data-page-node-id="ZBXCf1cX2EBvCdTmeTAXrp">婷婷工作台</span><span class="brand-s" id="hSub" data-page-node-id="3Rar4cnCdyYWt4OmSGcFsU">今日概览</span></div>
     </div>
-    <div class="header-tool"><button class="cloud-btn" onclick="checkUpdate()" title="检查更新" style="padding:5px 8px"><svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="M21 12a9 9 0 1 1-2.64-6.36"/><path d="M21 3v6h-6"/></svg><b>更新</b></button><button class="cloud-btn" onclick="openCloudEntry()" id="cloudBtn" title="云端备份"><span class="cloud-dot" id="cloudDot"></span><b id="cloudTxt">云备</b></button></div>
+    <div class="header-tool" data-page-node-id="HCaPZYZOu9owG0VtbCXVkk"><button class="cloud-btn" onclick="checkUpdate()" title="检查更新" style="padding:5px 8px" data-page-node-id="JhTLhSgIFHKgiFUFAvz30j"><svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round" data-page-node-id="MryK4GBG9IRU2YrDRG3f67"><path d="M21 12a9 9 0 1 1-2.64-6.36" data-page-node-id="gGvCmi24NKOrZXNluDEbtl"/><path d="M21 3v6h-6" data-page-node-id="0StE89gWaWWC1sKMZsKFrE"/></svg><b data-page-node-id="FBs1SkVWeymXFoGW6sjTar">更新</b></button><button class="cloud-btn" onclick="openCloudEntry()" id="cloudBtn" title="云端备份" data-page-node-id="vQqqNOO5yYoDzqyzT09Gqj"><span class="cloud-dot" id="cloudDot" data-page-node-id="LBuDUhfscGUz9G8a0cDsDi"></span><b id="cloudTxt" data-page-node-id="zpOcsWHoTScRJrrCXzO7O7">云备</b></button></div>
   </div></header>
 
-  <div class="content">
+  <div class="content" data-page-node-id="SDdhmzOhaYeNLQwp7FjvcJ">
     <!-- ============ HOME ============ -->
-    <div id="view-home" class="view on">
-      <div class="backup-bar unset" id="backupBar" onclick="openCloudEntry()">
-        <div class="bb-l"><span class="cloud-dot" id="barDot"></span><span class="bb-txt" id="barTxt">自动备份未启用</span></div>
-        <div class="bb-actions">
-          <button class="bb-btn" id="barBtn" onclick="event.stopPropagation();onBarBtn()">去启用</button>
-          <button class="bb-btn recover" id="barRestore" style="display:none" onclick="event.stopPropagation();onRestoreBtn()">从云端恢复</button>
+    <div id="view-home" class="view on" data-page-node-id="WaIcaZMApBbl59Edgw9UwX">
+      <div class="backup-bar unset" id="backupBar" onclick="openCloudEntry()" data-page-node-id="wfHIej90EGwLo4WaHbrqQt">
+        <div class="bb-l" data-page-node-id="NGwyL1VIkqgRMFQVUcsGZK"><span class="cloud-dot" id="barDot" data-page-node-id="Vovpn3FRrEPOxiwXDDSLp7"></span><span class="bb-txt" id="barTxt" data-page-node-id="fsUqY7O8pmLpBsCdSKSrgm">自动备份未启用</span></div>
+        <div class="bb-actions" data-page-node-id="UzYuZKARaeXQnnmzKMAncw">
+          <button class="bb-btn" id="barBtn" onclick="event.stopPropagation();onBarBtn()" data-page-node-id="txLVVoItQb7VIrdlCmNZrD">去启用</button>
+          <button class="bb-btn recover" id="barRestore" style="display:none" onclick="event.stopPropagation();onRestoreBtn()" data-page-node-id="qVH0vLrDTSG9ukpJqrtkur">从云端恢复</button>
         </div>
       </div>
-      <div class="stat-grid" style="margin-top:4px">
-        <div class="stat-card trend clickable" onclick="quickGoToday()"><div class="lab"><span class="mini-dot" style="background:var(--brand)"></span>今日发视频</div><div class="num" id="hTotalProd">0 <small>条</small></div><div class="sub" id="hProdSub">出单 0 单 · 0 个产品</div></div>
-        <div class="stat-card income clickable" onclick="viewTab('ledger')"><div class="lab"><span class="mini-dot" style="background:var(--green)"></span>本月收入</div><div class="num" id="hIncome">¥0</div><div class="sub" id="hIncomeSub">本月结余 ¥0</div></div>
-        <div class="stat-card wait clickable" onclick="viewTab('sample')"><div class="lab"><span class="mini-dot" style="background:var(--orange)"></span>待拍/待发</div><div class="num" id="hWaiting">0</div><div class="sub">样品在途+待发</div></div>
-        <div class="stat-card arrive clickable" onclick="viewTab('product')"><div class="lab"><span class="mini-dot" style="background:var(--blue)"></span>出单统计 <small style="font-weight:400">累计</small></div><div class="ord3">
-          <div class="o3"><div class="n" id="hOrdAllBig" style="color:var(--orange)">0</div><div class="l">大号</div></div>
-          <div class="o3"><div class="n" id="hOrdAllSmall" style="color:var(--blue)">0</div><div class="l">小号</div></div>
-          <div class="o3"><div class="n" id="hOrdAllTot" style="color:var(--green)">0</div><div class="l">共</div></div>
+      <div class="stat-grid" style="margin-top:4px" data-page-node-id="TjeOVMvaQe4KDFD13d1dcE">
+        <div class="stat-card trend clickable" onclick="quickGoToday()" data-page-node-id="NAEVbHC2AF5MQC66ZI9fCV"><div class="lab" data-page-node-id="OjsG1mtSmFo7vBN6gOicMA"><span class="mini-dot" style="background:var(--brand)" data-page-node-id="GGjCmjCXmXAdVOVwocwuOP"></span>今日发视频</div><div class="num" id="hTotalProd" data-page-node-id="v35ZrT6Zln62VMV53nSMVu">0 <small data-page-node-id="7PABhKSQBDaLrEK46exSsm">条</small></div><div class="sub" id="hProdSub" data-page-node-id="CFgFxTYH94JYKaNtEMfImq">出单 0 单 · 0 个产品</div></div>
+        <div class="stat-card income clickable" onclick="viewTab('ledger')" data-page-node-id="EsqAAZGnadQfpZcBCfTjjv"><div class="lab" data-page-node-id="SXcCrnBas5FC6iqiRiqClz"><span class="mini-dot" style="background:var(--green)" data-page-node-id="gZ3VuyRUDOcFcZqghOAWNP"></span>本月收入</div><div class="num" id="hIncome" data-page-node-id="C4GD9xEPzxYlB2rKabs7J0">¥0</div><div class="sub" id="hIncomeSub" data-page-node-id="GKKETOxbStl1EGaagO3BsR">本月结余 ¥0</div></div>
+        <div class="stat-card wait clickable" onclick="viewTab('sample')" data-page-node-id="QuDPncNwKFN71YY3agAGGb"><div class="lab" data-page-node-id="1d3cYFBc6V39PRU1cAWLm8"><span class="mini-dot" style="background:var(--orange)" data-page-node-id="yHlQBPSvnybYGp1wGBkCED"></span>待拍/待发</div><div class="num" id="hWaiting" data-page-node-id="xvZjf8vET9GV1fRJCHrAGC">0</div><div class="sub" data-page-node-id="CIFIHWScukEl1pdu0avERO">样品在途+待发</div></div>
+        <div class="stat-card arrive clickable" onclick="viewTab('product')" data-page-node-id="M7Yt2NHztCKQoLGgPpB3XS"><div class="lab" data-page-node-id="mn272CeOvCzwIkOGOW4lHX"><span class="mini-dot" style="background:var(--blue)" data-page-node-id="fwAmwIGqbTexxFcVO9jbkE"></span>出单统计 <small style="font-weight:400" data-page-node-id="f4DzhrreVHB6DK0SGFHKjv">累计</small></div><div class="ord3" data-page-node-id="7t026UDb9c803lyJyXKgv4">
+          <div class="o3" data-page-node-id="Cq6eo9XF9pvbLt7T3DCdtG"><div class="n" id="hOrdAllBig" style="color:var(--orange)" data-page-node-id="mwbbPU9iD6XhMgG4ETLvGh">0</div><div class="l" data-page-node-id="zYHOhO4THGrj96D6lKouew">大号</div></div>
+          <div class="o3" data-page-node-id="UnVi9DqPJPGRhOL8dizB2x"><div class="n" id="hOrdAllSmall" style="color:var(--blue)" data-page-node-id="ZIazl6xrpMXtfLhY9vZjA8">0</div><div class="l" data-page-node-id="hDNJuDisVtuk0ya800eS5v">小号</div></div>
+          <div class="o3" data-page-node-id="HKJbbGbM192HuayvY1OI0M"><div class="n" id="hOrdAllTot" style="color:var(--green)" data-page-node-id="fdGd86s5Z3COWXYEjuRSj8">0</div><div class="l" data-page-node-id="FnYbmCtdnsfNJ6xiEDeH1Y">共</div></div>
         </div></div>
       </div>
 
-      <div class="quick">
-        <button class="qa" onclick="quickAdd('product')"><div class="ic"><svg viewBox="0 0 24 24"><path d="M21 16V8a2 2 0 0 0-1-1.73l-7-4a2 2 0 0 0-2 0l-7 4A2 2 0 0 0 3 8v8a2 2 0 0 0 1 1.73l7 4a2 2 0 0 0 2 0l7-4A2 2 0 0 0 21 16z"/><path d="M3.27 6.96 12 12.01l8.73-5.05"/><path d="M12 22.08V12"/></svg></div><div class="t">记出单</div></button>
-        <button class="qa" onclick="quickAdd('copy')"><div class="ic"><svg viewBox="0 0 24 24"><path d="M12 20h9"/><path d="M16.5 3.5a2.12 2.12 0 0 1 3 3L7 19l-4 1 1-4Z"/></svg></div><div class="t">写文案</div></button>
-        <button class="qa" onclick="quickAdd('sample')"><div class="ic"><svg viewBox="0 0 24 24"><rect x="2" y="4" width="20" height="16" rx="2"/><path d="M2 9h20"/><path d="M6 7v.01M10 7v.01M6 12v.01M10 12v.01"/></svg></div><div class="t">样品排期</div></button>
-        <button class="qa" onclick="viewTab('ledger')"><div class="ic"><svg viewBox="0 0 24 24"><rect x="2" y="6" width="20" height="12" rx="2"/><circle cx="12" cy="12" r="3"/><path d="M6 12h.01M18 12h.01"/></svg></div><div class="t">记账</div></button>
+      <div class="quick" data-page-node-id="Y47ItWculFrw559FLoLYjs">
+        <button class="qa" onclick="quickAdd('product')" data-page-node-id="4XT9j0J4Ha0rJLkIqEpkHc"><div class="ic" data-page-node-id="Va3qRDeb2YDlet8NivXtIa"><svg viewBox="0 0 24 24" data-page-node-id="N3fOhN9Y8q2dj22eFkk4k9"><path d="M21 16V8a2 2 0 0 0-1-1.73l-7-4a2 2 0 0 0-2 0l-7 4A2 2 0 0 0 3 8v8a2 2 0 0 0 1 1.73l7 4a2 2 0 0 0 2 0l7-4A2 2 0 0 0 21 16z" data-page-node-id="bfbQkJuo8sV9rAUt0C5qv5"/><path d="M3.27 6.96 12 12.01l8.73-5.05" data-page-node-id="KoRKdkPdUxMBI4BlJXQaAE"/><path d="M12 22.08V12" data-page-node-id="ovXjUOJZgAtRRKEyncCLRh"/></svg></div><div class="t" data-page-node-id="2wPKzqBWxIgmm7879Jm7z5">记出单</div></button>
+        <button class="qa" onclick="quickAdd('copy')" data-page-node-id="lWvxZmlvhqBGwUgBgxHTXf"><div class="ic" data-page-node-id="ozmjgmjrUfxyUB4IkJtUQa"><svg viewBox="0 0 24 24" data-page-node-id="W8k9BUqGlYHGM2GPxDhXDf"><path d="M12 20h9" data-page-node-id="UBHxNVT5RDbbJoFQ0AEn4I"/><path d="M16.5 3.5a2.12 2.12 0 0 1 3 3L7 19l-4 1 1-4Z" data-page-node-id="6ZHvGP3p21wVprbGQoKrjS"/></svg></div><div class="t" data-page-node-id="cgchDvQ21U68FxRCrckhU6">写文案</div></button>
+        <button class="qa" onclick="quickAdd('sample')" data-page-node-id="NrVmziHyESHFSwthb5cg3z"><div class="ic" data-page-node-id="xoZ9146wrb1g3I5nsi5QPl"><svg viewBox="0 0 24 24" data-page-node-id="0zpUy3ho4Gfvl3B753KeeX"><rect x="2" y="4" width="20" height="16" rx="2" data-page-node-id="MuXVwZ5ohyju2ir61qAYZL"/><path d="M2 9h20" data-page-node-id="NCzvl3aLyGZH6dWHQp0gRj"/><path d="M6 7v.01M10 7v.01M6 12v.01M10 12v.01" data-page-node-id="jOrqIC0uZI2yRDp3xyGkiG"/></svg></div><div class="t" data-page-node-id="ig7syb4D2Fz39s2dQd8yte">样品排期</div></button>
+        <button class="qa" onclick="viewTab('ledger')" data-page-node-id="e09VpBp3Vu4XGaLSmq4cE9"><div class="ic" data-page-node-id="iIrDv6GSYaJnu5MVvhlVGJ"><svg viewBox="0 0 24 24" data-page-node-id="8XWYe9KTPbivzYVweKxqt1"><rect x="2" y="6" width="20" height="12" rx="2" data-page-node-id="KPoCoyJj2UBNU5WqUrnSrg"/><circle cx="12" cy="12" r="3" data-page-node-id="r1cwTAdSE3kaFEUUsXykiH"/><path d="M6 12h.01M18 12h.01" data-page-node-id="EsxgB2MGi9fvBDZmLUBh10"/></svg></div><div class="t" data-page-node-id="IdrTgHtC5EWhscde5ZVZWR">记账</div></button>
       </div>
 
-      <div class="section" id="homeOverdueSec" style="display:none">
-        <div class="sec-head"><span class="sec-title" style="color:#ff3d4a">逾期提醒 <span class="chip" style="background:#ffe3e3;color:#ff3d4a;font-size:12px" id="odCnt">0</span></span><button class="sec-link" onclick="viewTab('sample')">排期管理</button></div>
-        <div class="card" id="homeOverdue"></div>
+      <div class="section" id="homeOverdueSec" style="display:none" data-page-node-id="JtsGb3Q3TXBb4vRznpL02F">
+        <div class="sec-head" data-page-node-id="ytjFhzomUlDOOol51MNO4P"><span class="sec-title" style="color:#ff3d4a" data-page-node-id="A2nXt8oYCB50DSoYUWWAy8">逾期提醒 <span class="chip" style="background:#ffe3e3;color:#ff3d4a;font-size:12px" id="odCnt" data-page-node-id="ZLilalRbeQg20UVf6BUapN">0</span></span><button class="sec-link" onclick="viewTab('sample')" data-page-node-id="hbxMwTyX3SPxE824jbuD8h">排期管理</button></div>
+        <div class="card" id="homeOverdue" data-page-node-id="us2sVoEPJI8bT73eBX22DG"></div>
       </div>
 
-      <div class="section">
-        <div class="sec-head"><span class="sec-title">即将到期的排期</span><button class="sec-link" onclick="viewTab('sample')">全部</button></div>
-        <div class="card" id="homeSchedule"></div>
+      <div class="section" data-page-node-id="8Q9S5Ha27PEDvtVBc06V3g">
+        <div class="sec-head" data-page-node-id="YCExsks60Ac1B8RPJcpQTo"><span class="sec-title" data-page-node-id="rS0A4UmvnKypoL3RUQ0vFh">即将到期的排期</span><button class="sec-link" onclick="viewTab('sample')" data-page-node-id="bNNpteF8BwFhtZY9unZ7i9">全部</button></div>
+        <div class="card" id="homeSchedule" data-page-node-id="z8zvU3CvYV8j3M5G5jFSGN"></div>
       </div>
 
-      <div class="section">
-        <div class="sec-head"><span class="sec-title">最近出单</span><button class="sec-link" onclick="viewTab('product')">全部</button></div>
-        <div class="card" id="homeRecent"></div>
+      <div class="section" data-page-node-id="wAqY4SjvbbFzBCEW4dUM5F">
+        <div class="sec-head" data-page-node-id="vPHbClqwtBLkmVnIy5e3FY"><span class="sec-title" data-page-node-id="lSTNojVAKndCVKPL3PvoQ4">最近出单</span><button class="sec-link" onclick="viewTab('product')" data-page-node-id="abrbEJIZiWBPiNDjjCuh9G">全部</button></div>
+        <div class="card" id="homeRecent" data-page-node-id="InqOXwxfXEOqDClBoOMh3q"></div>
       </div>
     </div>
 
     <!-- ============ PRODUCT ============ -->
-    <div id="view-product" class="view">
-      <div class="view-title">出单管理</div>
-      <div class="filter">
-        <span class="fb-seg" id="prodAcctSeg">
-          <button class="f-pill on" data-a="all">全部账号</button>
-          <button class="f-pill" data-a="big">大号</button>
-          <button class="f-pill" data-a="small">小号</button>
+    <div id="view-product" class="view" data-page-node-id="l0oDHyBMKRfneE1n0VEBMI">
+      <div class="view-title" data-page-node-id="y29Ufu2u5aYXMWTVUONW4h">出单管理</div>
+      <div class="filter" data-page-node-id="AJPgsVIiaqoh03bw3EJwVe">
+        <span class="fb-seg" id="prodAcctSeg" data-page-node-id="7RP0H6ThUTSadYRPor2BFQ">
+          <button class="f-pill on" data-a="all" data-page-node-id="SGDhxFKKF2EMx8hvzetGeO">全部账号</button>
+          <button class="f-pill" data-a="big" data-page-node-id="MO5bCi4mKCUQJOpCyPxO4G">大号</button>
+          <button class="f-pill" data-a="small" data-page-node-id="Kx1sj5eXlgxADrv1OOWkwJ">小号</button>
         </span>
-        <span class="fb-sep"></span>
-        <span class="fb-seg" id="prodRangeSeg">
-          <button class="f-pill on" data-r="all">全部</button>
-          <button class="f-pill" data-r="today">今天</button>
-          <button class="f-pill" data-r="yest">昨天</button>
-          <button class="f-pill" data-r="week">本周</button>
-          <button class="f-pill" data-r="month">本月</button>
-          <button class="f-pill" data-r="lastmonth">上月</button>
-          <input type="month" class="f-month" id="prodMonth" value="">
+        <span class="fb-sep" data-page-node-id="UuhCUTC2u77SLQ8xynbSzM"></span>
+        <span class="fb-seg" id="prodRangeSeg" data-page-node-id="K1mbf9FBv1zO5wAw6C51JJ">
+          <button class="f-pill on" data-r="all" data-page-node-id="lWSrbuN0BUGBDQyA0u8Rej">全部</button>
+          <button class="f-pill" data-r="today" data-page-node-id="az1qQETVAG2UQufi4Qi0XM">今天</button>
+          <button class="f-pill" data-r="yest" data-page-node-id="gGZL4yaCEdnE4Cls8MHZh6">昨天</button>
+          <button class="f-pill" data-r="week" data-page-node-id="74CGWOMbZepkrWSl3ArkJD">本周</button>
+          <button class="f-pill" data-r="month" data-page-node-id="0m5M4Dx7SYXAC6LLQTkuvu">本月</button>
+          <button class="f-pill" data-r="lastmonth" data-page-node-id="zh3YGbxVijNcceqH1CjVEC">上月</button>
+          <input type="month" class="f-month" id="prodMonth" value="" data-page-node-id="bagbfeGidsAGpFkinQHwhx">
         </span>
-        <span class="fb-sep"></span>
-        <span class="fb-seg" id="prodSortSeg">
-          <button class="f-pill on" data-s="last">最新</button>
-          <button class="f-pill" data-s="orders">出单最多</button>
+        <span class="fb-sep" data-page-node-id="VKYBCJTBYg9GHfbEeE63rV"></span>
+        <span class="fb-seg" id="prodSortSeg" data-page-node-id="emU2HSN1hCqUIYpQgWB8J5">
+          <button class="f-pill on" data-s="last" data-page-node-id="BdSF71ja1mZ0uCbvv7mtUP">最新</button>
+          <button class="f-pill" data-s="orders" data-page-node-id="RauVKeIhtA6zSYElqBEnvJ">出单最多</button>
         </span>
       </div>
-      <div class="hint" id="prodRangeTip" style="margin:8px 2px 0"></div>
-      <div style="margin-top:10px" id="prodList"></div>
+      <div class="hint" id="prodRangeTip" style="margin:8px 2px 0" data-page-node-id="ekFXn6zktIDqDPIMR2DKkt"></div>
+      <div style="margin-top:10px" id="prodList" data-page-node-id="b0hUvtXz6SVEg0qXq6YPw1"></div>
     </div>
 
     <!-- ============ SAMPLE ============ -->
-    <div id="view-sample" class="view">
-      <div class="view-title">样品排期</div>
-      <div class="seg" id="sampleAcctSeg">
-        <button class="on" data-a="all">全部账号</button>
-        <button data-a="big">大号</button>
-        <button data-a="small">小号</button>
+    <div id="view-sample" class="view" data-page-node-id="Gdi5DhyncPEz5vw2xQGsdB">
+      <div class="view-title" data-page-node-id="OMX7V4RQlCHx7VuFO5xPAA">样品排期</div>
+      <div class="seg" id="sampleAcctSeg" data-page-node-id="5QZLRn5GLCQJeaP5YNiTkE">
+        <button class="on" data-a="all" data-page-node-id="9WAb986mUCe31zEWDlmLCq">全部账号</button>
+        <button data-a="big" data-page-node-id="Ulji6h0I9j9EnVEjrGHg7D">大号</button>
+        <button data-a="small" data-page-node-id="GdpgEJhKKC8dGLfonoPv3o">小号</button>
       </div>
-      <div class="seg" id="sampleSeg" style="margin-top:8px">
-        <button class="on" data-f="all">全部</button>
-        <button data-f="wait">在途</button>
-        <button data-f="todo">待拍</button>
-        <button data-f="shoot">已拍待发</button>
-        <button data-f="done">已完成</button>
+      <div class="seg" id="sampleSeg" style="margin-top:8px" data-page-node-id="yd5YDqXm2InpkH7Z3Vj1KM">
+        <button class="on" data-f="all" data-page-node-id="Aj8rf2eOy6GxNBm2iDAx5j">全部</button>
+        <button data-f="wait" data-page-node-id="CkLHT2KSXj8Eb9mIkcy4xu">在途</button>
+        <button data-f="todo" data-page-node-id="ujkpMDgDOxdQxmqI5LvApP">待拍</button>
+        <button data-f="shoot" data-page-node-id="TSXXgqGoheHOdIAn3SaaJF">已拍待发</button>
+        <button data-f="done" data-page-node-id="5loFvKnNn1LHkCyLZJDRxx">已完成</button>
       </div>
-      <div style="margin-top:10px" id="sampleList"></div>
+      <div style="margin-top:10px" id="sampleList" data-page-node-id="j60kjNOg6u6tB7t9JsPaw3"></div>
     </div>
 
     <!-- ============ COPY WRITING ============ -->
-    <div id="view-copy" class="view">
-      <div id="copyHome">
-        <div style="display:flex;align-items:center;justify-content:space-between;padding:4px 0 12px">
-          <div class="view-title" style="padding:0">文案库</div>
-          <span class="chip" style="font-size:13px;background:var(--brand-soft);color:var(--brand);font-weight:700" id="cpTopStat">文案 0</span>
+    <div id="view-copy" class="view" data-page-node-id="mXsuGHxCQ7NanTQlDCbESh">
+      <div id="copyHome" data-page-node-id="9BjSnCzV1NiqSsFPApzQYD">
+        <div style="display:flex;align-items:center;justify-content:space-between;padding:4px 0 12px" data-page-node-id="fW2gLEK4locWQJ9Y7DSBbo">
+          <div class="view-title" style="padding:0" data-page-node-id="vVQ6XZzFxTBGBQ67tB0jyb">文案库</div>
+          <span class="chip" style="font-size:13px;background:var(--brand-soft);color:var(--brand);font-weight:700" id="cpTopStat" data-page-node-id="TaLZRgYigXVSLTyFPc4Cn1">文案 0</span>
         </div>
-        <input class="f-input" id="copySearch" type="search" placeholder="搜索产品名称…" oninput="copySearch=this.value.trim();renderCopies()" style="margin-bottom:12px">
-        <div style="margin-top:4px" id="copyList"></div>
+        <input class="f-input" id="copySearch" type="search" placeholder="搜索产品名称…" oninput="copySearch=this.value.trim();renderCopies()" style="margin-bottom:12px" data-page-node-id="Gt41q2xcupMyqHxDyhpUA3">
+        <div style="margin-top:4px" id="copyList" data-page-node-id="CJCLUNSAhGiqqdzGVBOomv"></div>
       </div>
-      <div id="copyDrill" style="display:none"></div>
+      <div id="copyDrill" style="display:none" data-page-node-id="34aOz0fKk30qcVsXh0PvUx"></div>
     </div>
 
     <!-- ============ PUBLISH 视频发布 ============ -->
-    <div id="view-publish" class="view">
-      <div class="view-title">视频发布</div>
-      <div class="seg" id="publishAcctSeg">
-        <button class="on" data-a="all">全部账号</button>
-        <button data-a="big">大号</button>
-        <button data-a="small">小号</button>
+    <div id="view-publish" class="view" data-page-node-id="1BTlabpbZEBSXxRKqDltW2">
+      <div class="view-title" data-page-node-id="jOcjAeAB8b7aLWR4vp6iom">视频发布</div>
+      <div class="seg" id="publishAcctSeg" data-page-node-id="LdjhzL6nfIGUKogjZD9RZ3">
+        <button class="on" data-a="all" data-page-node-id="WetNp9H92jrOL3dQT7SwiX">全部账号</button>
+        <button data-a="big" data-page-node-id="pxS8VTG8z9EWzaSCVGKGBA">大号</button>
+        <button data-a="small" data-page-node-id="p0fLSsAjIsOyOcFDPcR2Av">小号</button>
       </div>
-      <div style="margin-top:10px" id="publishList"></div>
+      <div style="margin-top:10px" id="publishList" data-page-node-id="lHEnEgeay3djs8YaUxKMdR"></div>
     </div>
 
     <!-- ============ LEDGER 记账 ============ -->
-    <div id="view-ledger" class="view">
-      <div class="led-hero" onclick="openMonthPicker()" style="cursor:pointer">
-        <div class="row1"><div class="mo" id="ledgerMonth">2026年9月 ▾</div><div style="text-align:right"><div class="bal-label">结余</div><div class="bal" id="ledHeroBal">¥0</div></div></div>
-        <div class="sumline"><div class="pill"><span class="up">↑</span> 收入 <span id="ledHeroInc">¥0</span></div><div class="pill"><span class="dn">↓</span> 支出 <span id="ledHeroExp">¥0</span></div></div>
+    <div id="view-ledger" class="view" data-page-node-id="rwy6Fb9ZibNLHfUnYNS9kO">
+      <div class="led-hero" onclick="openMonthPicker()" style="cursor:pointer" data-page-node-id="1kZaKSTElSUXqJnTuvZiju">
+        <div class="row1" data-page-node-id="aDVM7css43CkVy7ePA4o4O"><div class="mo" id="ledgerMonth" data-page-node-id="ZfAJbEpnIsOE5GR9tWkneO">2026年9月 ▾</div><div style="text-align:right" data-page-node-id="XzeVALP3O0x6pIQ1lk1sby"><div class="bal-label" data-page-node-id="mi6SRdHjkiUIte4rhkteFv">结余</div><div class="bal" id="ledHeroBal" data-page-node-id="DiRJU0Dou8mj62G2CnJU1D">¥0</div></div></div>
+        <div class="sumline" data-page-node-id="TSkSiwFm327j8q31RndYq9"><div class="pill" data-page-node-id="GLbmk6p7qpNtgeaN2s2g7X"><span class="up" data-page-node-id="Y3kw8cB4nERbiTCATni65F">↑</span> 收入 <span id="ledHeroInc" data-page-node-id="fcxydWuLLGWdRUJI4VBFg2">¥0</span></div><div class="pill" data-page-node-id="DQRujOcXYSnYfgToWSA6yG"><span class="dn" data-page-node-id="z5zBVnD65YkHqmoJ44OjFj">↓</span> 支出 <span id="ledHeroExp" data-page-node-id="h7QxyV9ZBCWzl0lqpDFwjm">¥0</span></div></div>
       </div>
-      <div class="led-tabs" id="ledTabs">
-        <button class="on" data-t="detail">明细</button>
-        <button data-t="rank">排行</button>
-        <button data-t="chart">图表</button>
+      <div class="led-tabs" id="ledTabs" data-page-node-id="f68Ak6MYvF0mlm0gWgaTXe">
+        <button class="on" data-t="detail" data-page-node-id="YJNRMASJmmeMJrw6IuBmky">明细</button>
+        <button data-t="rank" data-page-node-id="jCRUcF16IqiES7KPGKATFD">排行</button>
+        <button data-t="chart" data-page-node-id="9m5igMwsvYGcEdCiqnu83z">图表</button>
       </div>
-      <div id="ledgerList"></div>
+      <div id="ledgerList" data-page-node-id="jIhza1sNcdUyluvn1jaWG6"></div>
     </div>
 
     </div>
 
-  <div class="fab-btn" onclick="contextFab()"><svg viewBox="0 0 24 24"><path d="M12 5v14M5 12h14"/></svg></div>
+  <div class="fab-btn" onclick="contextFab()" data-page-node-id="IkYNgsqlX2ym3mvQRjVBaq"><svg viewBox="0 0 24 24" data-page-node-id="IIZv7pisBzNGGrUfqFat0p"><path d="M12 5v14M5 12h14" data-page-node-id="sxP0QjozprPT3N5xnLjXnE"/></svg></div>
 </div>
 
 <!-- ============ TABBAR ============ -->
-<nav class="tabbar"><div class="tabbar-in">
-  <button class="tab on" data-v="home"><span class="tb-ic"><svg viewBox="0 0 24 24"><path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/><path d="M9 22V12h6v10"/></svg></span><span class="tb-t">总览</span></button>
-  <button class="tab" data-v="product"><span class="tb-ic"><svg viewBox="0 0 24 24"><path d="M21 16V8a2 2 0 0 0-1-1.73l-7-4a2 2 0 0 0-2 0l-7 4A2 2 0 0 0 3 8v8a2 2 0 0 0 1 1.73l7 4a2 2 0 0 0 2 0l7-4A2 2 0 0 0 21 16z"/><path d="M3.27 6.96 12 12.01l8.73-5.05"/><path d="M12 22.08V12"/></svg></span><span class="tb-t">出单</span><span class="dot-ct" id="bdProd" style="display:none">0</span></button>
-  <button class="tab" data-v="sample"><span class="tb-ic"><svg viewBox="0 0 24 24"><rect x="3" y="4" width="18" height="18" rx="2"/><path d="M16 2v4M8 2v4M3 10h18"/><circle cx="12" cy="15" r="1.6"/><path d="M12 13v.01"/></svg></span><span class="tb-t">排期</span><span class="dot-ct" id="bdSample" style="display:none">0</span></button>
-  <button class="tab" data-v="copy"><span class="tb-ic"><svg viewBox="0 0 24 24"><path d="M12 20h9"/><path d="M16.5 3.5a2.12 2.12 0 0 1 3 3L7 19l-4 1 1-4Z"/></svg></span><span class="tb-t">文案</span></button>
-  <button class="tab" data-v="publish"><span class="tb-ic"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M23 7l-7 5 7 5V7z"/><rect x="1" y="5" width="15" height="14" rx="2" ry="2"/></svg></span><span class="tb-t">视频发布</span></button>
-  <button class="tab" data-v="ledger"><span class="tb-ic"><svg viewBox="0 0 24 24"><rect x="2" y="6" width="20" height="12" rx="2"/><circle cx="12" cy="12" r="3"/><path d="M6 12h.01M18 12h.01"/></svg></span><span class="tb-t">记账</span></button>
+<nav class="tabbar" data-page-node-id="0tUwZiduGb8m3wLYofMTqc"><div class="tabbar-in" data-page-node-id="AZWCvErkFiNQENIGjfJeOd">
+  <button class="tab on" data-v="home" data-page-node-id="NuOrRNC2HCghwgHpeSxAMB"><span class="tb-ic" data-page-node-id="vRWJxDALi60eEPlCbplGGQ"><svg viewBox="0 0 24 24" data-page-node-id="WITiKZ080u3LShqOf5G9lH"><path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z" data-page-node-id="BRcGzJnhN1q6eKt9CTTCft"/><path d="M9 22V12h6v10" data-page-node-id="baEZk8fFpRg5bqTM6KmjCf"/></svg></span><span class="tb-t" data-page-node-id="WlPgdkHgL7okaufWxEqUJp">总览</span></button>
+  <button class="tab" data-v="product" data-page-node-id="CBqFec03qv4CoExC9XUDdX"><span class="tb-ic" data-page-node-id="q3R3XDDn4yDBpeNILa0dYp"><svg viewBox="0 0 24 24" data-page-node-id="ty2CDZx8pbSgdaMsCC8TNQ"><path d="M21 16V8a2 2 0 0 0-1-1.73l-7-4a2 2 0 0 0-2 0l-7 4A2 2 0 0 0 3 8v8a2 2 0 0 0 1 1.73l7 4a2 2 0 0 0 2 0l7-4A2 2 0 0 0 21 16z" data-page-node-id="f9UHBOz8dSz0igfMv4dNN6"/><path d="M3.27 6.96 12 12.01l8.73-5.05" data-page-node-id="w1KMo1xSYJESEuTtDbrFsH"/><path d="M12 22.08V12" data-page-node-id="raxaKFgiG2erSJ9iX2z8P3"/></svg></span><span class="tb-t" data-page-node-id="pbEMUoyhrs9Upr7UjARmU3">出单</span><span class="dot-ct" id="bdProd" style="display:none" data-page-node-id="zQjn8shc419nvjOYNB5HdZ">0</span></button>
+  <button class="tab" data-v="sample" data-page-node-id="gayY4lqiJnMkJaNkcpTtGx"><span class="tb-ic" data-page-node-id="LwK9lZGrIf2zBBmq6Q5zWE"><svg viewBox="0 0 24 24" data-page-node-id="c2IYvOOOsKMVwZTQnCpfz2"><rect x="3" y="4" width="18" height="18" rx="2" data-page-node-id="JxwxxfIdQJshX0KOFoSDjt"/><path d="M16 2v4M8 2v4M3 10h18" data-page-node-id="GxSkJjtHuobcfn1riKS6Ok"/><circle cx="12" cy="15" r="1.6" data-page-node-id="CjH8eKMz4qk6sn4aKn4zln"/><path d="M12 13v.01" data-page-node-id="9N4gOkeTzJU9vRNE8f9Ypg"/></svg></span><span class="tb-t" data-page-node-id="MnBZ1kEBS8vRWhv5Is7YHd">排期</span><span class="dot-ct" id="bdSample" style="display:none" data-page-node-id="9Al7HqQ8BwwLwlwiaTRaEW">0</span></button>
+  <button class="tab" data-v="copy" data-page-node-id="7frh1FYMSSFaeSUzE6k3qS"><span class="tb-ic" data-page-node-id="hjiawKV8gzMOGhPCzw8Mef"><svg viewBox="0 0 24 24" data-page-node-id="lMqKaEYD97Bi7Un4EZmsv2"><path d="M12 20h9" data-page-node-id="DDEvwuxqZDfEQtG6Xs7WKb"/><path d="M16.5 3.5a2.12 2.12 0 0 1 3 3L7 19l-4 1 1-4Z" data-page-node-id="SlxP3O5HYH7qBP6sMJahYf"/></svg></span><span class="tb-t" data-page-node-id="f2d5T16wByrrs9Abkjjly3">文案</span></button>
+  <button class="tab" data-v="publish" data-page-node-id="OuWIGmEIuW0jyQ3qcujSCD"><span class="tb-ic" data-page-node-id="UjV8b2KMHoH6rjlQHshA7D"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" data-page-node-id="mW6AbE4wooI51TWltQ3RPW"><path d="M23 7l-7 5 7 5V7z" data-page-node-id="EZE7frumj9zCFqIra9KFRy"/><rect x="1" y="5" width="15" height="14" rx="2" ry="2" data-page-node-id="7nEsyhDtnrHWHiNG5k4E2C"/></svg></span><span class="tb-t" data-page-node-id="ZrN3VcY4OxpGZrPgjtmqO8">视频发布</span></button>
+  <button class="tab" data-v="ledger" data-page-node-id="BBDX6TBSGZXlqMQHpDBB5W"><span class="tb-ic" data-page-node-id="pCYfe8oc7zYCNiputId3A2"><svg viewBox="0 0 24 24" data-page-node-id="zE0obGGQztMtum6Py1dupN"><rect x="2" y="6" width="20" height="12" rx="2" data-page-node-id="qPOusVZmC1ECPqBMuTXRUe"/><circle cx="12" cy="12" r="3" data-page-node-id="O7EuOdMKkGSd3u58vudOVX"/><path d="M6 12h.01M18 12h.01" data-page-node-id="KUFZndRKLUG9dpnCUIypMF"/></svg></span><span class="tb-t" data-page-node-id="jlhW7FSGKYRPpeXYanqjTd">记账</span></button>
 </div></nav>
 
 <!-- bottom sheets -->
-<div class="mask" id="mask" onclick="closeSheet()"></div>
-<div class="sheet" id="sheet"></div>
-<div id="toast"></div>
+<div class="mask" id="mask" onclick="closeSheet()" data-page-node-id="QdBKE9j9J3iP6Zhyfzo3X2"></div>
+<div class="sheet" id="sheet" data-page-node-id="ajPeQOzVYLHTI3FuWQkaeM"></div>
+<div id="toast" data-page-node-id="sZMKkrLHl8WcEqfqlrF9le"></div>
 
-<script>
+<script data-page-node-id="hArVDfoe9Jp47j4zZEWniB">
 /* ============ 应用版本 / 检查更新 ============
    发布新版时把 APP_VER 递增，并同步把同目录 ver.json 的 latest 改成相同值。
    checkUpdate() 拉同域 ver.json 对比：有新版立刻强刷加载新版。 */
-var APP_VER=64;
+var APP_VER=65;
+/* ============ 存储兼容兜底 ============
+   部分嵌入环境（如预览沙箱 iframe）禁用 localStorage，访问即抛 SecurityError，
+   会导致 load() 中断、页面全空。此处探测一次：不可用就用内存模拟，保证页面能正常
+   渲染（该环境下数据不持久，仅本页有效；正常浏览器不受影响、仍持久保存）。 */
+(function(){
+  try{localStorage.setItem('__ls_probe','1');localStorage.removeItem('__ls_probe');return;}
+  catch(e){}
+  var mem={};
+  var fake={
+    getItem:function(k){return Object.prototype.hasOwnProperty.call(mem,k)?mem[k]:null;},
+    setItem:function(k,v){mem[k]=String(v);},
+    removeItem:function(k){delete mem[k];},
+    clear:function(){mem={};},
+    key:function(i){return Object.keys(mem)[i]||null;},
+    get length(){return Object.keys(mem).length;}
+  };
+  try{Object.defineProperty(window,'localStorage',{value:fake,configurable:true});}
+  catch(e2){try{window.localStorage=fake;}catch(e3){}}
+  var smem={};
+  var sfake={getItem:function(k){return Object.prototype.hasOwnProperty.call(smem,k)?smem[k]:null;},setItem:function(k,v){smem[k]=String(v);},removeItem:function(k){delete smem[k];},clear:function(){smem={};}};
+  try{Object.defineProperty(window,'sessionStorage',{value:sfake,configurable:true});}
+  catch(e2){try{window.sessionStorage=sfake;}catch(e3){}}
+})();
 /* 检查是否有新版（手动触发）— 无确认弹窗，点「更新」直接拉新版 */
 function checkUpdate(){
   const now=Date.now();
@@ -596,7 +619,9 @@ function runSeeds(){
   ensureSeedCopies();ensureSeedCopiesExtra();ensureSeedVideos();ensureSeedVideosSmall();
   ensureSeedSamples();ensureSeedOrders();ensureSeedOrdersSmall();migrateSeedDatesToToday();
 }
+var HAD_LOCAL=false;   // 本次打开前本地是否已有存档（在种入种子数据前探测，供云端恢复判断）
 function load(){
+  try{HAD_LOCAL=!!localStorage.getItem(DB_KEY);}catch(e){HAD_LOCAL=false;}
   try{db=JSON.parse(localStorage.getItem(DB_KEY))||db}catch(e){}
   normalize();
   runSeeds();
@@ -867,19 +892,20 @@ function cloudPush(){
   .catch(e=>{CLOUD_STATE='fail';setCloudUI();toast('云端备份失败：连不上 GitHub');console.warn('云备份失败',e);});
 }
 function cloudPull(){
-  if(!cloudReady())return Promise.reject('no token');
+  /* gist 本身可匿名读取（备份内容非敏感）；有 token 则带上，无 token 也能拉，保证新设备/新地址首次打开可自动恢复 */
   const gistId=ghGist()||'';
   if(!gistId)return Promise.reject('no gist yet');
-  return fetch('https://api.github.com/gists/'+gistId,{headers:{'Authorization':'Bearer '+ghToken(),'Accept':'application/vnd.github+json','X-GitHub-Api-Version':'2022-11-28'}})
+  const h={'Accept':'application/vnd.github+json','X-GitHub-Api-Version':'2022-11-28'};
+  if(ghToken())h['Authorization']='Bearer '+ghToken();
+  return fetch('https://api.github.com/gists/'+gistId,{headers:h})
     .then(r=>{if(r.status===401||r.status===403)throw new Error('UNAUTH');if(!r.ok)throw new Error('HTTP '+r.status);return r.json();})
     .then(j=>{const f=j.files&&j.files[GH_FILE];if(!f||!f.content)return null;return JSON.parse(f.content);});
 }
-/* 首次打开：本地没数据但云端有 → 自动拉回 */
+/* 首次打开：打开前本地就没存档(HAD_LOCAL=false)且云端有 → 自动拉回。
+   注意不能用"当前 db 是否为空"判断——种子数据已先入库，会把恢复机会挤掉。 */
 function cloudMaybeRecover(){
-  if(!cloudReady())return;
-  const lv=localStorage.getItem(DB_KEY);
-  const hasLocal=!!(lv&&JSON.parse(lv));
-  cloudPull().then(cd=>{if(cd&&cd.products&&!hasLocal){db=cd;normalize();save();toast('已从云端恢复数据');}}).catch(()=>{});
+  if(HAD_LOCAL)return;
+  cloudPull().then(cd=>{if(cd&&cd.products&&cd.records){db=cd;normalize();save();toast('已从云端恢复数据');}}).catch(()=>{});
 }
 function setCloudUI(){
   // 右上角 header 云备点
@@ -901,10 +927,10 @@ function refreshBar(ready){
   const dot=document.getElementById('barDot'),txt=document.getElementById('barTxt'),btn=document.getElementById('barBtn');
   if(!dot||!txt||!btn)return;
   if(!ready){
-    bar.className='backup-bar unset';dot.className='cloud-dot';txt.innerHTML='自动备份未启用<small>改动不会自动保存到云端</small>';btn.textContent='去启用';const rb=document.getElementById('barRestore');if(rb)rb.style.display='none';return;
+    bar.className='backup-bar unset';dot.className='cloud-dot';txt.innerHTML='自动备份未启用<small data-page-node-id="AaS1WoI6tTNkb63nFDIACc">改动不会自动保存到云端</small>';btn.textContent='去启用';const rb=document.getElementById('barRestore');if(rb)rb.style.display='none';return;
   }
   const st=barState();bar.className='backup-bar';dot.className='cloud-dot '+st[0];
-  txt.innerHTML=st[1]+'<small>上次备份 '+cloudLastTime()+'</small>';btn.textContent=st[2];
+  txt.innerHTML=st[1]+'<small data-page-node-id="jFLPpT0ArnEmBbRgWbmm1g">上次备份 '+cloudLastTime()+'</small>';btn.textContent=st[2];
   const rb=document.getElementById('barRestore');if(rb)rb.style.display='';
 }
 /* 总览备份条右侧按钮 */
