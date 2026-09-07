@@ -455,15 +455,17 @@ body{
     <!-- ============ PRODUCT ============ -->
     <div id="view-product" class="view">
       <div class="view-title">出单管理</div>
-      <!-- v75: 单行布局——左侧(账号/时间/排序)横向滚动，右侧日期选择器固定 -->
+      <!-- v76: 账号段单独成行(固定) -->
+      <div class="filter filter-acct">
+        <span class="fb-seg" id="prodAcctSeg">
+          <button class="f-pill on" data-a="all">全部账号</button>
+          <button class="f-pill" data-a="big">大号</button>
+          <button class="f-pill" data-a="small">小号</button>
+        </span>
+      </div>
+      <!-- 第二行:时间段横向滚动 + 排序 + 日期固定右 -->
       <div class="filter filter-lock">
         <div class="filter-scroll-in">
-          <span class="fb-seg" id="prodAcctSeg">
-            <button class="f-pill on" data-a="all">全部账号</button>
-            <button class="f-pill" data-a="big">大号</button>
-            <button class="f-pill" data-a="small">小号</button>
-          </span>
-          <span class="fb-sep"></span>
           <span class="fb-seg" id="prodRangeSeg">
             <button class="f-pill on" data-r="all">全部</button>
             <button class="f-pill" data-r="today">今天</button>
@@ -478,7 +480,6 @@ body{
             <button class="f-pill" data-s="orders">出单最多</button>
           </span>
         </div>
-        <!-- 日期固定在最右 -->
         <span class="fb-sep"></span>
         <span class="filter-month-lock">
           <input type="month" class="f-month" id="prodMonth" value="">
@@ -629,7 +630,7 @@ try{console._wbe=__wbErr;var _oe=console.error;console.error=function(){__wbErr(
 /* ============ 应用版本 / 检查更新 ============
    发布新版时把 APP_VER 递增，并同步把同目录 ver.json 的 latest 改成相同值。
    checkUpdate() 拉同域 ver.json 对比：有新版立刻强刷加载新版。 */
-var APP_VER=75;
+var APP_VER=76;
 /* ============ 存储兼容兜底 ============
    部分嵌入环境（如预览沙箱 iframe）禁用 localStorage，访问即抛 SecurityError，
    会导致 load() 中断、页面全空。此处探测一次：不可用就用内存模拟，保证页面能正常

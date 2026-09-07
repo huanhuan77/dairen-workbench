@@ -1,5 +1,5 @@
 {
-  "latest": 75,
-  "releaseDate": "2026-09-07",
-  "note": "v75: 出单管理布局改对——一行布局：左账号段/中横向滚动区(时间段+排序)/右日期选择器固定。新加 .filter-lock + .filter-scroll-in(flex:1 min-width:0 overflow-x:auto nowrap)+ .filter-month-lock(flex:0 0 auto 右侧固定)。真实浏览器验证：sameLine=true monthInLock=true month贴右、fill 2026-08 工作、0 error。"
+  "latest": 76,
+  "updated": "2026-09-07",
+  "note": "v76: 出单管理布局——账号段单独成行固定,时间段+排序横向滚动,日期固定最右"
 }
